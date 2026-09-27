@@ -22,12 +22,22 @@ const BANNERS = [
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
 const PROMO_BANNER = { desktop:'', mobile:'', alt:'Promoción', link:'#productos' };
 
-// Tarjetas de categoría → 800 × 1000 px cada una (vertical)
+// Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
+const CINTA = [
+  'Envío gratis en compras sobre $49.990',
+  'Despacho a todo Chile',
+  'Garantía de 6 meses',
+  'Hasta 6 cuotas sin interés',
+  'Productos Apple originales',
+];
+
+// Tarjetas de categoría en puzzle. El orden manda: la 1ª es la grande.
+// Cada una lleva su propia medida porque ocupan tamaños distintos.
 const CATEGORIAS = [
-  { chip:'Audio',      titulo:'AirPods',      sub:'Sonido sin cables',    img:'', link:'#productos' },
-  { chip:'Relojes',    titulo:'Apple Watch',  sub:'Salud y deporte',      img:'', link:'#productos' },
-  { chip:'Carga',      titulo:'Cargadores',   sub:'Rápida y segura',      img:'', link:'#productos' },
-  { chip:'Accesorios', titulo:'MagSafe',      sub:'Magnético y práctico', img:'', link:'#productos' },
+  { chip:'Audio',      titulo:'AirPods',      sub:'Sonido sin cables',    img:'', medida:'1200 × 900',  link:'#productos' },
+  { chip:'Relojes',    titulo:'Apple Watch',  sub:'Salud y deporte',      img:'', medida:'1200 × 500',  link:'#productos' },
+  { chip:'Carga',      titulo:'Cargadores',   sub:'Rápida y segura',      img:'', medida:'600 × 500',   link:'#productos' },
+  { chip:'Accesorios', titulo:'MagSafe',      sub:'Magnético y práctico', img:'', medida:'600 × 500',   link:'#productos' },
 ];
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
@@ -57,7 +67,7 @@ const Banners = (() => {
   function categoria(c) {
     const img = c.img
       ? `<img src="${escAttr(c.img)}" alt="${escAttr(c.titulo)}" loading="lazy" decoding="async">`
-      : `<div class="slot cat-slot" data-medida="800 × 1000"></div>`;
+      : `<div class="slot cat-slot" data-medida="${escAttr(c.medida || '1200 × 900')}"></div>`;
     return `<a href="${escAttr(c.link || '#productos')}" class="cat-card">
         <div class="cat-media">${img}</div>
         <div class="cat-body">
@@ -99,7 +109,17 @@ const Banners = (() => {
     if (el) el.innerHTML = CATEGORIAS.map(categoria).join('');
   }
 
+  // La cinta se repite dos veces exactas: así el bucle no tiene corte visible.
+  function renderCinta() {
+    const el = document.getElementById('topbarTrack');
+    if (!el) return;
+    const uno = CINTA.map(t => `<span class="cinta-item">${escTxt(t)}</span><span class="cinta-sep" aria-hidden="true">✦</span>`).join('');
+    el.innerHTML = uno + uno;
+    el.setAttribute('aria-label', CINTA.join('. '));
+  }
+
   function init() {
+    renderCinta();
     renderBanners();
     renderCategorias();
     renderPromo();

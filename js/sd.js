@@ -60,7 +60,7 @@ function colorDots(slug){
 // Precio anterior y stock. Van como data-* para que js/tr.js los lea después.
 // Si Supabase no trae la columna, no se escribe el atributo y no se muestra nada.
 function extraData(p){
-  let out = '';
+  let out = p.category ? ` data-cat="${escAttr(p.category)}"` : '';
   if (p.compare_at_price != null && p.compare_at_price !== '') out += ` data-compare="${Number(p.compare_at_price)}"`;
   if (p.stock_qty        != null && p.stock_qty        !== '') out += ` data-stock="${Number(p.stock_qty)}"`;
   return out;

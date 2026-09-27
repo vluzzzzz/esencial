@@ -65,6 +65,43 @@ const ProductModal=(()=>{
   function openAccordion(id){const b=document.getElementById(id+'-body'),c=document.getElementById(id+'-chev');if(!b||!c)return;const o=b.style.height!=='0px'&&b.style.height!=='';if(o){b.style.height='0';c.classList.remove('open');}else{b.style.height=b.scrollHeight+'px';c.classList.add('open');}}
   function updateTotal(){document.getElementById('ppageTotal').textContent=fmt(priceForQty(qty)*qty);renderTiers();}
   function renderFeatures(key){const f=FEATURES[key]||[],i=document.getElementById('ppage-features-inner');if(i)i.innerHTML='<ul>'+f.map(x=>`<li>${x}</li>`).join('')+'</ul>';}
+  // Productos similares. Primero los de la misma familia (airpods, apple-watch,
+  // cargador…), y si faltan se completa con el resto del catálogo.
+  function renderSimilares(slug){
+    const el=document.getElementById('ppageSimilares');
+    if(!el)return;
+    const todas=[...document.querySelectorAll('#productosGrid .product-card')].filter(c=>c.dataset.id!==slug);
+    // Familia = la categoría de Supabase si está; si no, la primera palabra del
+    // slug: airpods-4, airpods-pro-2 y airpods-max caen todos en "airpods".
+    const familia=c=>c.dataset.cat || String(c.dataset.id||'').split('-')[0];
+    const yo=document.querySelector(`#productosGrid .product-card[data-id="${CSS.escape(slug)}"]`);
+    const mia=yo?familia(yo):'';
+    const orden=[...todas.filter(c=>familia(c)===mia),...todas.filter(c=>familia(c)!==mia)];
+    const lista=orden.slice(0,8);
+    if(!lista.length){el.innerHTML='';el.hidden=true;return;}
+    el.hidden=false;
+    el.innerHTML=`<h3 class="ppage-sim-titulo">Productos similares</h3>
+      <div class="ppage-sim-row">${lista.map(c=>{
+        const img=c.querySelector('.card-img-wrap img');
+        const p=Number(c.dataset.price);
+        return `<button class="sim-card" data-goto="${escAttr(c.dataset.id)}">
+            <span class="sim-img">${img?`<img src="${escAttr(img.getAttribute('src'))}" alt="" loading="lazy">`:''}</span>
+            <span class="sim-name">${escTxt(c.dataset.name)}</span>
+            <span class="sim-price">${fmt(p)}</span>
+          </button>`;
+      }).join('')}</div>`;
+  }
+
+  // Cambiar de producto sin cerrar: se rellena de nuevo y se sube al inicio.
+  function irA(slug){
+    const card=document.querySelector(`#productosGrid .product-card[data-id="${CSS.escape(slug)}"]`);
+    if(!card)return;
+    qty=1;tiersOpen=false;isTemp=false;
+    populate(card,slug);
+    originCard=card;
+    document.getElementById('ppageInfo')?.scrollTo({top:0,behavior:'smooth'});
+  }
+
   // Estrellas y descuento, bajo el nombre del producto.
   function renderMeta(card,key){
     const el=document.getElementById('ppageMeta');
@@ -106,7 +143,7 @@ const ProductModal=(()=>{
     ['ppage-features','ppage-delivery'].forEach(id=>{const b=document.getElementById(id+'-body'),c=document.getElementById(id+'-chev');if(b)b.style.height='0';if(c)c.classList.remove('open');});
     document.getElementById('ppageTiersList').style.height='0';
     renderTiers();updateTotal();renderFeatures(key);
-    renderMeta(card,key);renderTrust(card);Reviews.renderProducto(key);
+    renderMeta(card,key);renderTrust(card);Reviews.renderProducto(key);renderSimilares(key);
     resetCarousel(currentProduct.image,card.dataset.name,key);
     _buyTried=false;
     if(colorVars(key))imgIndex=-1;            // color: ninguno elegido al abrir
@@ -296,6 +333,13 @@ const ProductModal=(()=>{
     ppage.style.display='none';overlay.style.opacity='0';
 
     backBtn.addEventListener('click',close);overlay.addEventListener('click',close);
+
+    // Clic en un producto similar → se abre ese sin salir de la ficha.
+    document.getElementById('ppageSimilares')?.addEventListener('click',e=>{
+      const b=e.target.closest('[data-goto]');
+      if(b)irA(b.dataset.goto);
+    });
+
     document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
     document.getElementById('ppageTierSelected')?.addEventListener('click',toggleTiers);
     document.getElementById('ppageImgNext')?.addEventListener('click',()=>goToImg(imgIndex+1));

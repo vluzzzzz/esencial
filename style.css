@@ -748,3 +748,95 @@ body:has(#topbar) .nav{top:38px}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .line{animation:none!important}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V2 — paleta celeste, cinta móvil, categorías puzzle y ficha corregida
+   Estas reglas van al final: pisan a las de arriba sin borrarlas.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* El celeste es el acento. La mayoría del color vendrá de las imágenes,
+     así que se usa con cuentagotas: cinta, foco, chips y enlaces. */
+  --celeste:#38bdf8;
+  --celeste-deep:#0284c7;   /* para texto sobre blanco: contraste suficiente */
+  --celeste-soft:#e0f2fe;
+}
+
+/* ── Fuera lo que se movía de fondo ──────────────────────────────────────── */
+.background,.hero-lines,.xtape-wrap{display:none!important}
+
+/* ── Cinta de arriba ─────────────────────────────────────────────────────── */
+.topbar{display:block;padding:0;min-height:0;background:var(--celeste);color:var(--black);overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(to right,transparent,#000 6%,#000 94%,transparent)}
+.topbar-track{display:flex;align-items:center;width:max-content;white-space:nowrap;padding:9px 0;animation:cinta 34s linear infinite;will-change:transform}
+.topbar:hover .topbar-track{animation-play-state:paused}
+.cinta-item{font-size:13px;font-weight:600;letter-spacing:.01em;padding:0 18px}
+.cinta-sep{font-size:10px;opacity:.5}
+/* el contenido está duplicado exacto: al llegar al 50% el bucle no se nota */
+@keyframes cinta{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── Acentos celestes, contados ──────────────────────────────────────────── */
+.buscador:focus-within{border-color:var(--celeste-deep);box-shadow:0 6px 24px rgba(56,189,248,.22)}
+.buscador-lupa{fill:var(--celeste-deep)}
+.cat-chip{background:var(--celeste);color:var(--black)}
+.cat-card:has(img) .cat-chip{background:var(--celeste);color:var(--black)}
+.cat-subtitulo,.reviews-subtitulo,.productos-subtitulo{color:var(--celeste-deep)}
+.tira-icono{background:var(--celeste-soft);color:var(--celeste-deep)}
+.rv-bar-fill{background:var(--celeste)}
+.footer-nav a:hover,.topbar-link{color:var(--celeste-deep)}
+
+/* ── Categorías en puzzle ────────────────────────────────────────────────── */
+/* 1ª grande (2×2), 2ª ancha (2×1), 3ª y 4ª chicas (1×1). */
+.cat-grid{grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:14px}
+.cat-card{aspect-ratio:auto;height:100%}
+.cat-grid .cat-card:nth-child(1){grid-column:span 2;grid-row:span 2}
+.cat-grid .cat-card:nth-child(2){grid-column:span 2;grid-row:span 1}
+.cat-grid .cat-card:nth-child(3){grid-column:span 1;grid-row:span 1}
+.cat-grid .cat-card:nth-child(4){grid-column:span 1;grid-row:span 1}
+.cat-grid .cat-card:nth-child(1) .cat-titulo{font-size:42px}
+.cat-grid .cat-card:nth-child(n+3) .cat-titulo{font-size:24px}
+.cat-grid .cat-card:nth-child(n+3) .cat-sub{display:none}
+.cat-grid .cat-card:nth-child(n+3) .cat-body{padding:14px}
+
+/* ── Ficha de producto ───────────────────────────────────────────────────── */
+/* El bug del recorte: con justify-content:center y overflow, el navegador
+   corta la parte de arriba cuando el contenido no cabe. Va desde el inicio. */
+.ppage-info{justify-content:flex-start;padding:72px 48px 64px 48px;gap:22px;scroll-behavior:smooth}
+.ppage-img-panel{position:sticky;top:0;align-self:flex-start;height:100vh;min-height:0}
+
+/* ── Productos similares ─────────────────────────────────────────────────── */
+.ppage-similares{margin-top:26px;padding-top:22px;border-top:1px solid var(--gray-light)}
+.ppage-sim-titulo{font-family:var(--font-display);font-size:26px;letter-spacing:.02em;margin-bottom:14px}
+.ppage-sim-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sim-card{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 10px 14px;background:var(--white);border:1px solid var(--gray-light);border-radius:13px;text-align:center;transition:border-color .25s var(--ease-smooth),transform .25s var(--ease-smooth),box-shadow .25s var(--ease-smooth)}
+.sim-card:hover{border-color:var(--celeste);transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.09)}
+.sim-img{display:flex;align-items:center;justify-content:center;width:100%;height:82px}
+.sim-img img{max-width:100%;max-height:100%;object-fit:contain}
+.sim-name{font-size:12px;font-weight:500;line-height:1.3;color:var(--black)}
+.sim-price{font-size:13px;font-weight:700;color:var(--celeste-deep)}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media(max-width:900px){
+  .ppage-sim-row{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:768px){
+  .cat-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:170px}
+  .cat-grid .cat-card:nth-child(1){grid-column:span 2;grid-row:span 2}
+  .cat-grid .cat-card:nth-child(2){grid-column:span 2;grid-row:span 1}
+  .cat-grid .cat-card:nth-child(3),
+  .cat-grid .cat-card:nth-child(4){grid-column:span 1;grid-row:span 1}
+  .ppage-img-panel{position:relative;height:auto}
+  .ppage-info{padding:56px 24px 48px}
+}
+@media(max-width:700px){
+  .cinta-item{font-size:12px;padding:0 14px}
+  .ppage-sim-row{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:430px){
+  .cat-grid{grid-auto-rows:150px;gap:10px}
+  .cat-grid .cat-card:nth-child(1) .cat-titulo{font-size:30px}
+}
+
+/* La cinta también se detiene si el sistema pide menos movimiento. */
+@media(prefers-reduced-motion:reduce){
+  .topbar-track{animation:none}
+}
