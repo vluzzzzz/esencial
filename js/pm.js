@@ -99,7 +99,8 @@ const ProductModal=(()=>{
     qty=1;tiersOpen=false;isTemp=false;
     populate(card,slug);
     originCard=card;
-    document.getElementById('ppageInfo')?.scrollTo({top:0,behavior:'smooth'});
+    // El scroll ahora lo lleva la ficha entera, no la columna de datos.
+    ppage.scrollTo({top:0,behavior:'smooth'});
   }
 
   // Estrellas y descuento, bajo el nombre del producto.
@@ -158,12 +159,13 @@ const ProductModal=(()=>{
     isOpen=true;originCard=card;qty=1;tiersOpen=false;
     const key = card.dataset.id;
     populate(card,key);
+    ppage.scrollTop=0;          // cada producto abre desde arriba
     originRect=card.getBoundingClientRect();
     const cardImg=getCardImg(card),ppageImgEl=document.getElementById('ppageImg'),ppageInfo=document.getElementById('ppageInfo');
 
     if(!document.startViewTransition||window.innerWidth<=900){
       const cx=(originRect.left+originRect.width/2)/window.innerWidth*100,cy=(originRect.top+originRect.height/2)/window.innerHeight*100;
-      ppage.style.cssText=`display:flex;flex-direction:column;position:fixed;top:0;right:0;bottom:0;left:0;width:100vw;max-width:100vw;height:100dvh;margin:0;padding:0;border-radius:0;overflow:hidden;transform-origin:${cx.toFixed(2)}% ${cy.toFixed(2)}%;`;
+      ppage.style.cssText=`display:block;position:fixed;top:0;right:0;bottom:0;left:0;width:100vw;max-width:100vw;height:100dvh;margin:0;padding:0;border-radius:0;overflow-y:auto;overflow-x:hidden;transform-origin:${cx.toFixed(2)}% ${cy.toFixed(2)}%;`;
       if(ppageInfo)ppageInfo.style.opacity='1';
       lockScroll();ppage.classList.add('active');overlay.classList.add('active');overlay.style.opacity='0';card.style.visibility='hidden';
       gsap.to(overlay,{opacity:1,duration:.4,ease:'power2.out'});
@@ -183,9 +185,9 @@ const ProductModal=(()=>{
       if(cardImg){cardImg.style.viewTransitionName='';cardImg.style.transition='';}
       card.style.visibility='hidden';
 
-      ppage.style.display='flex';ppage.style.position='fixed';ppage.style.inset='0';
+      ppage.style.display='block';ppage.style.position='fixed';ppage.style.inset='0';
       ppage.style.width='100vw';ppage.style.height='100dvh';
-      ppage.style.margin='0';ppage.style.padding='0';ppage.style.borderRadius='0';ppage.style.overflow='hidden';
+      ppage.style.margin='0';ppage.style.padding='0';ppage.style.borderRadius='0';ppage.style.overflowY='auto';ppage.style.overflowX='hidden';
       ppage.style.transform='';ppage.style.transformOrigin='';
 
       ppage.style.viewTransitionName='card-container';

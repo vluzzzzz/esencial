@@ -1012,3 +1012,66 @@ body:has(#topbar) .nav{top:auto}
 @media(max-width:768px){
   .nav-logo img{width:28px;height:28px}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V9 — la ficha deja de estar partida en dos columnas al bajar
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Antes toda la ficha era una fila de dos columnas y el scroll ocurría dentro
+   de la columna derecha. Al bajar, la imagen se terminaba y quedaba un vacío
+   gris a la izquierda con todo el contenido apretado a la derecha.
+   Ahora la página entera baja: arriba imagen + datos, y debajo las reseñas y
+   los similares a lo ancho. */
+.ppage{
+  display:block;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth
+}
+
+/* La parte de arriba conserva las dos columnas. */
+.ppage-top{display:flex;flex-direction:row;align-items:stretch;min-height:100vh}
+
+/* La imagen acompaña mientras se leen los datos y se detiene al llegar abajo. */
+.ppage-img-panel{position:sticky;top:0;height:100vh;min-height:0;align-self:flex-start}
+
+/* La columna de datos ya no tiene scroll propio: baja con la página. */
+.ppage-info{
+  overflow:visible;
+  min-height:100vh;
+  justify-content:flex-start;
+  box-shadow:none
+}
+
+/* Reseñas y similares, a lo ancho y centrados. */
+.ppage-bottom{
+  max-width:1180px;margin:0 auto;
+  padding:8px 48px 90px;
+  background:#fff
+}
+.ppage-bottom .ppage-reviews,
+.ppage-bottom .ppage-similares{margin-top:40px;padding-top:32px}
+.ppage-bottom .ppage-reviews:first-child{margin-top:0;border-top:none;padding-top:0}
+
+/* Con más ancho entran más columnas. */
+.ppage-bottom .ppage-rv-lista{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:14px
+}
+.ppage-bottom .ppage-sim-row{grid-template-columns:repeat(6,1fr)}
+
+/* El botón de volver acompaña el scroll en vez de perderse arriba. */
+.ppage-back{position:fixed;top:20px;left:24px}
+
+@media(max-width:1100px){
+  .ppage-bottom .ppage-rv-lista{grid-template-columns:repeat(2,1fr)}
+  .ppage-bottom .ppage-sim-row{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:768px){
+  /* En móvil se apilan: imagen arriba, datos abajo. */
+  .ppage-top{flex-direction:column;min-height:0}
+  .ppage-img-panel{position:relative;width:100%;height:auto;min-height:62vh}
+  .ppage-info{min-height:0;justify-content:flex-start}
+  .ppage-bottom{padding:0 20px 70px}
+  .ppage-bottom .ppage-rv-lista{grid-template-columns:1fr}
+  .ppage-bottom .ppage-sim-row{grid-template-columns:repeat(2,1fr)}
+}
