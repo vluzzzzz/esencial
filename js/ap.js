@@ -14,6 +14,7 @@ function freshWork(p){
     id:p.id, slug:p.slug, name:p.name, category:p.category || 'audifonos',
     description:p.description || '', image:p.image || '', image_scale:p.image_scale ?? 0.85,
     in_stock:p.in_stock !== false, features:[...(p.features||[])],
+    compare_at_price:p.compare_at_price ?? null, stock_qty:p.stock_qty ?? null,
     gallery:[...(p.gallery||[])], colors:[...(p.colors||[])],
     is_hero:!!p.is_hero, is_featured:!!p.is_featured,
   };
@@ -67,6 +68,17 @@ function buildCard(p){
       </div>
     </div>
 
+    <div class="row2">
+      <label class="fld"><span>Precio anterior (opcional)</span>
+        <input type="number" min="1" step="1" data-f="compare" value="${p.compare_at_price ?? ''}" placeholder="Ej: 19990">
+        <p class="note-stock">El chip “-23%” y el precio tachado solo salen si este número es mayor al precio actual. Vacío = sin descuento.</p>
+      </label>
+      <label class="fld"><span>Unidades disponibles (opcional)</span>
+        <input type="number" min="0" step="1" data-f="qty" value="${p.stock_qty ?? ''}" placeholder="Ej: 3">
+        <p class="note-stock">El aviso “Quedan N unidades” solo sale si es 5 o menos. Vacío = no se muestra nada.</p>
+      </label>
+    </div>
+
     <div class="adv-toggle" data-act="adv"><span class="chev">▸</span> Características e imágenes</div>
     <div class="adv hidden" data-box="adv">
       <h4>Características</h4>
@@ -104,6 +116,10 @@ function bindCard(card){
   imgInput.addEventListener('input', e => { st.p.image = e.target.value; const t = card.querySelector('[data-h=thumb]'); t.src = e.target.value; t.style.visibility = 'visible'; });
   card.querySelector('[data-f=scale]').addEventListener('input', e => st.p.image_scale = parseFloat(e.target.value) || 0.85);
   card.querySelector('[data-f=stock]').addEventListener('change', e => st.p.in_stock = e.target.checked);
+  // Campo vacío → null, para que la web no muestre ni descuento ni aviso de stock.
+  const numOrNull = v => { const n = parseInt(v, 10); return Number.isFinite(n) ? n : null; };
+  card.querySelector('[data-f=compare]').addEventListener('input', e => st.p.compare_at_price = numOrNull(e.target.value));
+  card.querySelector('[data-f=qty]').addEventListener('input', e => st.p.stock_qty = numOrNull(e.target.value));
 
   // acciones
   card.addEventListener('click', async e => {
@@ -206,6 +222,7 @@ async function saveProduct(card, st, btn){
       image:p.image.trim(), image_scale:p.image_scale, in_stock:p.in_stock,
       features:p.features.filter(f=>f.trim()!==''), gallery:p.gallery,
       is_hero:p.is_hero, is_featured:p.is_featured,
+      compare_at_price:p.compare_at_price, stock_qty:p.stock_qty,
     }).eq('id', p.id);
     if (e1) throw e1;
 

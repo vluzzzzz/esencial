@@ -65,6 +65,27 @@ const ProductModal=(()=>{
   function openAccordion(id){const b=document.getElementById(id+'-body'),c=document.getElementById(id+'-chev');if(!b||!c)return;const o=b.style.height!=='0px'&&b.style.height!=='';if(o){b.style.height='0';c.classList.remove('open');}else{b.style.height=b.scrollHeight+'px';c.classList.add('open');}}
   function updateTotal(){document.getElementById('ppageTotal').textContent=fmt(priceForQty(qty)*qty);renderTiers();}
   function renderFeatures(key){const f=FEATURES[key]||[],i=document.getElementById('ppage-features-inner');if(i)i.innerHTML='<ul>'+f.map(x=>`<li>${x}</li>`).join('')+'</ul>';}
+  // Estrellas y descuento, bajo el nombre del producto.
+  function renderMeta(card,key){
+    const el=document.getElementById('ppageMeta');
+    if(!el)return;
+    const lista=Reviews.porProducto(key);
+    let estrellas='';
+    if(lista.length){
+      const r=Reviews.resumen(lista);
+      estrellas=`<a href="#ppageReviews" class="ppage-stars">${Reviews.estrellas(Math.round(r.media),'sm')}<span>${r.total} ${r.total===1?'reseña':'reseñas'}</span></a>`;
+    }
+    el.innerHTML=estrellas+Trust.descuentoHTML(card.dataset.price,card.dataset.compare);
+  }
+
+  // Stock, entrega y medios de pago. Los datos salen de la tarjeta que se abrió.
+  function renderTrust(card){
+    const el=document.getElementById('ppageTrust');
+    if(!el)return;
+    const stock=Trust.stockHTML(card.dataset.stock);
+    el.innerHTML=`${stock}${Trust.entregaHTML()}${Trust.pagosHTML()}`;
+  }
+
   function populate(card,key){
     const ci=getCardImg(card);
     tiers = PRICE_TIERS[key] || [{ qty: 1, price: Number(card.dataset.price) }];
@@ -85,6 +106,7 @@ const ProductModal=(()=>{
     ['ppage-features','ppage-delivery'].forEach(id=>{const b=document.getElementById(id+'-body'),c=document.getElementById(id+'-chev');if(b)b.style.height='0';if(c)c.classList.remove('open');});
     document.getElementById('ppageTiersList').style.height='0';
     renderTiers();updateTotal();renderFeatures(key);
+    renderMeta(card,key);renderTrust(card);Reviews.renderProducto(key);
     resetCarousel(currentProduct.image,card.dataset.name,key);
     _buyTried=false;
     if(colorVars(key))imgIndex=-1;            // color: ninguno elegido al abrir

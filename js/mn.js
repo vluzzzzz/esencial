@@ -8,10 +8,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   ProductNav.init();Cart.init();CartButton.init();MaskReveal.init();
   ProductsSection.init();NavScroll.init();ProductModal.init();Carousel3D.init();Checkout.init();
 
-  document.querySelector('.icon-btn[aria-label="Cuenta"]')?.addEventListener('click',()=>{
-    const el=document.getElementById('contacto');
-    if(el) el.scrollIntoView({behavior:'smooth'});
-  });
+  // Piezas de venta. Van después de loadCatalog porque leen las tarjetas ya pintadas.
+  Banners.init();Reviews.init();Trust.init();Buscador.init();
+
+  // Barra de anuncio: al cerrarla no vuelve a aparecer.
+  const tb=document.getElementById('topbar');
+  if(tb){
+    if(localStorage.getItem('topbarOff')==='1') tb.remove();
+    document.getElementById('topbarClose')?.addEventListener('click',()=>{
+      localStorage.setItem('topbarOff','1');
+      gsap.to(tb,{height:0,opacity:0,duration:.3,ease:'power2.inOut',onComplete:()=>tb.remove()});
+    });
+  }
 
   const rr=document.getElementById('revealRect');
   if(rr && typeof ScrollTrigger !== 'undefined')

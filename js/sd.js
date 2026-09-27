@@ -26,6 +26,11 @@ const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 
 
 function fmt(n){ return '$'+n.toLocaleString('es-CL'); }
 
+// ¿El usuario pidió menos movimiento en su sistema? Se respeta.
+function reduceMotion(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
 function slugify(str) {
   return str
     .toLowerCase()
@@ -42,10 +47,23 @@ function slugify(str) {
 // ── Catálogo desde Supabase + render dinámico ──────────────────────────────
 function escAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
 
+// Para texto que va DENTRO de una etiqueta. escAttr no alcanza: no escapa < ni >,
+// así que un texto escrito a mano con "<" rompería el HTML.
+function escTxt(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 function colorDots(slug){
   const cv=(typeof COLOR_VARIANTS!=='undefined')?COLOR_VARIANTS[slug]:null;
   if(!cv)return '';
   return '<div class="card-colors">'+cv.map(v=>`<span class="card-color-dot">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="${escAttr(v.name)}">`:`<span style="display:block;width:100%;height:100%;border-radius:50%;background:${v.hex}"></span>`}</span>`).join('')+'</div>';
+}
+
+// Precio anterior y stock. Van como data-* para que js/tr.js los lea después.
+// Si Supabase no trae la columna, no se escribe el atributo y no se muestra nada.
+function extraData(p){
+  let out = '';
+  if (p.compare_at_price != null && p.compare_at_price !== '') out += ` data-compare="${Number(p.compare_at_price)}"`;
+  if (p.stock_qty        != null && p.stock_qty        !== '') out += ` data-stock="${Number(p.stock_qty)}"`;
+  return out;
 }
 
 function tierOne(slug){
@@ -59,7 +77,7 @@ function cardHTML(p){
   const dis = p.in_stock === false ? ' aria-disabled="true"' : '';
   const btn = p.in_stock === false ? 'Sin stock' : 'Ver más';
   const oos = p.in_stock === false ? '<div class="oos-tag">SIN STOCK</div>' : '';
-  return `<div class="product-card${out}" data-id="${escAttr(p.slug)}" data-name="${escAttr(p.name)}" data-price="${p1}" data-raw="${p1}" data-img-scale="${p.image_scale ?? 0.75}" data-desc="${escAttr(p.description)}"${dis}>
+  return `<div class="product-card${out}" data-id="${escAttr(p.slug)}" data-name="${escAttr(p.name)}" data-price="${p1}" data-raw="${p1}"${extraData(p)} data-img-scale="${p.image_scale ?? 0.75}" data-desc="${escAttr(p.description)}"${dis}>
       <div class="card-img-wrap"><img src="${escAttr(p.image)}" alt="${escAttr(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><svg class="card-img-placeholder" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>${oos}</div>
       <div class="card-info"><p class="card-name">${escAttr(p.name)}</p><div class="card-price-row"><p class="card-price">${fmt(p1)} <span class="card-unit">c/u</span></p>${colorDots(p.slug)}</div><button class="card-btn">${btn}</button></div>
     </div>`;
@@ -76,7 +94,7 @@ function slideHTML(p,i){
   const btn = p.in_stock === false ? 'Sin stock' : 'Ver más';
   const oos = p.in_stock === false ? '<div class="oos-tag">SIN STOCK</div>' : '';
   const mid = 'mfx' + i;
-  return `<div class="swiper-slide csl-slide${out}" data-id="${escAttr(p.slug)}" data-name="${escAttr(name)}" data-price="${p1}" data-raw="${p1}" data-img-scale="${p.image_scale ?? 0.75}" data-desc="${escAttr(p.description)}"${dis}>
+  return `<div class="swiper-slide csl-slide${out}" data-id="${escAttr(p.slug)}" data-name="${escAttr(name)}" data-price="${p1}" data-raw="${p1}"${extraData(p)} data-img-scale="${p.image_scale ?? 0.75}" data-desc="${escAttr(p.description)}"${dis}>
       <div class="csl-corner"><svg width="31" height="31" viewBox="0 0 31 31" fill="none"><g opacity="0.35"><mask id="${mid}" fill="white"><path d="M30.6 1L1.6 0L0.7 29L29.7 30L30.6 1Z"/></mask><path d="M30.6 1L30.65 -0.47L32.2 -0.42L32.15 1.09L30.6 1ZM30.55 2.55L1.6 1.59L1.7 -1.43L30.65 -0.47L30.55 2.55ZM28.17 29.98L29.13 0.99L32.15 1.09L31.19 30.08L28.17 29.98Z" fill="white" mask="url(#${mid})"/></g></svg></div>
       <span class="csl-tag">${escAttr(tag)}</span>
       <div class="csl-img"><img src="${escAttr(img)}" alt="${escAttr(name)}" loading="lazy">${oos}</div>
