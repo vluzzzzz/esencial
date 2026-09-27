@@ -993,3 +993,22 @@ body:has(#topbar) .nav{top:auto}
 /* La nav entraba con un fadeUp de 0.8 s en cada carga: se notaba en cada F5.
    Las otras reglas de esa línea apuntan al hero, que ya no existe. */
 .nav{animation:none}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V8 — el logo de la marca reemplaza al de Apple
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* En la nav. El archivo mide 58x58 px y acá se muestra a 34. */
+.nav-logo a{display:flex;align-items:center;line-height:0}
+.nav-logo img{
+  width:34px;height:34px;object-fit:contain;display:block;
+  transition:transform .25s var(--ease-smooth)
+}
+.nav-logo a:hover img{transform:scale(1.06)}
+
+/* En el pie, un poco más chico. */
+.footer-logo img{width:26px;height:26px;object-fit:contain;display:block}
+
+@media(max-width:768px){
+  .nav-logo img{width:28px;height:28px}
+}
