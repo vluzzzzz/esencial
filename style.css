@@ -962,3 +962,19 @@ body:has(#topbar) .nav{top:auto}
   .cinta-item{font-size:11px;padding:0 14px;letter-spacing:.04em}
   .topbar{min-height:38px}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V6 — nav negra y banner más ancho
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --azul-nav:#0a0a0a;   /* la nav pasa a negro; la cinta sigue en #0053fc */
+  --bnr-max:1700px;     /* antes 1400: el banner se estira a los costados */
+}
+
+/* Una línea tenue entre la nav negra y el fondo claro de la página. */
+.nav{border-bottom:1px solid rgba(255,255,255,.08)}
+
+/* Respaldo lento por si el JS no llega a calcular la duración exacta.
+   La velocidad real la fija CINTA_VELOCIDAD en js/bn.js. */
+.topbar-track{animation-duration:110s}

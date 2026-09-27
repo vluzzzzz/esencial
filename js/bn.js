@@ -24,12 +24,15 @@ const PROMO_BANNER = { desktop:'', mobile:'', alt:'Promoción', link:'#productos
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
-  'Envío gratis en compras sobre $49.990',
-  'Despacho a todo Chile',
-  'Garantía de 6 meses',
-  'Hasta 6 cuotas sin interés',
-  'Productos Apple originales',
+  'Calidad Garantizada',
+  '+500 Clientes',
+  'Pago Seguro',
+  'Envío Express',
+  'Distribución Mayorista',
 ];
+
+// Velocidad de la cinta, en píxeles por segundo. Más chico = más lenta.
+const CINTA_VELOCIDAD = 28;
 
 // Tarjetas de categoría en puzzle. El orden manda: la 1ª es la grande.
 // Cada una lleva su propia medida porque ocupan tamaños distintos.
@@ -130,10 +133,16 @@ const Banners = (() => {
 
     // Se mide una mitad y se agregan vueltas hasta pasar el ancho de pantalla.
     requestAnimationFrame(() => {
-      const mitad = el.scrollWidth / 2;
-      if (!mitad) return;
-      const vueltas = Math.max(1, Math.ceil(window.innerWidth / mitad) + 1);
+      const base = el.scrollWidth / 2;
+      if (!base) return;
+      const vueltas = Math.max(1, Math.ceil(window.innerWidth / base) + 1);
       if (vueltas > 1) el.innerHTML = uno.repeat(vueltas * 2);
+
+      // La duración se calcula según lo que mide el recorrido. Si fuera fija,
+      // al agregar vueltas la cinta pasaría cada vez más rápido: el trayecto
+      // crece pero el tiempo no. Así la velocidad es siempre la misma.
+      const recorrido = base * vueltas;
+      el.style.animationDuration = Math.round(recorrido / CINTA_VELOCIDAD) + 's';
     });
   }
 
