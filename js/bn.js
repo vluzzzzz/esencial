@@ -13,7 +13,7 @@
    ════════════════════════════════════════════════════════════════════════════ */
 const BANNERS = [
   { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech', link:'#productos' },
-  { desktop:'', mobile:'', alt:'Banner 2', link:'#productos' },
+  { desktop:'images/bannerdos.png', mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 3', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 4', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 5', link:'#productos' },

@@ -1075,3 +1075,13 @@ body:has(#topbar) .nav{top:auto}
   .ppage-bottom .ppage-rv-lista{grid-template-columns:1fr}
   .ppage-bottom .ppage-sim-row{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V10 — encuadre de los banners
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* El contenedor es 24/7 (3.43). Una imagen menos ancha, como bannerdos.png
+   (3.00), se recorta arriba y abajo por igual. Ahí el logo de la esquina
+   superior perdía unos 25 px. Con top el recorte se lo lleva todo de abajo,
+   que es donde solo hay fondo. */
+.bnr-media img{object-position:center top}
