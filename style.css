@@ -866,3 +866,28 @@ body:has(#topbar) .nav{top:38px}
   .bnr-slide{aspect-ratio:1/1}
   .tira{min-height:0}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V4 — banner de borde a borde
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Estaba encerrado en una caja de 1320 px con 24 px de aire a los lados: en
+   una pantalla de 1536 px sobraban 264 px de fondo gris y la imagen se veía
+   chica. Ahora ocupa el ancho completo, como en SP Digital. */
+.bnr-section{max-width:none;margin:64px 0 0;padding:0}
+.bnr-swiper{border-radius:0}
+
+/* Las flechas y los puntos se separan un poco más del borde de la pantalla. */
+.bnr-arr-prev{left:24px}
+.bnr-arr-next{right:24px}
+
+/* En pantallas enormes se limita el ANCHO, no el alto: así el banner conserva
+   su proporción 24/7 y la imagen nunca se recorta. Con max-height pasaría lo
+   contrario — el contenedor dejaría de ser 24/7 y cover cortaría el diseño. */
+.bnr-swiper{max-width:2200px;margin:0 auto}
+
+@media(max-width:768px){
+  .bnr-section{margin-top:58px;padding:0}
+  .bnr-arr-prev{left:12px}
+  .bnr-arr-next{right:12px}
+}
