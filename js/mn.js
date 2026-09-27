@@ -1,14 +1,23 @@
 // mn
 'use strict';
 document.querySelectorAll('.porque-card').forEach(c=>c.addEventListener('click',()=>c.classList.toggle('flipped')));
-document.addEventListener('DOMContentLoaded', async () => {
-  await loadCatalog();                          // hidrata desde Supabase si está; si no, queda el fallback
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ── 1. YA. Nada de esto depende de Supabase, así que no espera a la red.
+  //    Antes todo iba detrás de `await loadCatalog()` y la página se quedaba
+  //    en blanco varios segundos: cinta, banners, categorías y buscador
+  //    aparecían recién cuando contestaba la base de datos.
   document.body.classList.add('sheet-ready');
+  Banners.init();Reviews.init();Buscador.init();
+  Cart.init();NavScroll.init();ProductModal.init();Checkout.init();
+  Trust.init();                       // pinta la tira y decora el fallback
+  ProductsSection.init();
 
-  // El hero flotante y el carrusel de destacados se quitaron, así que
-  // ProductNav, MaskReveal, CartButton y Carousel3D ya no se inician.
-  Cart.init();ProductsSection.init();NavScroll.init();ProductModal.init();Checkout.init();
-
-  // Piezas de venta. Van después de loadCatalog porque leen las tarjetas ya pintadas.
-  Banners.init();Reviews.init();Trust.init();Buscador.init();
+  // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la grilla
+  //    con los datos reales y se vuelve a decorar.
+  loadCatalog().then(ok => {
+    if (!ok) return;
+    ProductsSection.init();
+    Trust.decorarTarjetas();
+  }).catch(err => console.error('Catálogo:', err));
 });

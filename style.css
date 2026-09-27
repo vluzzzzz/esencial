@@ -840,3 +840,29 @@ body:has(#topbar) .nav{top:38px}
 @media(prefers-reduced-motion:reduce){
   .topbar-track{animation:none}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V3 — velocidad de carga
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* El banner mide 1920 × 560, así que la caja reserva esa proporción exacta.
+   Con la medida reservada la página no da el salto al cargar la imagen. */
+.bnr-slide{aspect-ratio:24/7}
+.bnr-media img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Mientras Swiper no arranca, los 5 slides se apilarían uno al lado del otro.
+   Se muestra solo el primero hasta que Swiper toma el control. */
+.bnr-swiper:not(.swiper-initialized) .swiper-wrapper{display:block}
+.bnr-swiper:not(.swiper-initialized) .bnr-slide:not(:first-child){display:none}
+.bnr-swiper:not(.swiper-initialized) .bnr-arr,
+.bnr-swiper:not(.swiper-initialized) .bnr-pagination{opacity:0}
+
+/* Altura mínima para la cinta y la tira: sin esto el contenido salta hacia
+   abajo cuando el JS las rellena. */
+.topbar{min-height:37px}
+.tira{min-height:74px}
+
+@media(max-width:700px){
+  .bnr-slide{aspect-ratio:1/1}
+  .tira{min-height:0}
+}

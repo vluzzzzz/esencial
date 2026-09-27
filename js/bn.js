@@ -7,12 +7,12 @@
    Mientras 'desktop' esté vacío se ve el rectángulo punteado con la medida.
    Apenas pegás la ruta, el punteado desaparece solo.
 
-   Medidas recomendadas:
-     desktop → 2400 × 800 px   (webp)
-     mobile  → 1200 × 1200 px  (webp)  · si lo dejás vacío se usa el de desktop
+   Medidas:
+     desktop → 1920 × 560 px
+     mobile  → 1080 × 1080 px  · si lo dejás vacío se usa el de desktop
    ════════════════════════════════════════════════════════════════════════════ */
 const BANNERS = [
-  { desktop:'', mobile:'', alt:'Banner 1', link:'#productos' },
+  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 2', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 3', link:'#productos' },
   { desktop:'', mobile:'', alt:'Banner 4', link:'#productos' },
@@ -46,19 +46,24 @@ const Banners = (() => {
   let swiper = null;
 
   // Imagen responsive. Sin ruta → hueco punteado con la medida escrita.
-  function media(item, w, h, clase) {
+  // El primer banner es lo primero que ve el visitante, así que carga con
+  // prioridad alta; los demás esperan a que haga falta (lazy).
+  function media(item, w, h, clase, primero = false) {
     if (!item.desktop) {
       return `<div class="slot ${clase}" data-medida="${w} × ${h}"></div>`;
     }
     const mob = item.mobile || item.desktop;
+    const carga = primero
+      ? 'fetchpriority="high" decoding="sync"'
+      : 'loading="lazy" decoding="async"';
     return `<picture class="${clase}">
         <source media="(max-width:700px)" srcset="${escAttr(mob)}">
-        <img src="${escAttr(item.desktop)}" alt="${escAttr(item.alt || '')}" loading="lazy" decoding="async">
+        <img src="${escAttr(item.desktop)}" alt="${escAttr(item.alt || '')}" width="${w}" height="${h}" ${carga}>
       </picture>`;
   }
 
-  function slide(item) {
-    const inner = media(item, '2400', '800', 'bnr-media');
+  function slide(item, i) {
+    const inner = media(item, '1920', '560', 'bnr-media', i === 0);
     return item.link && item.desktop
       ? `<div class="swiper-slide bnr-slide"><a href="${escAttr(item.link)}" class="bnr-link">${inner}</a></div>`
       : `<div class="swiper-slide bnr-slide">${inner}</div>`;

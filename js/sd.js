@@ -143,16 +143,12 @@ async function loadCatalog(){
         HERO_STOCK[heroName] = p.in_stock !== false;
       });
 
-    // Grilla de productos
+    // Grilla de productos. Se repinta solo si cambió algo: como el fallback ya
+    // se ve desde el primer instante, reemplazarlo por lo mismo haría parpadear.
     const grid = document.getElementById('productosGrid');
-    if (grid) grid.innerHTML = products.map(cardHTML).join('');
-
-    // Carrusel destacados
-    const wrap = document.querySelector('.csl-swiper .swiper-wrapper');
-    if (wrap) {
-      const feats = products.filter(p => p.is_featured)
-        .sort((a,b)=>(a.featured_order||0)-(b.featured_order||0));
-      wrap.innerHTML = feats.map(slideHTML).join('');
+    if (grid) {
+      const nuevo = products.map(cardHTML).join('');
+      if (nuevo.replace(/\s+/g,'') !== grid.innerHTML.replace(/\s+/g,'')) grid.innerHTML = nuevo;
     }
 
     document.body.classList.add('sheet-ready');

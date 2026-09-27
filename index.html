@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AirPods Store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Barlow:wght@100&family=Anton&family=Caveat:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://sfcuiptbnsqvnzzraoee.supabase.co" crossorigin>
+  <!-- solo las dos familias que usa el CSS: Barlow, Anton y Caveat ya no se usaban -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <!-- el banner es lo primero que se ve: que empiece a bajar antes que el JS -->
+  <link rel="preload" as="image" href="images/principalhero.png" fetchpriority="high">
 </head>
 <body>
 
@@ -491,23 +496,20 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase-config.js"></script>
+<!-- ScrollTrigger y Flip se fueron con el hero: ya no los usa nadie -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script defer src="js/supabase-config.js"></script>
 <!-- cargar en este orden -->
-<script src="js/sd.js"></script>
-<script src="js/rv.js"></script>
-<script src="js/tr.js"></script>
-<script src="js/bn.js"></script>
-<script src="js/bs.js"></script>
-<script src="js/hc.js"></script>
-<script src="js/cc.js"></script>
-<script src="js/he.js"></script>
-<script src="js/pm.js"></script>
-<script src="js/sc.js"></script>
-<script src="js/mn.js"></script>
+<script defer src="js/sd.js"></script>
+<script defer src="js/rv.js"></script>
+<script defer src="js/tr.js"></script>
+<script defer src="js/bn.js"></script>
+<script defer src="js/bs.js"></script>
+<script defer src="js/cc.js"></script>
+<script defer src="js/pm.js"></script>
+<script defer src="js/sc.js"></script>
+<script defer src="js/mn.js"></script>
 </body>
 </html>
