@@ -34,6 +34,10 @@ const CINTA = [
 // Velocidad de la cinta, en píxeles por segundo. Más chico = más lenta.
 const CINTA_VELOCIDAD = 28;
 
+// Lo que separa un mensaje del otro. Es el mismo archivo que subiste; solo
+// cambia el nombre, sin la ñ, porque en una URL da problemas de servidor.
+const CINTA_SEPARADOR = 'images/logo-cinta.png';
+
 // Tarjetas de categoría en puzzle. El orden manda: la 1ª es la grande.
 // Cada una lleva su propia medida porque ocupan tamaños distintos.
 const CATEGORIAS = [
@@ -125,7 +129,8 @@ const Banners = (() => {
     const el = document.getElementById('topbarTrack');
     if (!el) return;
     const uno = CINTA.map(t =>
-      `<span class="cinta-item">${escTxt(t)}</span><span class="cinta-sep" aria-hidden="true">✦</span>`
+      `<span class="cinta-item">${escTxt(t)}</span>` +
+      `<img class="cinta-sep" src="${escAttr(CINTA_SEPARADOR)}" alt="" aria-hidden="true" width="58" height="58">`
     ).join('');
 
     el.innerHTML = uno + uno;

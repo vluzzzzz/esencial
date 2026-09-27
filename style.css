@@ -978,3 +978,18 @@ body:has(#topbar) .nav{top:auto}
 /* Respaldo lento por si el JS no llega a calcular la duración exacta.
    La velocidad real la fija CINTA_VELOCIDAD en js/bn.js. */
 .topbar-track{animation-duration:110s}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V7 — logo como separador y sin animación de entrada en la nav
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* El punto ✦ pasa a ser el logo. El archivo mide 58x58 px y acá se muestra
+   a 18 px de alto. */
+.cinta-sep{
+  width:18px;height:18px;flex-shrink:0;
+  object-fit:contain;display:inline-block;vertical-align:middle;opacity:1
+}
+
+/* La nav entraba con un fadeUp de 0.8 s en cada carga: se notaba en cada F5.
+   Las otras reglas de esa línea apuntan al hero, que ya no existe. */
+.nav{animation:none}
