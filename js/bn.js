@@ -114,13 +114,27 @@ const Banners = (() => {
     if (el) el.innerHTML = CATEGORIAS.map(categoria).join('');
   }
 
-  // La cinta se repite dos veces exactas: así el bucle no tiene corte visible.
+  // La cinta nunca puede quedar con un hueco. La animación corre de 0 a -50%,
+  // así que el contenido tiene que estar duplicado Y cada mitad tiene que ser
+  // más ancha que la pantalla. En un monitor muy ancho una sola vuelta de
+  // mensajes no alcanza, así que se repite hasta cubrirla.
   function renderCinta() {
     const el = document.getElementById('topbarTrack');
     if (!el) return;
-    const uno = CINTA.map(t => `<span class="cinta-item">${escTxt(t)}</span><span class="cinta-sep" aria-hidden="true">✦</span>`).join('');
+    const uno = CINTA.map(t =>
+      `<span class="cinta-item">${escTxt(t)}</span><span class="cinta-sep" aria-hidden="true">✦</span>`
+    ).join('');
+
     el.innerHTML = uno + uno;
     el.setAttribute('aria-label', CINTA.join('. '));
+
+    // Se mide una mitad y se agregan vueltas hasta pasar el ancho de pantalla.
+    requestAnimationFrame(() => {
+      const mitad = el.scrollWidth / 2;
+      if (!mitad) return;
+      const vueltas = Math.max(1, Math.ceil(window.innerWidth / mitad) + 1);
+      if (vueltas > 1) el.innerHTML = uno.repeat(vueltas * 2);
+    });
   }
 
   function init() {

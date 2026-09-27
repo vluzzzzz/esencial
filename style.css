@@ -891,3 +891,74 @@ body:has(#topbar) .nav{top:38px}
   .bnr-arr-prev{left:12px}
   .bnr-arr-next{right:12px}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V5 — cinta azul, nav estática y tamaño del banner
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --azul-cinta:#0053fc;   /* la cinta de arriba */
+  --azul-nav:#0038aa;     /* la barra de navegación */
+
+  /* ┌──────────────────────────────────────────────────────────────────┐
+     │  TAMAÑO DEL BANNER — tocá estos dos números y nada más.          │
+     │                                                                  │
+     │  --bnr-lado : aire a cada lado. Más grande = banner más chico.   │
+     │  --bnr-max  : ancho máximo. Más chico = banner más chico.        │
+     │                                                                  │
+     │  Para agrandarlo:  --bnr-lado:24px  --bnr-max:1800px             │
+     │  Para achicarlo:   --bnr-lado:80px  --bnr-max:1200px             │
+     └──────────────────────────────────────────────────────────────────┘ */
+  --bnr-lado:48px;
+  --bnr-max:1400px;
+}
+
+/* ── Cinta ───────────────────────────────────────────────────────────────── */
+/* Sin la máscara de antes: era la que dejaba ese degradado blanco en las
+   puntas y hacía parecer que la cinta se vaciaba en los bordes. */
+.topbar{
+  background:var(--azul-cinta);color:#fff;
+  -webkit-mask-image:none;mask-image:none;
+  min-height:44px;display:flex;align-items:center
+}
+.topbar-track{padding:0;align-items:center}
+.cinta-item{
+  font-size:13px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:#fff;padding:0 20px
+}
+.cinta-sep{color:#fff;opacity:.55;font-size:11px}
+
+/* ── Nav estática ────────────────────────────────────────────────────────── */
+/* Deja de flotar sobre el contenido: ocupa su lugar, como en SP Digital. */
+.nav{
+  position:relative;top:auto;left:auto;right:auto;
+  background:var(--azul-nav);height:60px;
+  box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none
+}
+/* el scroll ya no le cambia el aspecto */
+.nav.scrolled,.nav.nav-on-dark{
+  background:var(--azul-nav)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important
+}
+.nav-logo,.nav.nav-on-dark .nav-logo{color:#fff!important;opacity:1!important}
+.nav-center a,.nav.nav-on-dark .nav-center a{color:#fff!important;opacity:.92}
+.nav-center a:hover{opacity:1}
+.nav-right .icon-btn,.nav.nav-on-dark .nav-right .icon-btn{color:#fff!important;opacity:1!important}
+.nav .icon,.nav.nav-on-dark .icon{fill:#fff!important;opacity:1!important}
+.cart-count{background:#fff;color:var(--azul-nav)}
+/* la nav ya no es fija, así que nada tiene que correrse hacia abajo */
+body:has(#topbar) .nav{top:auto}
+
+/* ── Banner ──────────────────────────────────────────────────────────────── */
+.bnr-section{margin:28px 0 0;padding:0 var(--bnr-lado)}
+.bnr-swiper{max-width:var(--bnr-max);margin:0 auto;border-radius:16px}
+.bnr-arr-prev{left:16px}
+.bnr-arr-next{right:16px}
+
+@media(max-width:768px){
+  :root{--bnr-lado:16px}
+  .nav{height:54px}
+  .bnr-section{margin-top:18px}
+  .cinta-item{font-size:11px;padding:0 14px;letter-spacing:.04em}
+  .topbar{min-height:38px}
+}
