@@ -1228,3 +1228,137 @@ body:has(#topbar) .nav{top:auto}
   .nav-center{gap:14px;font-size:13px}
   .nav-buscador .buscador-input{font-size:13px}
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V14 — tarjeta comercial · fila de ofertas · panel de categorías
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── El bug del borde ────────────────────────────────────────────────────────
+   Al pasar el ratón la tarjeta se mueve (transform) y la imagen de adentro
+   crece. Chrome recorta la esquina redondeada en la GPU y por un instante se
+   ve un pico blanco que después se corrige solo. La cura es recortar en la
+   capa de la imagen, no en la tarjeta, y dejar las dos capas ya compuestas
+   antes de que empiece la animación.                                        */
+.cat-card{ transform:translateZ(0); backface-visibility:hidden; }
+.cat-card:hover{ transform:translate3d(0,-4px,0); }
+.cat-media{
+  border-radius:inherit;
+  overflow:hidden;
+  transform:translateZ(0);
+  backface-visibility:hidden;
+  -webkit-mask-image:-webkit-radial-gradient(#fff,#000);
+          mask-image:radial-gradient(#fff,#000);
+}
+.cat-media img{ backface-visibility:hidden; }
+/* Categoría abierta: se marca para saber cuál se está mirando. */
+.cat-card.activa{ outline:3px solid var(--celeste-deep); outline-offset:-3px; }
+
+/* ── Tarjeta de producto comercial ──────────────────────────────────────────
+   Sin botón "Ver más": la tarjeta entera abre la ficha. Queda el precio
+   grande y el carrito al costado, que agrega una unidad sin abrir nada.     */
+.card-info{ display:flex; flex-direction:column; gap:6px; }
+.card-name{ margin-bottom:0; }
+.card-foot{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:12px; margin-top:auto; padding-top:8px;
+}
+.card-precio-col{ display:flex; flex-direction:column; gap:1px; min-width:0; }
+.card-desde{
+  font-size:11px; font-weight:500; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--gray-mid);
+}
+.card-price{ font-size:32px; margin-bottom:0; color:var(--celeste-deep); }
+.card-unit{ font-size:11px; }
+.card-cart{
+  flex:0 0 auto; width:46px; height:46px; border-radius:14px;
+  background:var(--black); color:var(--white);
+  display:grid; place-items:center; cursor:pointer;
+  transition:background .2s, transform .2s var(--ease-spring);
+}
+.card-cart svg{ width:20px; height:20px; fill:currentColor; }
+.card-cart:hover{ background:var(--celeste-deep); transform:scale(1.07); }
+.card-cart:active{ transform:scale(.94); }
+.card-cart.ok{ background:#1f9d55; }
+.card-sinstock{
+  font-size:12px; font-weight:600; letter-spacing:.04em;
+  text-transform:uppercase; color:#9a9a9f; padding-bottom:6px;
+}
+.product-card .card-stars{ margin-top:0; }
+.out-of-stock .card-price{ color:#9a9a9f; }
+
+/* ── Fila de ofertas ────────────────────────────────────────────────────── */
+.ofertas-section{ position:relative; z-index:2; max-width:1320px; margin:0 auto; padding:72px 24px 0; }
+.ofertas-header{ margin-bottom:28px; }
+.ofertas-subtitulo{
+  font-size:13px; font-weight:500; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--celeste-deep);
+}
+.ofertas-titulo{
+  font-family:var(--font-display); font-size:clamp(38px,6vw,64px);
+  letter-spacing:.02em; line-height:1; margin-top:6px;
+}
+/* A la izquierda la imagen alta, a la derecha las 5 tarjetas en una línea. */
+.ofertas-wrap{ display:grid; grid-template-columns:300px 1fr; gap:18px; align-items:stretch; }
+.oferta-lateral{ position:relative; border-radius:18px; overflow:hidden; min-height:100%; }
+.oferta-lateral .slot{ border-radius:18px; }
+.oferta-link{ display:block; height:100%; }
+.oferta-media{ display:block; width:100%; height:100%; }
+.oferta-media img{ width:100%; height:100%; object-fit:cover; display:block; }
+.ofertas-row{ display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:14px; }
+.ofertas-row .card-price{ font-size:26px; }
+.ofertas-row .card-cart{ width:40px; height:40px; border-radius:12px; }
+
+/* ── Panel de categoría / búsqueda ──────────────────────────────────────── */
+.panel-section{ position:relative; z-index:2; max-width:1320px; margin:0 auto; padding:56px 24px 0; }
+.panel-section[hidden]{ display:none; }
+.panel-head{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:16px; margin-bottom:28px;
+  border-bottom:1px solid var(--gray-light); padding-bottom:18px;
+}
+.panel-sub{
+  font-size:13px; font-weight:500; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--celeste-deep);
+}
+.panel-titulo{
+  font-family:var(--font-display); font-size:clamp(34px,5.5vw,58px);
+  letter-spacing:.02em; line-height:1; margin-top:6px;
+}
+.panel-close{
+  display:inline-flex; align-items:center; gap:7px; flex:0 0 auto;
+  padding:10px 16px; border-radius:999px;
+  border:1px solid var(--gray-light); background:transparent;
+  font-size:13px; font-weight:500; color:var(--gray-mid); cursor:pointer;
+  transition:background .2s, color .2s, border-color .2s;
+}
+.panel-close svg{ width:15px; height:15px; fill:currentColor; }
+.panel-close:hover{ background:var(--black); border-color:var(--black); color:var(--white); }
+.panel-vacio{ font-size:15px; color:var(--gray-mid); padding:12px 0 24px; }
+.panel-mas{ margin-top:56px; }
+.panel-mas-titulo{
+  font-family:var(--font-display); font-size:30px; letter-spacing:.02em;
+  margin-bottom:20px; color:var(--gray-mid);
+}
+
+@media(max-width:1100px){
+  .ofertas-wrap{ grid-template-columns:260px 1fr; }
+  .ofertas-row{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+}
+@media(max-width:900px){
+  .ofertas-wrap{ grid-template-columns:1fr; }
+  .oferta-lateral{ aspect-ratio:16/7; min-height:0; }
+  .ofertas-row{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:768px){
+  .ofertas-section,.panel-section{ padding-left:16px; padding-right:16px; }
+  .ofertas-section{ padding-top:56px; }
+  /* gana al bloque móvil viejo, que traía margen bajo el precio */
+  .card-price{ font-size:24px!important; margin-bottom:0!important; }
+  .ofertas-row .card-price{ font-size:22px!important; }
+  .card-cart,.ofertas-row .card-cart{ width:38px; height:38px; border-radius:11px; }
+  .panel-head{ flex-direction:column; align-items:flex-start; }
+}
+@media(max-width:430px){
+  .card-price{ font-size:21px!important; margin-bottom:0!important; }
+  .card-desde{ font-size:10px; }
+}

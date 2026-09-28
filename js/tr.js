@@ -127,7 +127,7 @@ const Trust = (() => {
 
       if (info && !card.querySelector('.stock-aviso')) {
         const html = stockHTML(stock);
-        if (html) info.querySelector('.card-btn')?.insertAdjacentHTML('beforebegin', html);
+        if (html) info.querySelector('.card-foot')?.insertAdjacentHTML('beforebegin', html);
       }
     });
   }

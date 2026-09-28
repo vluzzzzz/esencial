@@ -67,98 +67,117 @@ const ProductModal=(()=>{
   function renderFeatures(key){const f=FEATURES[key]||[],i=document.getElementById('ppage-features-inner');if(i)i.innerHTML='<ul>'+f.map(x=>`<li>${x}</li>`).join('')+'</ul>';}
   // Productos similares. Primero los de la misma familia (airpods, apple-watch,
   // cargador…), y si faltan se completa con el resto del catálogo.
-  function renderSimilares(slug){
+  // Los similares salen del catálogo, no del HTML de otra sección. Así la
+  // ficha siempre muestra el mismo producto, esté o no pintado en la página.
+  function renderSimilares(actual){
     const el=document.getElementById('ppageSimilares');
     if(!el)return;
-    const todas=[...document.querySelectorAll('#productosGrid .product-card')].filter(c=>c.dataset.id!==slug);
-    // Familia = la categoría de Supabase si está; si no, la primera palabra del
-    // slug: airpods-4, airpods-pro-2 y airpods-max caen todos en "airpods".
-    const familia=c=>c.dataset.cat || String(c.dataset.id||'').split('-')[0];
-    const yo=document.querySelector(`#productosGrid .product-card[data-id="${CSS.escape(slug)}"]`);
-    const mia=yo?familia(yo):'';
-    const orden=[...todas.filter(c=>familia(c)===mia),...todas.filter(c=>familia(c)!==mia)];
-    const lista=orden.slice(0,8);
+    const yo=findProduct(actual);
+    const resto=CATALOGO.filter(p=>p.slug!==actual);
+    const mia=yo?yo.cat:'';
+    const lista=[...resto.filter(p=>p.cat===mia),...resto.filter(p=>p.cat!==mia)].slice(0,8);
     if(!lista.length){el.innerHTML='';el.hidden=true;return;}
     el.hidden=false;
     el.innerHTML=`<h3 class="ppage-sim-titulo">Productos similares</h3>
-      <div class="ppage-sim-row">${lista.map(c=>{
-        const img=c.querySelector('.card-img-wrap img');
-        const p=Number(c.dataset.price);
-        return `<button class="sim-card" data-goto="${escAttr(c.dataset.id)}">
-            <span class="sim-img">${img?`<img src="${escAttr(img.getAttribute('src'))}" alt="" loading="lazy">`:''}</span>
-            <span class="sim-name">${escTxt(c.dataset.name)}</span>
-            <span class="sim-price">${fmt(p)}</span>
-          </button>`;
-      }).join('')}</div>`;
+      <div class="ppage-sim-row">${lista.map(p=>
+        `<button class="sim-card" data-goto="${escAttr(p.slug)}">
+            <span class="sim-img">${p.image?`<img src="${escAttr(p.image)}" alt="" loading="lazy">`:''}</span>
+            <span class="sim-name">${escTxt(p.name)}</span>
+            <span class="sim-price">${fmt(tierOne(p.slug))}</span>
+          </button>`
+      ).join('')}</div>`;
   }
 
-  // Cambiar de producto sin cerrar: se rellena de nuevo y se sube al inicio.
+  // Cambiar de producto sin cerrar: se rellena la MISMA ficha y se sube arriba.
   function irA(slug){
-    const card=document.querySelector(`#productosGrid .product-card[data-id="${CSS.escape(slug)}"]`);
-    if(!card)return;
+    const p=findProduct(slug);
+    if(!p)return;
     qty=1;tiersOpen=false;isTemp=false;
-    populate(card,slug);
-    originCard=card;
+    populate(p,false);
+
+    // Si ese producto está pintado y visible en la página, la ficha pasa a
+    // cerrarse hacia él. Si no está a la vista se deja la tarjeta de origen,
+    // porque animar hacia un elemento oculto deja la ficha colapsada en nada.
+    const card=[...document.querySelectorAll(`.product-card[data-id="${CSS.escape(slug)}"]`)]
+      .find(c=>c.offsetParent!==null||c===originCard);
+    if(card&&card!==originCard){
+      if(originCard)originCard.style.visibility='';
+      originCard=card;originRect=card.getBoundingClientRect();
+      card.style.visibility='hidden';
+    }
     // El scroll ahora lo lleva la ficha entera, no la columna de datos.
     ppage.scrollTo({top:0,behavior:'smooth'});
   }
 
   // Estrellas y descuento, bajo el nombre del producto.
-  function renderMeta(card,key){
+  function renderMeta(p){
     const el=document.getElementById('ppageMeta');
     if(!el)return;
-    const lista=Reviews.porProducto(key);
+    const lista=Reviews.porProducto(p.slug);
     let estrellas='';
     if(lista.length){
       const r=Reviews.resumen(lista);
       estrellas=`<a href="#ppageReviews" class="ppage-stars">${Reviews.estrellas(Math.round(r.media),'sm')}<span>${r.total} ${r.total===1?'reseña':'reseñas'}</span></a>`;
     }
-    el.innerHTML=estrellas+Trust.descuentoHTML(card.dataset.price,card.dataset.compare);
+    el.innerHTML=estrellas+Trust.descuentoHTML(tierOne(p.slug),p.compare);
   }
 
-  // Stock, entrega y medios de pago. Los datos salen de la tarjeta que se abrió.
-  function renderTrust(card){
+  // Stock, entrega y medios de pago. Los datos salen del catálogo.
+  function renderTrust(p){
     const el=document.getElementById('ppageTrust');
     if(!el)return;
-    const stock=Trust.stockHTML(card.dataset.stock);
-    el.innerHTML=`${stock}${Trust.entregaHTML()}${Trust.pagosHTML()}`;
+    el.innerHTML=`${Trust.stockHTML(p.stock)}${Trust.entregaHTML()}${Trust.pagosHTML()}`;
   }
 
-  function populate(card,key){
-    const ci=getCardImg(card);
-    tiers = PRICE_TIERS[key] || [{ qty: 1, price: Number(card.dataset.price) }];
+  // Un producto del catálogo. Si la tarjeta no está en el catálogo (por
+  // ejemplo el carrusel viejo), se arma uno al vuelo con sus data-*.
+  function datosDe(card){
+    return findProduct(card.dataset.id) || {
+      slug: card.dataset.id || '',
+      cat: card.dataset.cat || '',
+      name: card.dataset.name || '',
+      image: getCardImg(card)?.src || '',
+      desc: card.dataset.desc || '',
+      compare: card.dataset.compare,
+      stock: card.dataset.stock,
+    };
+  }
+
+  function populate(p,temp){
+    const key=p.slug;
+    const base=tierOne(key)||Number(p.price)||0;
+    tiers = PRICE_TIERS[key] || [{ qty: 1, price: base }];
     currentProduct = {
-      id: 'cat-' + (card.dataset.id || ''),
+      id: 'cat-' + key,
       key: key,
-      name: card.dataset.name,
-      price: fmt(tiers[0]?.price ?? card.dataset.price),
-      rawPrice: tiers[0]?.price ?? Number(card.dataset.price),
-      image: ci?.src || ''
+      name: p.name,
+      price: fmt(tiers[0]?.price ?? base),
+      rawPrice: tiers[0]?.price ?? base,
+      image: p.image || ''
     };
     openingImage=currentProduct.image;
     document.getElementById('ppageImg').src=currentProduct.image;
     document.getElementById('ppageImg').alt=currentProduct.name;
     document.getElementById('ppageName').textContent=currentProduct.name;
-    document.getElementById('ppageDesc').textContent=card.dataset.desc||'';
+    document.getElementById('ppageDesc').textContent=p.desc||'';
     document.getElementById('ppageQtyNum').textContent='1';
     ['ppage-features','ppage-delivery'].forEach(id=>{const b=document.getElementById(id+'-body'),c=document.getElementById(id+'-chev');if(b)b.style.height='0';if(c)c.classList.remove('open');});
     document.getElementById('ppageTiersList').style.height='0';
     renderTiers();updateTotal();renderFeatures(key);
-    renderMeta(card,key);renderTrust(card);Reviews.renderProducto(key);renderSimilares(key);
-    resetCarousel(currentProduct.image,card.dataset.name,key);
+    renderMeta(p);renderTrust(p);Reviews.renderProducto(key);renderSimilares(key);
+    resetCarousel(currentProduct.image,p.name,key);
     _buyTried=false;
     if(colorVars(key))imgIndex=-1;            // color: ninguno elegido al abrir
     renderColors(key);
     document.getElementById('ppageColorHint')?.classList.remove('show');
     document.getElementById('ppageColorsRow')?.classList.remove('shake');
-    if(card.classList.contains('csl-slide')&&!colorVars(key)){isTemp=true;updateArrow();renderTempThumbs();}
+    if(temp&&!colorVars(key)){isTemp=true;updateArrow();renderTempThumbs();}
   }
 
   function open(card){
     if(isOpen)return;
     isOpen=true;originCard=card;qty=1;tiersOpen=false;
-    const key = card.dataset.id;
-    populate(card,key);
+    populate(datosDe(card),card.classList.contains('csl-slide'));
     ppage.scrollTop=0;          // cada producto abre desde arriba
     originRect=card.getBoundingClientRect();
     const cardImg=getCardImg(card),ppageImgEl=document.getElementById('ppageImg'),ppageInfo=document.getElementById('ppageInfo');
@@ -363,7 +382,28 @@ const ProductModal=(()=>{
     document.getElementById('ppageCartBtn').addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);const b=document.getElementById('ppageCartBtn');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';setTimeout(()=>{b.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>';},1800);});
     document.getElementById('ppageMpBtn')?.addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);Checkout.open();});
     ['ppage-features','ppage-delivery'].forEach(id=>document.getElementById(id+'-header')?.addEventListener('click',()=>openAccordion(id)));
-    document.querySelectorAll('.card-btn').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();open(btn.closest('[data-name]'));}));
+    // Las tarjetas se pintan y se repintan todo el tiempo (ofertas, panel de
+    // categoría, buscador), así que el clic se escucha una sola vez acá arriba
+    // en vez de atarlo a cada botón.
+    document.addEventListener('click',e=>{
+      const carro=e.target.closest('.card-cart');
+      if(carro){e.preventDefault();e.stopPropagation();agregarRapido(carro);return;}
+      const card=e.target.closest('.product-card');
+      if(card&&!card.classList.contains('out-of-stock'))open(card);
+    });
+  }
+
+  // Botón de carrito de la tarjeta: agrega una unidad sin abrir la ficha.
+  // Si el producto tiene colores hay que elegir uno, así que abre la ficha.
+  function agregarRapido(btn){
+    const card=btn.closest('.product-card');
+    if(!card)return;
+    const p=datosDe(card);
+    if(colorVars(p.slug)){open(card);return;}
+    const precio=tierOne(p.slug)||Number(card.dataset.price)||0;
+    Cart.addItem({id:'cat-'+p.slug,key:p.slug,name:p.name,price:fmt(precio),rawPrice:precio,image:p.image});
+    btn.classList.add('ok');
+    setTimeout(()=>btn.classList.remove('ok'),1200);
   }
   return{init,close,open,closeInstant};
 })();

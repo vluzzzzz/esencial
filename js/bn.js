@@ -16,16 +16,19 @@
    'desktop'. El orden de esta lista es el orden en que se ven.
    ════════════════════════════════════════════════════════════════════════════ */
 const BANNERS = [
-  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#productos' },
-  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#productos' },
-  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#productos' },
-  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe', link:'#productos' },
+  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
+  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#ofertas' },
+  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#ofertas' },
+  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe', link:'#ofertas' },
   // Quinto banner en pausa. Para traerlo de vuelta, borrá las dos barras:
-  // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#productos' },
+  // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#ofertas' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
-const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#productos' };
+const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#ofertas' };
+
+// Imagen alta de la izquierda en la fila de ofertas → 620 × 860 px
+const OFERTA_LATERAL = { desktop:'', mobile:'', archivo:'oferta-lateral.png', alt:'Despacho a todo Chile', link:'#ofertas' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
@@ -53,12 +56,13 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
 
    'arriba' es la línea chica y 'titulo' la grande. 'desde' es el precio del
    recuadro; si lo dejás vacío no se muestra el recuadro.
+   'cat' es la categoría del catálogo (js/sd.js) que se abre al hacer clic.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 const CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', img:'images/cat-audifonos.png', medida:'800 × 1000', link:'#productos' },
-  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', img:'images/smarwacth.png', medida:'800 × 500',  link:'#productos' },
-  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', img:'images/iphone.png', medida:'800 × 500',  link:'#productos' },
-  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  img:'images/cat-cargadores.png', medida:'800 × 1000', link:'#productos' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000' },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500'  },
+  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', cat:'iphone',     img:'images/iphone.png',         medida:'800 × 500'  },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000' },
 ];
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
@@ -103,7 +107,8 @@ const Banners = (() => {
     const precio = c.desde
       ? `<span class="cat-desde"><span class="cat-desde-lbl">desde:</span>${escTxt(c.desde)}</span>`
       : '';
-    return `<a href="${escAttr(c.link || '#productos')}" class="cat-card">
+    // No lleva a otra página: abre el panel de esa categoría acá mismo.
+    return `<a href="#panel" class="cat-card" data-cat="${escAttr(c.cat || '')}" data-cat-abrir="${escAttr(c.cat || '')}">
         <div class="cat-media">${img}</div>
         <div class="cat-body">
           <div class="cat-texto">
@@ -146,6 +151,15 @@ const Banners = (() => {
     if (el) el.innerHTML = CATEGORIAS.map(categoria).join('');
   }
 
+  function renderOfertaLateral() {
+    const el = document.getElementById('ofertaLateral');
+    if (!el) return;
+    const inner = media(OFERTA_LATERAL, '620', '860', 'oferta-media');
+    el.innerHTML = OFERTA_LATERAL.link && OFERTA_LATERAL.desktop
+      ? `<a href="${escAttr(OFERTA_LATERAL.link)}" class="oferta-link">${inner}</a>`
+      : inner;
+  }
+
   // La cinta nunca puede quedar con un hueco. La animación corre de 0 a -50%,
   // así que el contenido tiene que estar duplicado Y cada mitad tiene que ser
   // más ancha que la pantalla. En un monitor muy ancho una sola vuelta de
@@ -180,6 +194,7 @@ const Banners = (() => {
     renderCinta();
     renderBanners();
     renderCategorias();
+    renderOfertaLateral();
     renderPromo();
   }
 

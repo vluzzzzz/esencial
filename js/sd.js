@@ -24,6 +24,34 @@ const PRICE_TIERS={
 };
 const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 0;let p=t[0].price;for(const r of t)if(qty>=r.qty)p=r.price;return p;};
 
+/* ── CATÁLOGO ───────────────────────────────────────────────────────────────
+   Única fuente de productos de toda la web. De acá salen la fila de ofertas,
+   el panel de categorías, el buscador y los productos similares de la ficha.
+   Antes las tarjetas estaban escritas a mano en index.html y cada sección
+   leía del HTML de la otra; por eso al abrir un similar se armaba una tarjeta
+   distinta en vez de reusar la misma. Ahora todas salen del mismo lugar.
+   loadCatalog() lo reemplaza entero si Supabase responde.                   */
+let CATALOGO = [
+  {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/apple-watch-ultra-3.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
+  {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 10',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
+  {slug:'apple-watch-black-ultra-2',cat:'smartwatch', name:'Apple Watch Black Ultra 2',  image:'images/black-ultra-2.webp',       desc:'Edición Black del Ultra 2. Acabado en negro carbón, titanio negro y cristal de zafiro. Máxima resistencia y estilo.'},
+  {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
+  {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
+  {slug:'airpods-3',                cat:'audifonos',  name:'AirPods 3ra Generación',     image:'images/airpods-3gen.webp',        desc:'Audio espacial, audio adaptativo y resistencia al agua IPX4. Diseño rediseñado y cómodo para uso diario.'},
+  {slug:'bateria-magsafe',          cat:'iphone',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
+  {slug:'airpods-max',              cat:'iphone',     name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
+  {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
+  {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargador-tipo-c.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
+  {slug:'cargador-samsung-45w',     cat:'cargadores', name:'Cargador Samsung 45W',       image:'images/cargador-samsung-45w.webp',desc:'Cargador ultra rápido Samsung 45W. Compatible con toda la línea Galaxy. Carga completa en menos de una hora.'},
+];
+
+// Si Supabase no trae categoría, se deduce de la primera palabra del slug.
+const FAMILIAS = {airpods:'audifonos', apple:'smartwatch', cargador:'cargadores', bateria:'iphone'};
+const familiaDe = slug => FAMILIAS[String(slug||'').split('-')[0]] || 'otros';
+
+const findProduct  = slug => CATALOGO.find(p => p.slug === slug) || null;
+const porCategoria = cat  => CATALOGO.filter(p => p.cat === cat);
+
 function fmt(n){ return '$'+n.toLocaleString('es-CL'); }
 
 // ¿El usuario pidió menos movimiento en su sistema? Se respeta.
@@ -60,9 +88,9 @@ function colorDots(slug){
 // Precio anterior y stock. Van como data-* para que js/tr.js los lea después.
 // Si Supabase no trae la columna, no se escribe el atributo y no se muestra nada.
 function extraData(p){
-  let out = p.category ? ` data-cat="${escAttr(p.category)}"` : '';
-  if (p.compare_at_price != null && p.compare_at_price !== '') out += ` data-compare="${Number(p.compare_at_price)}"`;
-  if (p.stock_qty        != null && p.stock_qty        !== '') out += ` data-stock="${Number(p.stock_qty)}"`;
+  let out = p.cat ? ` data-cat="${escAttr(p.cat)}"` : '';
+  if (p.compare != null && p.compare !== '') out += ` data-compare="${Number(p.compare)}"`;
+  if (p.stock   != null && p.stock   !== '') out += ` data-stock="${Number(p.stock)}"`;
   return out;
 }
 
@@ -71,15 +99,30 @@ function tierOne(slug){
   return (t.find(x => x.qty === 1) || t[0] || {}).price || 0;
 }
 
+const ICONO_CARRO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>';
+
+// Tarjeta comercial: nombre, estrellas (las pone js/tr.js), "desde", precio
+// grande y botón de carrito. El clic en cualquier otra parte abre la ficha.
 function cardHTML(p){
-  const p1 = tierOne(p.slug);
-  const out = p.in_stock === false ? ' out-of-stock' : '';
-  const dis = p.in_stock === false ? ' aria-disabled="true"' : '';
-  const btn = p.in_stock === false ? 'Sin stock' : 'Ver más';
-  const oos = p.in_stock === false ? '<div class="oos-tag">SIN STOCK</div>' : '';
-  return `<div class="product-card${out}" data-id="${escAttr(p.slug)}" data-name="${escAttr(p.name)}" data-price="${p1}" data-raw="${p1}"${extraData(p)} data-img-scale="${p.image_scale ?? 0.75}" data-desc="${escAttr(p.description)}"${dis}>
+  const p1  = tierOne(p.slug);
+  const sin = p.inStock === false;
+  const oos = sin ? '<div class="oos-tag">SIN STOCK</div>' : '';
+  const accion = sin
+    ? '<span class="card-sinstock">Sin stock</span>'
+    : `<button class="card-cart" type="button" aria-label="Agregar ${escAttr(p.name)} al carrito">${ICONO_CARRO}</button>`;
+  return `<div class="product-card${sin ? ' out-of-stock' : ''}" data-id="${escAttr(p.slug)}" data-name="${escAttr(p.name)}" data-price="${p1}" data-raw="${p1}"${extraData(p)} data-img-scale="${p.imgScale ?? 0.75}" data-desc="${escAttr(p.desc)}"${sin ? ' aria-disabled="true"' : ''}>
       <div class="card-img-wrap"><img src="${escAttr(p.image)}" alt="${escAttr(p.name)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><svg class="card-img-placeholder" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>${oos}</div>
-      <div class="card-info"><p class="card-name">${escAttr(p.name)}</p><div class="card-price-row"><p class="card-price">${fmt(p1)} <span class="card-unit">c/u</span></p>${colorDots(p.slug)}</div><button class="card-btn">${btn}</button></div>
+      <div class="card-info">
+        <p class="card-name">${escTxt(p.name)}</p>
+        ${colorDots(p.slug)}
+        <div class="card-foot">
+          <div class="card-precio-col">
+            <span class="card-desde">Desde</span>
+            <p class="card-price">${fmt(p1)} <span class="card-unit">c/u</span></p>
+          </div>
+          ${accion}
+        </div>
+      </div>
     </div>`;
 }
 
@@ -143,16 +186,21 @@ async function loadCatalog(){
         HERO_STOCK[heroName] = p.in_stock !== false;
       });
 
-    // Grilla de productos. Se repinta solo si cambió algo: como el fallback ya
-    // se ve desde el primer instante, reemplazarlo por lo mismo haría parpadear.
-    const grid = document.getElementById('productosGrid');
-    if (grid) {
-      const nuevo = products.map(cardHTML).join('');
-      if (nuevo.replace(/\s+/g,'') !== grid.innerHTML.replace(/\s+/g,'')) grid.innerHTML = nuevo;
-    }
+    // Catálogo completo. Las secciones se repintan solas desde acá.
+    CATALOGO = products.map(p => ({
+      slug: p.slug,
+      cat: p.category || familiaDe(p.slug),
+      name: p.name,
+      image: p.image,
+      desc: p.description || '',
+      imgScale: p.image_scale ?? 0.75,
+      compare: p.compare_at_price,
+      stock: p.stock_qty,
+      inStock: p.in_stock !== false,
+    }));
 
     document.body.classList.add('sheet-ready');
-    return PRODUCTS.length > 0;
+    return true;
   } catch (err) {
     console.error('❗ No se pudo cargar el catálogo desde Supabase:', err);
     document.body.classList.add('sheet-ready');

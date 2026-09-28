@@ -13,14 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.classList.add('sheet-ready');
   Banners.init();Reviews.init();Buscador.init();
   Cart.init();NavScroll.init();ProductModal.init();Checkout.init();
-  Trust.init();                       // pinta la tira y decora el fallback
-  ProductsSection.init();
+  Trust.init();                       // pinta la tira de confianza
+  Panel.init();
+  Ofertas.init();
 
-  // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la grilla
-  //    con los datos reales y se vuelve a decorar.
+  // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la fila de
+  //    ofertas con los datos reales. El panel se pinta solo al abrirlo, así
+  //    que siempre sale con lo último que llegó.
   loadCatalog().then(ok => {
     if (!ok) return;
-    ProductsSection.init();
-    Trust.decorarTarjetas();
+    Ofertas.init();
   }).catch(err => console.error('Catálogo:', err));
 });
