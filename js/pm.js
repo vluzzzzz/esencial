@@ -96,6 +96,7 @@ const ProductModal=(()=>{
     if(!p)return;
     qty=1;tiersOpen=false;isTemp=false;
     populate(p,false);
+    medirResenas();
 
     // Si ese producto está pintado y visible en la página, la ficha pasa a
     // cerrarse hacia él. Si no está a la vista se deja la tarjeta de origen,
@@ -143,6 +144,13 @@ const ProductModal=(()=>{
       compare: card.dataset.compare,
       stock: card.dataset.stock,
     };
+  }
+
+  // El recorte de las reseñas se decide midiendo, y medir necesita que la
+  // ficha ya esté en pantalla. Los dos cuadros de espera dejan que el
+  // navegador haga el cálculo de posiciones antes de preguntar el alto.
+  function medirResenas(){
+    requestAnimationFrame(()=>requestAnimationFrame(()=>Reviews.ajustarRecorte()));
   }
 
   function populate(p,temp){
@@ -212,6 +220,7 @@ const ProductModal=(()=>{
     lockScroll();ppage.classList.add('active');overlay.classList.add('active');overlay.style.opacity='0';
     gsap.to(overlay,{opacity:1,duration:.35,ease:'power2.out'});
     gsap.fromTo(ppage,{opacity:0,scale:.94},{opacity:1,scale:1,duration:.4,ease:'power3.out',onComplete(){ppage.style.transformOrigin='';ppage.style.transform='';ppage.style.opacity='';}});
+    medirResenas();
   }
 
   function open(card){
@@ -229,6 +238,7 @@ const ProductModal=(()=>{
       lockScroll();ppage.classList.add('active');overlay.classList.add('active');overlay.style.opacity='0';card.style.visibility='hidden';
       gsap.to(overlay,{opacity:1,duration:.4,ease:'power2.out'});
       gsap.fromTo(ppage,{scale:0},{scale:1,duration:.52,ease:'expo.out',onComplete(){ppage.style.transformOrigin='';ppage.style.transform='';}});
+      medirResenas();
       return;
     }
 
@@ -278,6 +288,7 @@ const ProductModal=(()=>{
       });
 
       if(ppageBack) gsap.to(ppageBack,{opacity:1,scale:1,y:0,duration:.24,ease:'power2.out',delay:.06});
+      medirResenas();
     }).catch(()=>{
       if(ppageInfo){ppageInfo.style.opacity='1';ppageInfo.style.transform='';}
       if(ppageBack){ppageBack.style.opacity='1';ppageBack.style.transform='';}
@@ -405,6 +416,12 @@ const ProductModal=(()=>{
       if(!a)return;
       close();
       if(!a.dataset.catAbrir&&typeof CatPage!=='undefined')CatPage.cerrar();
+    });
+
+    // "Ver más reseñas". El botón se pinta con las reseñas, así que el clic
+    // se escucha en el contenedor, que sí es fijo.
+    document.getElementById('ppageReviews')?.addEventListener('click',e=>{
+      if(e.target.closest('#ppageRvMas'))Reviews.verMas();
     });
 
     // Clic en un producto similar → se rellena la misma ficha, no se abre otra.

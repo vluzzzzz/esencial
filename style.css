@@ -1674,3 +1674,56 @@ svg{ -webkit-user-select:none; user-select:none; }
 @media(max-width:768px){
   .card-cart,.ofertas-row .card-cart{ border-radius:7px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V22 — reseñas recortadas con degradado y botón "Ver más"
+   El alto del recorte se elige en js/rv.js → RESENAS_ALTO_RECORTE
+   ════════════════════════════════════════════════════════════════════════════ */
+.ppage-rv-caja{ position:relative; }
+
+/* Solo se recorta cuando js/rv.js midió que de verdad sobra contenido. Sin
+   esta clase la caja no tiene límite, así que con pocas reseñas no aparece
+   un degradado sobre el aire. */
+.ppage-rv-caja.recortada{
+  max-height:var(--rv-alto,380px);
+  overflow:hidden;
+}
+
+/* El degradado tapa el corte. Va sobre la caja, no dentro de la lista, así
+   las columnas no lo toman como una tarjeta más. */
+.ppage-rv-caja.recortada::after{
+  content:'';
+  position:absolute; left:0; right:0; bottom:0; height:130px;
+  background:linear-gradient(to bottom,
+    rgba(255,255,255,0) 0%,
+    rgba(255,255,255,.75) 55%,
+    #fff 100%);
+  pointer-events:none;
+}
+
+/* Al desplegar, la caja crece sin tope. La transición de max-height no se
+   puede animar a un valor desconocido, así que el cambio es directo: más
+   vale instantáneo que un salto a medias. */
+.ppage-rv-caja.abierta{ max-height:none; overflow:visible; }
+
+.ppage-rv-mas{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  margin:-14px auto 0; position:relative; z-index:1;
+  padding:12px 26px; border-radius:999px;
+  border:1px solid var(--gray-light); background:var(--white);
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  color:var(--black); cursor:pointer;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  transition:background .2s, color .2s, border-color .2s, transform .2s var(--ease-spring);
+}
+.ppage-rv-mas svg{ width:17px; height:17px; fill:currentColor; }
+.ppage-rv-mas:hover{
+  background:var(--black); border-color:var(--black); color:var(--white);
+  transform:translateY(-1px);
+}
+.ppage-rv-mas:active{ transform:translateY(0); }
+.ppage-rv-mas[hidden]{ display:none; }
+
+@media(max-width:768px){
+  .ppage-rv-mas{ width:100%; padding:13px; }
+}

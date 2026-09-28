@@ -193,6 +193,10 @@ const RESENAS_MINIMAS_VISIBLES = 5;
 // Cuántas se muestran en la sección de la portada. Con más de cien, pintarlas
 // todas alargaría la página sin sumar nada: se ven las más nuevas.
 const RESENAS_EN_PORTADA = 12;
+
+// Hasta qué alto se ven las reseñas en la ficha antes del degradado y el
+// botón "Ver más reseñas". En píxeles.
+const RESENAS_ALTO_RECORTE = 380;
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
@@ -307,8 +311,42 @@ const Reviews = (() => {
         <span class="ppage-rv-n">${nota(media)}</span>
         <span class="ppage-rv-total">${total} ${total === 1 ? 'reseña' : 'reseñas'}</span>
       </div>
-      <div class="ppage-rv-lista">${lista.map(r => tarjeta(r, false)).join('')}</div>`;
+      <div class="ppage-rv-caja" id="ppageRvCaja" style="--rv-alto:${RESENAS_ALTO_RECORTE}px">
+        <div class="ppage-rv-lista">${lista.map(r => tarjeta(r, false)).join('')}</div>
+      </div>
+      <button class="ppage-rv-mas" id="ppageRvMas" type="button" hidden>
+        Ver las ${total} reseñas
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>`;
+    ajustarRecorte();
   }
 
-  return { init: renderSeccion, miniEstrellas, renderProducto, estrellas, resumen, porProducto };
+  // El botón solo tiene sentido si de verdad quedó algo tapado. No se puede
+  // saber por la cantidad: con tres columnas, ocho reseñas cortas caben y
+  // ocho largas no. Así que se mide lo que ocupa la lista contra el alto del
+  // recorte. Si la ficha todavía está oculta el alto es 0 y no se decide
+  // nada; por eso la medición se reintenta en dos cuadros seguidos, y pm.js
+  // vuelve a llamarla cuando la ficha ya está en pantalla.
+  function ajustarRecorte() {
+    const caja = document.getElementById('ppageRvCaja');
+    const boton = document.getElementById('ppageRvMas');
+    if (!caja || !boton) return;
+    const lista = caja.querySelector('.ppage-rv-lista');
+    if (!lista || !lista.scrollHeight) return;
+
+    const sobra = lista.scrollHeight > RESENAS_ALTO_RECORTE + 8;
+    boton.hidden = !sobra;
+    caja.classList.toggle('recortada', sobra && !caja.classList.contains('abierta'));
+  }
+
+  function verMas() {
+    const caja = document.getElementById('ppageRvCaja');
+    const boton = document.getElementById('ppageRvMas');
+    if (!caja) return;
+    caja.classList.add('abierta');
+    caja.classList.remove('recortada');
+    if (boton) boton.hidden = true;
+  }
+
+  return { init: renderSeccion, miniEstrellas, renderProducto, estrellas, resumen, porProducto, ajustarRecorte, verMas };
 })();
