@@ -19,7 +19,7 @@ const BANNERS = [
   { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#productos' },
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#productos' },
   { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#productos' },
-  { desktop:'', mobile:'', archivo:'bannercuatro.png', alt:'Banner 4', link:'#productos' },
+  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe', link:'#productos' },
   // Quinto banner en pausa. Para traerlo de vuelta, borrá las dos barras:
   // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#productos' },
 ];
