@@ -43,13 +43,22 @@ const CINTA_VELOCIDAD = 28;
 // cambia el nombre, sin la ñ, porque en una URL da problemas de servidor.
 const CINTA_SEPARADOR = 'images/logo-cinta.png';
 
-// Tarjetas de categoría en puzzle. El orden manda: la 1ª es la grande.
-// Cada una lleva su propia medida porque ocupan tamaños distintos.
+/* Tarjetas de categoría en puzzle. El orden de la lista es el de la pantalla:
+
+     ┌─────────┬─────────┬─────────┐
+     │         │    2    │         │
+     │    1    ├─────────┤    4    │     1 y 4 altas · 2 y 3 bajas
+     │         │    3    │         │
+     └─────────┴─────────┴─────────┘
+
+   'arriba' es la línea chica y 'titulo' la grande. 'desde' es el precio del
+   recuadro; si lo dejás vacío no se muestra el recuadro.
+   Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 const CATEGORIAS = [
-  { chip:'Audio',      titulo:'AirPods',      sub:'Sonido sin cables',    img:'', medida:'1200 × 900',  link:'#productos' },
-  { chip:'Relojes',    titulo:'Apple Watch',  sub:'Salud y deporte',      img:'', medida:'1200 × 500',  link:'#productos' },
-  { chip:'Carga',      titulo:'Cargadores',   sub:'Rápida y segura',      img:'', medida:'600 × 500',   link:'#productos' },
-  { chip:'Accesorios', titulo:'MagSafe',      sub:'Magnético y práctico', img:'', medida:'600 × 500',   link:'#productos' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', img:'', archivo:'cat-audifonos.png',  medida:'800 × 1000', link:'#productos' },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', img:'', archivo:'cat-smartwatch.png', medida:'800 × 500',  link:'#productos' },
+  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', img:'', archivo:'cat-iphone.png',     medida:'800 × 500',  link:'#productos' },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  img:'', archivo:'cat-cargadores.png', medida:'800 × 1000', link:'#productos' },
 ];
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
@@ -88,13 +97,20 @@ const Banners = (() => {
   function categoria(c) {
     const img = c.img
       ? `<img src="${escAttr(c.img)}" alt="${escAttr(c.titulo)}" loading="lazy" decoding="async">`
-      : `<div class="slot cat-slot" data-medida="${escAttr(c.medida || '1200 × 900')}"></div>`;
+      : `<div class="slot cat-slot" data-medida="${escAttr(c.medida || '800 × 1000')}">` +
+        (c.archivo ? `<span class="slot-archivo">${escTxt(c.archivo)}</span>` : '') +
+        `</div>`;
+    const precio = c.desde
+      ? `<span class="cat-desde"><span class="cat-desde-lbl">desde:</span>${escTxt(c.desde)}</span>`
+      : '';
     return `<a href="${escAttr(c.link || '#productos')}" class="cat-card">
         <div class="cat-media">${img}</div>
         <div class="cat-body">
-          <span class="cat-chip">${escTxt(c.chip)}</span>
-          <h3 class="cat-titulo">${escTxt(c.titulo)}</h3>
-          <p class="cat-sub">${escTxt(c.sub)}</p>
+          <div class="cat-texto">
+            <span class="cat-arriba">${escTxt(c.arriba || '')}</span>
+            <h3 class="cat-titulo">${escTxt(c.titulo)}</h3>
+          </div>
+          ${precio}
         </div>
       </a>`;
   }
