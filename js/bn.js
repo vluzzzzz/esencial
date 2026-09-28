@@ -28,7 +28,7 @@ const BANNERS = [
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
 const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#ofertas' };
 
-// Imagen alta de la izquierda en la fila de ofertas → 620 × 860 px
+// Imagen alta de la izquierda en la fila de ofertas → 620 × 714 px
 const OFERTA_LATERAL = { desktop:'images/banneroferta.png', mobile:'', alt:'Ofertas del mes', link:'#ofertas' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
@@ -170,7 +170,7 @@ const Banners = (() => {
   function renderOfertaLateral() {
     const el = document.getElementById('ofertaLateral');
     if (!el) return;
-    const inner = media(OFERTA_LATERAL, '620', '860', 'oferta-media');
+    const inner = media(OFERTA_LATERAL, '620', '714', 'oferta-media');
     el.innerHTML = OFERTA_LATERAL.link && OFERTA_LATERAL.desktop
       ? `<a href="${escAttr(OFERTA_LATERAL.link)}" class="oferta-link">${inner}</a>`
       : inner;

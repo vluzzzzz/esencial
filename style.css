@@ -1637,3 +1637,40 @@ img{
 /* Los medios de pago y los iconos son dibujos del código, no archivos: no hay
    nada que guardar, pero seleccionarlos por accidente se ve mal. */
 svg{ -webkit-user-select:none; user-select:none; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V21 — el hueco de las tarjetas de ofertas · menos radio
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── El hueco ────────────────────────────────────────────────────────────────
+   La imagen lateral lleva width="620" height="860" en el HTML, así que el
+   navegador le reserva esa proporción: a 300 px de ancho pedía 416 px de
+   alto. Eso estiraba la fila entera y las cinco tarjetas se llenaban de aire
+   para alcanzarla, con el hueco justo arriba del pie por el margin-top:auto.
+
+   La cura es sacar la foto del flujo: en absoluto no aporta altura, así que
+   la fila la miden las tarjetas y la imagen llena lo que salga.            */
+.oferta-lateral{ min-height:0; align-self:stretch; }
+.oferta-media{ position:absolute; inset:0; width:100%; height:100%; }
+.oferta-media img{ width:100%; height:100%; object-fit:cover; }
+
+/* Ahora la altura la manda la tarjeta, así que se aprovecha en lo que sirve:
+   la foto del producto, más alta que ancha. Con esto la fila queda parecida
+   al alto que tenía antes, pero lleno de producto en vez de aire, y la
+   imagen lateral se recorta poco. */
+.ofertas-row .card-img-wrap{ aspect-ratio:1/1.2; }
+
+/* ── Menos radio ─────────────────────────────────────────────────────────── */
+.product-card{ border-radius:8px; }
+.card-cart,
+.ofertas-row .card-cart{ border-radius:7px; }
+.oferta-lateral,
+.oferta-lateral .slot{ border-radius:8px; }
+.cat-card{ border-radius:8px; }
+.rv-card{ border-radius:8px; }
+.sim-card{ border-radius:8px; }
+.bsc-img{ border-radius:6px; }
+
+@media(max-width:768px){
+  .card-cart,.ofertas-row .card-cart{ border-radius:7px; }
+}
