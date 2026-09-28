@@ -33,7 +33,7 @@ const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 
    distinta en vez de reusar la misma. Ahora todas salen del mismo lugar.
    loadCatalog() lo reemplaza entero si Supabase responde.                   */
 let CATALOGO = [
-  {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/apple-watch-ultra-3.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
+  {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/ultra3black.png', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
   {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
   {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
   {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpods-3gen.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
@@ -242,6 +242,11 @@ const FEATURES={
 const GALLERY={};
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).
 const COLOR_VARIANTS={
+  'apple-watch-ultra-3':[
+    {name:'Negro',   hex:'#1A1A1A', img:'images/ultra3black.png',  swatch:'images/miniblackultra3.png'},
+    {name:'Gris',    hex:'#8E8E93', img:'images/ultra3gris.png',   swatch:'images/minigrisultra3.png'},
+    {name:'Naranja', hex:'#F26513', img:'images/ultra3orange.png', swatch:'images/miniorangeultra3.png'},
+  ],
   'airpods-max':[
     {name:'Midnight', hex:'#1A1A1A', img:'images/max-negros.webp',  swatch:'images/black.webp'},
     {name:'Starlight',hex:'#F5F0E8', img:'images/max-blanco.webp',  swatch:'images/mstarlight.webp'},
