@@ -176,6 +176,30 @@ const ProductModal=(()=>{
     if(temp&&!colorVars(key)){isTemp=true;updateArrow();renderTempThumbs();}
   }
 
+  // Abrir por slug, sin una tarjeta de la que salir: lo usa el buscador de la
+  // nav. Si ese producto sí está pintado y a la vista, se abre desde él para
+  // conservar la animación; si no, crece desde el centro de la pantalla.
+  function abrirSlug(slug){
+    if(isOpen)return;
+    const card=[...document.querySelectorAll(`.product-card[data-id="${CSS.escape(slug)}"]`)]
+      .find(c=>c.offsetParent!==null);
+    if(card){open(card);return;}
+
+    const p=findProduct(slug);
+    if(!p)return;
+    isOpen=true;originCard=null;qty=1;tiersOpen=false;
+    populate(p,false);
+    ppage.scrollTop=0;
+    const w=window.innerWidth,h=window.innerHeight;
+    originRect={left:w/2,top:h/2,width:0,height:0};
+    ppage.style.cssText='display:block;position:fixed;top:0;right:0;bottom:0;left:0;width:100vw;max-width:100vw;height:100dvh;margin:0;padding:0;border-radius:0;overflow-y:auto;overflow-x:hidden;transform-origin:50% 50%;';
+    const ppageInfo=document.getElementById('ppageInfo');
+    if(ppageInfo)ppageInfo.style.opacity='1';
+    lockScroll();ppage.classList.add('active');overlay.classList.add('active');overlay.style.opacity='0';
+    gsap.to(overlay,{opacity:1,duration:.35,ease:'power2.out'});
+    gsap.fromTo(ppage,{opacity:0,scale:.94},{opacity:1,scale:1,duration:.4,ease:'power3.out',onComplete(){ppage.style.transformOrigin='';ppage.style.transform='';ppage.style.opacity='';}});
+  }
+
   function open(card){
     if(isOpen)return;
     isOpen=true;originCard=card;qty=1;tiersOpen=false;
@@ -409,5 +433,5 @@ const ProductModal=(()=>{
     btn.classList.add('ok');
     setTimeout(()=>btn.classList.remove('ok'),1200);
   }
-  return{init,close,open,closeInstant};
+  return{init,close,open,abrirSlug,closeInstant};
 })();

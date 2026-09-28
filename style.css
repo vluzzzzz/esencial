@@ -1499,3 +1499,60 @@ body:has(#topbar) .nav{top:auto}
 @media (prefers-reduced-motion: reduce){
   .wa-flotante,.wa-flotante-txt{ transition:none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V18 — sugerencias del buscador, colgando de la barra
+   ════════════════════════════════════════════════════════════════════════════ */
+/* La barra deja de recortar, para que la lista pueda salirse de ella. */
+.nav-buscador .buscador{ overflow:visible; }
+.buscador-sug{
+  position:absolute; top:calc(100% + 8px); left:0; right:0; z-index:120;
+  background:var(--white); border:1px solid var(--gray-light);
+  border-radius:14px; padding:6px; overflow:hidden;
+  box-shadow:0 18px 44px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.06);
+}
+.buscador-sug[hidden]{ display:none; }
+.bsc-fila{
+  width:100%; display:flex; align-items:center; gap:12px;
+  padding:9px 10px; border-radius:10px; cursor:pointer;
+  background:none; text-align:left; transition:background .15s;
+}
+.bsc-fila:hover,.bsc-fila.activa{ background:rgba(0,0,0,.05); }
+/* Miniatura igual a la del carrito. */
+.bsc-img{
+  flex:0 0 auto; width:46px; height:46px; border-radius:9px;
+  background:#f5f5f7; display:grid; place-items:center; overflow:hidden;
+}
+.bsc-img img{ width:82%; height:82%; object-fit:contain; display:block; }
+.bsc-txt{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.bsc-nombre{
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  color:var(--black); line-height:1.25;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.bsc-precio{
+  font-family:var(--font-display); font-size:18px; line-height:1;
+  color:var(--black); letter-spacing:.01em;
+}
+.bsc-precio small{
+  font-family:var(--font-body); font-size:10px; font-weight:400;
+  color:var(--gray-mid); letter-spacing:0;
+}
+.bsc-todos{
+  width:100%; margin-top:4px; padding:11px; border-radius:10px;
+  background:var(--black); color:var(--white); cursor:pointer;
+  font-family:var(--font-body); font-size:13px; font-weight:500;
+  transition:background .2s;
+}
+.bsc-todos:hover{ background:var(--celeste-deep); }
+.bsc-vacio{
+  padding:16px 12px; text-align:center;
+  font-size:14px; color:var(--gray-mid);
+}
+
+@media(max-width:768px){
+  .buscador-sug{ border-radius:12px; }
+  .bsc-img{ width:42px; height:42px; }
+  .bsc-nombre{ font-size:13px; }
+  .bsc-precio{ font-size:16px; }
+}
