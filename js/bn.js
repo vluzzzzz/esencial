@@ -135,7 +135,9 @@ const Banners = (() => {
     swiper = new Swiper('.bnr-swiper', {
       loop: BANNERS.length > 1,
       speed: 650,
-      autoplay: reduceMotion() ? false : { delay: 6000, disableOnInteraction: false, pauseOnMouseEnter: true },
+      // Sin pauseOnMouseEnter: la cinta de banners nunca se detiene, ni al
+      // pasar el ratón por encima. Antes se frenaba y parecía trabada.
+      autoplay: reduceMotion() ? false : { delay: 6000, disableOnInteraction: false },
       keyboard: { enabled: true, onlyInViewport: true },
       navigation: { prevEl: '.bnr-arr-prev', nextEl: '.bnr-arr-next' },
       pagination: { el: '.bnr-pagination', clickable: true },
