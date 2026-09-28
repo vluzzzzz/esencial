@@ -41,7 +41,7 @@ const Cart=(()=>{
     const lines=state.cart.map(({product,qty})=>{const up=getUnitPrice(product.key,qty);return`\u25b8 ${qty}x ${product.name}${product.colorName?` (${product.colorName})`:''}\n  ${f(up)} c/u = *${f(up*qty)}*`;});
     const total=state.cart.reduce((s,i)=>s+getUnitPrice(i.product.key,i.qty)*i.qty,0);
     const msg=['*\u00a1Hola!* Me interesa hacer un pedido:','',...lines,'',`Total: *${f(total)}*`,'','\u00bfTienen stock disponible?'].join('\n');
-    window.open(`https://wa.me/56942348587?text=${encodeURIComponent(msg)}`,'_blank');
+    window.open(`https://wa.me/56930521645?text=${encodeURIComponent(msg)}`,'_blank');
   }
   function init(){
     document.body.appendChild(DOM.cartDrawer);document.body.appendChild(DOM.cartOverlay);
@@ -253,7 +253,7 @@ const Checkout=(()=>{
     const lines=state.cart.map(({product,qty})=>{const up=getUnitPrice(product.key,qty);return`▸ ${qty}x ${product.name}${product.colorName?` (${product.colorName})`:''}\n  ${f(up)} c/u = *${f(up*qty)}*`;});
     const total=state.cart.reduce((s,i)=>s+getUnitPrice(i.product.key,i.qty)*i.qty,0);
     const msg=['*¡Hola!* Me interesa hacer un pedido:','',...lines,'',`Total: *${f(total)}*`,'','¿Tienen stock disponible?'].join('\n');
-    window.open(`https://wa.me/56942348587?text=${encodeURIComponent(msg)}`,'_blank');
+    window.open(`https://wa.me/56930521645?text=${encodeURIComponent(msg)}`,'_blank');
   }
 
   return{init,open,close};
