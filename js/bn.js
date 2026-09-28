@@ -10,17 +10,21 @@
    Medidas:
      desktop → 1920 × 560 px
      mobile  → 1080 × 1080 px  · si lo dejás vacío se usa el de desktop
+
+   Los que faltan muestran el hueco punteado con el nombre de archivo que
+   esperan. Guardás la imagen con ese nombre en images/ y la pegás en
+   'desktop'. El orden de esta lista es el orden en que se ven.
    ════════════════════════════════════════════════════════════════════════════ */
 const BANNERS = [
-  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech', link:'#productos' },
-  { desktop:'images/bannerdos.png', mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad', link:'#productos' },
-  { desktop:'', mobile:'', alt:'Banner 3', link:'#productos' },
-  { desktop:'', mobile:'', alt:'Banner 4', link:'#productos' },
-  { desktop:'', mobile:'', alt:'Banner 5', link:'#productos' },
+  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#productos' },
+  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#productos' },
+  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#productos' },
+  { desktop:'', mobile:'', archivo:'bannercuatro.png', alt:'Banner 4', link:'#productos' },
+  { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#productos' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
-const PROMO_BANNER = { desktop:'', mobile:'', alt:'Promoción', link:'#productos' };
+const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#productos' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
@@ -57,7 +61,11 @@ const Banners = (() => {
   // prioridad alta; los demás esperan a que haga falta (lazy).
   function media(item, w, h, clase, primero = false) {
     if (!item.desktop) {
-      return `<div class="slot ${clase}" data-medida="${w} × ${h}"></div>`;
+      // El hueco dice qué archivo espera, para no tener que adivinarlo.
+      const nombre = item.archivo
+        ? `<span class="slot-archivo">${escTxt(item.archivo)}</span>`
+        : '';
+      return `<div class="slot ${clase}" data-medida="${w} × ${h}">${nombre}</div>`;
     }
     const mob = item.mobile || item.desktop;
     const carga = primero
