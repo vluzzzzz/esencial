@@ -43,7 +43,7 @@ let CATALOGO = [
   {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/budspro2.png',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
   {slug:'bateria-magsafe',          cat:'celulares',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
-  {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargador-tipo-c.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
+  {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargadorcompletotipoc.png',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
   {slug:'cargador-samsung-45w',     cat:'cargadores', name:'Cargador Samsung 45W',       image:'images/cargador-samsung-45w.webp',desc:'Cargador ultra rápido Samsung 45W. Compatible con toda la línea Galaxy. Carga completa en menos de una hora.'},
 ];
 

@@ -20,3 +20,9 @@ where slug = 'buds4-pro';
 select slug, name, image, gallery,
        jsonb_array_length(coalesce(colors,'[]'::jsonb)) as colores
 from public.products where slug in ('buds2-pro','buds4-pro');
+
+-- ── Cargador Tipo C ─────────────────────────────────────────────────────────
+-- Foto principal nueva. La segunda de la ficha no se toca.
+update public.products set
+  image = 'images/cargadorcompletotipoc.png'
+where slug = 'cargador-tipo-c';
