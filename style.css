@@ -1171,3 +1171,60 @@ body:has(#topbar) .nav{top:auto}
   .cat-body{padding:16px}
   .cat-desde{font-size:19px;padding:7px 12px}
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   V13 — el buscador vive en la nav
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* La nav pasa a repartir: logo · menú · buscador · carrito. */
+.nav{justify-content:space-between;gap:22px;height:66px;padding:0 32px}
+.nav-logo{position:static;left:auto;flex-shrink:0}
+.nav-center{flex-shrink:0}
+
+/* El buscador ocupa el espacio que sobra, con un tope para que no se estire
+   de más en pantallas anchas. */
+.nav-buscador{flex:1;min-width:0;max-width:440px;margin-left:auto}
+.nav-buscador .buscador{
+  height:40px;padding:0 6px 0 14px;border-radius:8px;
+  background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.16)
+}
+.nav-buscador .buscador:focus-within{
+  background:#fff;border-color:#fff;box-shadow:none
+}
+.nav-buscador .buscador-lupa{width:18px;height:18px;fill:rgba(255,255,255,.75)}
+.nav-buscador .buscador:focus-within .buscador-lupa{fill:var(--azul-cinta)}
+.nav-buscador .buscador-input{font-size:14px;color:#fff;padding:0 10px}
+.nav-buscador .buscador-input::placeholder{color:rgba(255,255,255,.6)}
+.nav-buscador .buscador:focus-within .buscador-input{color:var(--black)}
+.nav-buscador .buscador:focus-within .buscador-input::placeholder{color:var(--gray-mid)}
+.nav-buscador .buscador-clear{color:rgba(255,255,255,.7);font-size:19px}
+.nav-buscador .buscador:focus-within .buscador-clear{color:var(--gray-mid)}
+
+.nav-right{flex-shrink:0}
+
+/* El aviso de "sin resultados" ahora va con la grilla. */
+.buscador-vacio{margin-top:14px;font-size:14px;color:var(--gray-mid);text-align:center}
+
+/* Sin la sección del buscador, los banners suben. */
+.bnr-section{margin-top:22px}
+
+@media(max-width:1100px){
+  .nav{gap:16px;padding:0 20px}
+  .nav-center{gap:26px}
+  .nav-buscador{max-width:300px}
+}
+@media(max-width:860px){
+  /* No caben las cuatro cosas en una línea: el buscador pasa a una segunda
+     fila, a lo ancho. */
+  .nav{flex-wrap:wrap;height:auto;padding:10px 16px 12px;row-gap:10px}
+  .nav-logo{order:1}
+  .nav-center{order:2;gap:20px;font-size:14px}
+  .nav-right{order:3}
+  .nav-buscador{order:4;flex-basis:100%;max-width:none;margin-left:0}
+  .bnr-section{margin-top:14px}
+}
+@media(max-width:430px){
+  .nav-center{gap:14px;font-size:13px}
+  .nav-buscador .buscador-input{font-size:13px}
+}
