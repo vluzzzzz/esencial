@@ -82,8 +82,12 @@ function escAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/
 function escTxt(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function colorDots(slug){
-  const cv=(typeof COLOR_VARIANTS!=='undefined')?COLOR_VARIANTS[slug]:null;
-  if(!cv)return '';
+  const todos=(typeof COLOR_VARIANTS!=='undefined')?COLOR_VARIANTS[slug]:null;
+  if(!todos)return '';
+  // En la tarjeta solo van los disponibles: el punto mide doce píxeles y una
+  // marca de agotado ahí no se entiende. El aviso va en la ficha.
+  const cv=todos.filter(v=>!v.agotado);
+  if(!cv.length)return '';
   return '<div class="card-colors">'+cv.map(v=>`<span class="card-color-dot">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="${escAttr(v.name)}">`:`<span style="display:block;width:100%;height:100%;border-radius:50%;background:${v.hex}"></span>`}</span>`).join('')+'</div>';
 }
 
@@ -246,18 +250,25 @@ const FEATURES={
 // { slug: [imgPrincipal, ...secundarias] } — desde Supabase (vacío = usa fallback hardcodeado)
 const GALLERY={};
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).
+/* Cada color lleva 'agotado'. En true sigue a la vista pero en gris y no se
+   puede elegir, y desde /admin se vuelve a encender sin perder las fotos. */
 const COLOR_VARIANTS={
   'apple-watch-ultra-3':[
     {name:'Negro',   hex:'#1A1A1A', img:'images/ultra3black.png',  swatch:'images/miniblackultra3.png'},
     {name:'Gris',    hex:'#8E8E93', img:'images/ultra3gris.png',   swatch:'images/minigrisultra3.png'},
     {name:'Naranja', hex:'#F26513', img:'images/ultra3orange.png', swatch:'images/miniorangeultra3.png'},
   ],
+  'buds4-pro':[
+    {name:'Negro', hex:'#1A1A1A', img:'images/buds4black.png', swatch:'images/minibuds4black.png'},
+    {name:'Gris',  hex:'#8E8E93', img:'images/buds4gris.png',  swatch:'images/minibuds4gris.png'},
+    {name:'Rosa',  hex:'#E8A0B4', img:'images/buds4pink.png',  swatch:'images/minibuds4pink.png'},
+  ],
   'airpods-max':[
     {name:'Midnight', hex:'#1A1A1A', img:'images/max-negros.webp',  swatch:'images/black.webp'},
     {name:'Starlight',hex:'#F5F0E8', img:'images/max-blanco.webp',  swatch:'images/mstarlight.webp'},
-    {name:'Orange',   hex:'#F26513', img:'images/max-naranja.webp', swatch:'images/orange.webp'},
     {name:'Purple',   hex:'#9B59B6', img:'images/max-morado.webp',  swatch:'images/purple.webp'},
-    {name:'Blue',     hex:'#3498DB', img:'images/max-azul.webp',    swatch:'images/blue.webp'},
+    {name:'Orange',   hex:'#F26513', img:'images/max-naranja.webp', swatch:'images/orange.webp', agotado:true},
+    {name:'Blue',     hex:'#3498DB', img:'images/max-azul.webp',    swatch:'images/blue.webp',   agotado:true},
   ],
 };
 const PRODUCT_CONFIG={

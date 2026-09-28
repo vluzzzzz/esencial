@@ -47,9 +47,27 @@ const ProductModal=(()=>{
   function resetCarousel(src,name,key){imgIndex=0;const cv=colorVars(key);if(cv){imgList=cv.map(v=>v.img);}else{const g=(typeof GALLERY!=='undefined')?GALLERY[key]:null;imgList=(g&&g.length>1)?g.slice():buildImgList(src,key||name);}const w=document.getElementById('ppageThumbs');if(w)w.innerHTML='';document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');renderDots();updateArrow();}
   // ── Variantes de color ─────────────────────────────────────
   function _clearColorWarn(){document.getElementById('ppageColorHint')?.classList.remove('show');document.getElementById('ppageColorsRow')?.classList.remove('shake');}
-  function renderColors(key){const wrap=document.getElementById('ppageColors'),row=document.getElementById('ppageColorsRow');const cv=colorVars(key);if(!wrap||!row)return;if(!cv){wrap.style.display='none';return;}wrap.style.display='';row.innerHTML=cv.map((v,i)=>`<button class="ppage-color-swatch${i===imgIndex?' active':''}" data-index="${i}" title="${v.name}" aria-label="${v.name}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${v.swatch}" alt="${v.name}">`:''}</button>`).join('');row.querySelectorAll('.ppage-color-swatch').forEach(s=>s.addEventListener('click',()=>{_clearColorWarn();goToImgDirectly(Number(s.dataset.index));}));const label=document.getElementById('ppageColorName');if(label)label.textContent=(imgIndex>=0&&cv[imgIndex])?cv[imgIndex].name:'';}
-  function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
-  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.textContent=cv[imgIndex].name;}
+  function renderColors(key){
+    const wrap=document.getElementById('ppageColors'),row=document.getElementById('ppageColorsRow');
+    const cv=colorVars(key);
+    if(!wrap||!row)return;
+    if(!cv){wrap.style.display='none';return;}
+    wrap.style.display='';
+    row.innerHTML=cv.map((v,i)=>{
+      const ag=!!v.agotado;
+      return `<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}"${ag?' disabled aria-disabled="true"':''} title="${escAttr(v.name)}${ag?' · agotado':''}" aria-label="${escAttr(v.name)}${ag?', agotado':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
+    }).join('');
+    row.querySelectorAll('.ppage-color-swatch').forEach(s=>s.addEventListener('click',()=>{
+      if(s.disabled)return;
+      _clearColorWarn();goToImgDirectly(Number(s.dataset.index));
+    }));
+    const label=document.getElementById('ppageColorName');
+    if(label)label.innerHTML=(imgIndex>=0&&cv[imgIndex])
+      ? escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">agotado</span>':'')
+      : '';
+  }
+  function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;const _cv=colorVars(currentProduct&&currentProduct.key);if(_cv&&_cv[ni]&&_cv[ni].agotado)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
+  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">agotado</span>':'');}
   // El error de color SIEMPRE sale la 1ª vez que tocás un botón (aunque ya hayas mirado/cambiado colores).
   // Después de tocar un botón una vez (_buyTried) ya no bloquea.
   function _blockColor(){if(currentProduct&&colorVars(currentProduct.key)&&!_buyTried){_buyTried=true;_shakeColor();return true;}_clearColorWarn();return false;}

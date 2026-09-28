@@ -312,6 +312,23 @@ const Secciones = (() => {
     $('#resumenResenas').innerHTML = `Promedio general <b>${media}</b> sobre ${n} ${n === 1 ? 'reseña' : 'reseñas'}.`;
   }
 
+  // Selector del color comprado. Solo aparece si ese producto tiene colores,
+  // y las opciones salen de los suyos: así no se escribe un color que no
+  // existe y el puntito de la reseña siempre encuentra su muestra.
+  function opcionesColor(r) {
+    const cv = (typeof COLOR_VARIANTS !== 'undefined') ? COLOR_VARIANTS[r.product] : null;
+    if (!cv || !cv.length) return '';
+    const sueltos = r.color && !cv.some(c => c.name === r.color)
+      ? `<option value="${escH(r.color)}" selected>${escH(r.color)} (ya no existe)</option>` : '';
+    return `<label class="fld"><span>Color comprado (opcional)</span>
+        <select data-f="color">
+          <option value=""${!r.color ? ' selected' : ''}>Sin especificar</option>
+          ${cv.map(c => `<option value="${escH(c.name)}"${r.color === c.name ? ' selected' : ''}>${escH(c.name)}${c.agotado ? ' · agotado' : ''}</option>`).join('')}
+          ${sueltos}
+        </select>
+      </label>`;
+  }
+
   function pintarResenas() {
     pintarFiltro();
     const cont = $('#listResenas');
@@ -353,6 +370,7 @@ const Secciones = (() => {
             <input type="date" data-f="date" value="${escH(r.date || '')}">
           </label>
         </div>
+        ${opcionesColor(r)}
         <label class="fld"><span>Comentario</span>
           <textarea data-f="text">${escH(r.text || '')}</textarea>
         </label>
@@ -477,7 +495,10 @@ const Secciones = (() => {
               : e.target.value;
       st.reviews[i][campo] = v;
       marcar('reviews');
-      if (campo === 'stars' || campo === 'product') pintarFiltro();
+      if (campo === 'stars') pintarFiltro();
+      // Al cambiar de producto cambian los colores posibles, así que el
+      // selector se rehace y el color viejo se descarta.
+      if (campo === 'product') { delete st.reviews[i].color; pintarResenas(); }
     };
     cont.addEventListener('input', escribir);
     cont.addEventListener('change', escribir);

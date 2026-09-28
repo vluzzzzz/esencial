@@ -23,14 +23,26 @@
 let REVIEWS = [
 
   /* ── Max Magnéticos · 8 reseñas · 4,5 ────────────────────────────────── */
-  { name:'Ignacio T.',     stars:5, product:'airpods-max', date:'2026-09-12', verified:false, text:'La calidad de sonido es otro nivel. Muy cómodos para usar horas seguidas.' },
-  { name:'Romina F.',      stars:5, product:'airpods-max', date:'2026-08-24', verified:false, text:'La fijación magnética es precisa, calza de una sin buscar el punto.' },
-  { name:'Marcelo D.',     stars:5, product:'airpods-max', date:'2026-08-06', verified:false, text:'Terminación premium de verdad. Se siente el metal, no plástico pintado.' },
-  { name:'Javiera S.',     stars:5, product:'airpods-max', date:'2026-07-18', verified:false, text:'Los colores se ven tal cual la foto. Quedé encantada.' },
-  { name:'Álex M.',        stars:4, product:'airpods-max', date:'2026-06-27', verified:false, text:'Muy buenos 👌' },
-  { name:'Tamara C.',      stars:4, product:'airpods-max', date:'2026-06-08', verified:false, text:'Suenan excelente.' },
-  { name:'Luis P.',        stars:4, product:'airpods-max', date:'2026-05-19', verified:false, text:'👍👍' },
-  { name:'Catalina V.',    stars:4, product:'airpods-max', date:'2026-04-30', verified:false, text:'Buen producto, llegó bien protegido.' },
+  { name:'Ignacio T.',     stars:5, product:'airpods-max', date:'2026-09-12', verified:false, color:'Midnight', text:'La calidad de sonido es otro nivel. Muy cómodos para usar horas seguidas.' },
+  { name:'Romina F.',      stars:5, product:'airpods-max', date:'2026-08-24', verified:false, color:'Starlight', text:'La fijación magnética es precisa, calza de una sin buscar el punto.' },
+  { name:'Marcelo D.',     stars:5, product:'airpods-max', date:'2026-08-06', verified:false, color:'Purple', text:'Terminación premium de verdad. Se siente el metal, no plástico pintado.' },
+  { name:'Javiera S.',     stars:5, product:'airpods-max', date:'2026-07-18', verified:false, color:'Midnight', text:'Los colores se ven tal cual la foto. Quedé encantada.' },
+  { name:'Álex M.',        stars:4, product:'airpods-max', date:'2026-06-27', verified:false, color:'Orange', text:'Muy buenos 👌' },
+  { name:'Tamara C.',      stars:4, product:'airpods-max', date:'2026-06-08', verified:false, color:'Starlight', text:'Suenan excelente.' },
+  { name:'Luis P.',        stars:4, product:'airpods-max', date:'2026-05-19', verified:false, color:'Blue', text:'👍👍' },
+  { name:'Catalina V.',    stars:4, product:'airpods-max', date:'2026-04-30', verified:false, color:'Midnight', text:'Buen producto, llegó bien protegido.' },
+
+  /* ── Galaxy Buds4 Pro · 10 reseñas · 4,6 ─────────────────────────────── */
+  { name:'Camila R.',      stars:5, product:'buds4-pro', date:'2026-09-19', verified:false, color:'Negro', text:'El sonido es potente y la cancelación de ruido funciona muy bien en la micro.' },
+  { name:'Diego M.',       stars:5, product:'buds4-pro', date:'2026-09-04', verified:false, color:'Gris', text:'Livianos, casi no se sienten en la oreja. Los uso todo el día trabajando.' },
+  { name:'Fernanda P.',    stars:5, product:'buds4-pro', date:'2026-08-21', verified:false, color:'Rosa', text:'El rosa se ve precioso en persona, igual que en la foto. Muy contenta.' },
+  { name:'Sebastián L.',   stars:5, product:'buds4-pro', date:'2026-08-07', verified:false, color:'Negro', text:'Se conectan al Galaxy al instante. La batería me dura toda la jornada.' },
+  { name:'Antonia V.',     stars:5, product:'buds4-pro', date:'2026-07-23', verified:false, color:'Negro', text:'El estuche carga rápido y entra en cualquier bolsillo.' },
+  { name:'Matías C.',      stars:5, product:'buds4-pro', date:'2026-07-09', verified:false, color:'Gris', text:'Compré ocho para revender y salieron todos parejos. Buen producto.' },
+  { name:'Valeria S.',     stars:4, product:'buds4-pro', date:'2026-06-25', verified:false, color:'Rosa', text:'Muy buenos 👌' },
+  { name:'Joaquín A.',     stars:4, product:'buds4-pro', date:'2026-06-10', verified:false, color:'Negro', text:'Buen sonido y cómodos.' },
+  { name:'Paulina T.',     stars:4, product:'buds4-pro', date:'2026-05-26', verified:false, color:'Gris', text:'Cumplen de sobra 👍' },
+  { name:'Nicolás B.',     stars:4, product:'buds4-pro', date:'2026-05-08', verified:false, color:'Negro', text:'Llegaron rápido y bien embalados ✅' },
 
   /* ── Cargador Samsung 45W · 9 reseñas · 4,1 ──────────────────────────── */
   { name:'Marcela G.',     stars:5, product:'cargador-samsung-45w', date:'2026-09-06', verified:false, text:'Carga el Galaxy completo en menos de una hora. Impresionante.' },
@@ -119,22 +131,22 @@ let REVIEWS = [
   { name:'Tomás E.',       stars:4, product:'cargador-tipo-c', date:'2026-02-19', verified:false, text:'Anda bien y no se calienta 👍' },
 
   /* ── Apple Watch Ultra 3 · 16 reseñas · 4,9 ──────────────────────────── */
-  { name:'Andrea C.',      stars:5, product:'apple-watch-ultra-3', date:'2026-09-15', verified:false, text:'Súper linda experiencia de compra. Me ayudaron a elegir correctamente todo. Feliz con mi compra.' },
-  { name:'Rodrigo M.',     stars:5, product:'apple-watch-ultra-3', date:'2026-09-03', verified:false, text:'El titanio se siente firme, nada de plástico. Lo uso para correr y el GPS marca bien las rutas.' },
-  { name:'Catalina B.',    stars:5, product:'apple-watch-ultra-3', date:'2026-08-22', verified:false, text:'La batería es lo mejor. Lo cargo dos veces por semana y listo. Vengo de un Serie 6 y el cambio se nota.' },
-  { name:'Felipe A.',      stars:5, product:'apple-watch-ultra-3', date:'2026-08-11', verified:false, text:'Llegó sellado y con todo lo que decía. La pantalla se ve perfecta incluso con sol directo.' },
-  { name:'Nicolás P.',     stars:5, product:'apple-watch-ultra-3', date:'2026-07-31', verified:false, text:'Compré tres para revender y salieron todos iguales, sin detalles. Buen margen al por mayor.' },
-  { name:'Daniela S.',     stars:5, product:'apple-watch-ultra-3', date:'2026-07-19', verified:false, text:'Lo pedí un martes y llegó el jueves a Viña. Bien embalado, con doble burbuja.' },
-  { name:'Tomás L.',       stars:5, product:'apple-watch-ultra-3', date:'2026-07-08', verified:false, text:'La correa de titanio es cómoda. Nada de marcas en la muñeca después de todo el día.' },
-  { name:'Constanza R.',   stars:5, product:'apple-watch-ultra-3', date:'2026-06-26', verified:false, text:'Resiste el agua sin problema, lo usé en la piscina varias veces y sigue igual.' },
-  { name:'Paulina E.',     stars:5, product:'apple-watch-ultra-3', date:'2026-06-13', verified:false, text:'Segunda compra acá. Responden rápido y cumplen los plazos que dicen.' },
-  { name:'Cristián H.',    stars:5, product:'apple-watch-ultra-3', date:'2026-05-30', verified:false, text:'La configuración fue directa, lo emparejé con el iPhone en dos minutos.' },
-  { name:'Marisol T.',     stars:5, product:'apple-watch-ultra-3', date:'2026-05-17', verified:false, text:'El botón de acción se puede configurar para el cronómetro. Muy útil entrenando.' },
-  { name:'Pablo Ú.',       stars:5, product:'apple-watch-ultra-3', date:'2026-05-04', verified:false, text:'La sirena de emergencia se escucha fuerte de verdad. Lo llevo cuando salgo a cerro.' },
-  { name:'Elena R.',       stars:5, product:'apple-watch-ultra-3', date:'2026-04-20', verified:false, text:'Todo original, con su número de serie válido en la app de Apple. Sin sorpresas.' },
-  { name:'Camila Z.',      stars:5, product:'apple-watch-ultra-3', date:'2026-04-06', verified:false, text:'Se lo regalé a mi pareja y quedó feliz. Se ve mucho mejor en persona que en foto.' },
-  { name:'Josefa V.',      stars:4, product:'apple-watch-ultra-3', date:'2026-03-20', verified:false, text:'Muy bueno 🔥' },
-  { name:'Ignacio F.',     stars:4, product:'apple-watch-ultra-3', date:'2026-03-02', verified:false, text:'Excelente reloj y muy completo 👍' },
+  { name:'Andrea C.',      stars:5, product:'apple-watch-ultra-3', date:'2026-09-15', verified:false, color:'Negro', text:'Súper linda experiencia de compra. Me ayudaron a elegir correctamente todo. Feliz con mi compra.' },
+  { name:'Rodrigo M.',     stars:5, product:'apple-watch-ultra-3', date:'2026-09-03', verified:false, color:'Gris', text:'El titanio se siente firme, nada de plástico. Lo uso para correr y el GPS marca bien las rutas.' },
+  { name:'Catalina B.',    stars:5, product:'apple-watch-ultra-3', date:'2026-08-22', verified:false, color:'Negro', text:'La batería es lo mejor. Lo cargo dos veces por semana y listo. Vengo de un Serie 6 y el cambio se nota.' },
+  { name:'Felipe A.',      stars:5, product:'apple-watch-ultra-3', date:'2026-08-11', verified:false, color:'Naranja', text:'Llegó sellado y con todo lo que decía. La pantalla se ve perfecta incluso con sol directo.' },
+  { name:'Nicolás P.',     stars:5, product:'apple-watch-ultra-3', date:'2026-07-31', verified:false, color:'Negro', text:'Compré tres para revender y salieron todos iguales, sin detalles. Buen margen al por mayor.' },
+  { name:'Daniela S.',     stars:5, product:'apple-watch-ultra-3', date:'2026-07-19', verified:false, color:'Gris', text:'Lo pedí un martes y llegó el jueves a Viña. Bien embalado, con doble burbuja.' },
+  { name:'Tomás L.',       stars:5, product:'apple-watch-ultra-3', date:'2026-07-08', verified:false, color:'Negro', text:'La correa de titanio es cómoda. Nada de marcas en la muñeca después de todo el día.' },
+  { name:'Constanza R.',   stars:5, product:'apple-watch-ultra-3', date:'2026-06-26', verified:false, color:'Naranja', text:'Resiste el agua sin problema, lo usé en la piscina varias veces y sigue igual.' },
+  { name:'Paulina E.',     stars:5, product:'apple-watch-ultra-3', date:'2026-06-13', verified:false, color:'Gris', text:'Segunda compra acá. Responden rápido y cumplen los plazos que dicen.' },
+  { name:'Cristián H.',    stars:5, product:'apple-watch-ultra-3', date:'2026-05-30', verified:false, color:'Negro', text:'La configuración fue directa, lo emparejé con el iPhone en dos minutos.' },
+  { name:'Marisol T.',     stars:5, product:'apple-watch-ultra-3', date:'2026-05-17', verified:false, color:'Naranja', text:'El botón de acción se puede configurar para el cronómetro. Muy útil entrenando.' },
+  { name:'Pablo Ú.',       stars:5, product:'apple-watch-ultra-3', date:'2026-05-04', verified:false, color:'Negro', text:'La sirena de emergencia se escucha fuerte de verdad. Lo llevo cuando salgo a cerro.' },
+  { name:'Elena R.',       stars:5, product:'apple-watch-ultra-3', date:'2026-04-20', verified:false, color:'Gris', text:'Todo original, con su número de serie válido en la app de Apple. Sin sorpresas.' },
+  { name:'Camila Z.',      stars:5, product:'apple-watch-ultra-3', date:'2026-04-06', verified:false, color:'Negro', text:'Se lo regalé a mi pareja y quedó feliz. Se ve mucho mejor en persona que en foto.' },
+  { name:'Josefa V.',      stars:4, product:'apple-watch-ultra-3', date:'2026-03-20', verified:false, color:'Naranja', text:'Muy bueno 🔥' },
+  { name:'Ignacio F.',     stars:4, product:'apple-watch-ultra-3', date:'2026-03-02', verified:false, color:'Negro', text:'Excelente reloj y muy completo 👍' },
 
   /* ── AirPods 4ta Generación · 17 reseñas · 4,7 ───────────────────────── */
   { name:'Jorge R.',       stars:5, product:'airpods-4', date:'2026-09-19', verified:false, text:'Llegó rápido y bien envuelto. Muy buen sonido, se recomienda.' },
@@ -231,6 +243,18 @@ const Reviews = (() => {
 
   const porProducto = slug => REVIEWS.filter(r => r.product === slug);
 
+  // El puntito del color junto al nombre. Sale del catálogo, así que si el
+  // color se renombra o se borra, la reseña muestra el texto sin el punto en
+  // vez de un color que ya no existe.
+  function puntoColor(slug, nombre) {
+    const cv = (typeof COLOR_VARIANTS !== 'undefined') ? COLOR_VARIANTS[slug] : null;
+    const v = cv && cv.find(c => c.name === nombre);
+    if (!v) return '';
+    return v.swatch
+      ? `<img class="rv-color-mini" src="${escAttr(v.swatch)}" alt="">`
+      : `<span class="rv-color-mini" style="background:${escAttr(v.hex || '#ccc')}"></span>`;
+  }
+
   // Más nuevas primero.
   const porFecha = lista => lista.slice().sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
@@ -238,6 +262,7 @@ const Reviews = (() => {
     const inicial = (r.name.trim()[0] || '?').toUpperCase();
     const sello = r.verified ? '<span class="rv-ok">✓ Compra verificada</span>' : '';
     const prod  = conProducto ? `<p class="rv-prod">Producto: ${escTxt(nombreProducto(r.product))}</p>` : '';
+    const color = r.color ? `<span class="rv-color">${puntoColor(r.product, r.color)}Compró: ${escTxt(r.color)}</span>` : '';
     return `<article class="rv-card">
         <header class="rv-head">
           <span class="rv-avatar" aria-hidden="true">${escTxt(inicial)}</span>
@@ -247,7 +272,7 @@ const Reviews = (() => {
           </div>
           <time class="rv-date" datetime="${escAttr(r.date)}">${fecha(r.date)}</time>
         </header>
-        ${prod}
+        ${prod}${color}
         <p class="rv-text">${escTxt(r.text)}</p>
       </article>`;
   }

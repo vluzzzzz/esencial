@@ -140,7 +140,7 @@ function bindCard(card){
     if (!act) return;
     if (act === 'adv') { card.querySelector('[data-box=adv]').classList.toggle('hidden'); e.target.closest('.adv-toggle').classList.toggle('open'); }
     if (act === 'add-feature') { st.p.features.push(''); renderFeatures(card, st); }
-    if (act === 'add-color')   { st.p.colors.push({name:'',img:'',swatch:''}); renderColors(card, st); }
+    if (act === 'add-color')   { st.p.colors.push({name:'',img:'',swatch:'',agotado:false}); renderColors(card, st); }
     if (act === 'save') await saveProduct(card, st, e.target);
     if (act === 'undo') await undoProduct(card, id);
     if (act === 'delete') await deleteProduct(id, e.target);
@@ -200,6 +200,10 @@ function renderColors(card, st){
         <img class="sw" src="${escH(c.swatch||'')}" alt="" title="Miniatura" onerror="this.style.visibility='hidden'">
       </div>
       <input type="text" data-c="name" value="${escH(c.name||'')}" placeholder="Nombre. Ej: Negro">
+      <label class="color-stock" title="Apagado = agotado. Se ve en gris y no se puede elegir, pero no perdés las fotos.">
+        <input type="checkbox" data-c="hay" ${c.agotado?'':'checked'}>
+        <span>${c.agotado?'Agotado':'Hay'}</span>
+      </label>
       <button class="btn btn-dark file-btn" style="flex:none;padding:8px 12px;font-size:13px">Foto
         <input type="file" accept="image/*" data-cup="img">
       </button>
@@ -214,6 +218,12 @@ function renderColors(card, st){
   box.querySelectorAll('.color-fila').forEach(row => {
     const i = +row.dataset.ci;
     row.querySelector('[data-c=name]').addEventListener('input', e => cols[i].name = e.target.value);
+    row.querySelector('[data-c=hay]').addEventListener('change', e => {
+      cols[i].agotado = !e.target.checked;
+      row.querySelector('.color-stock span').textContent = e.target.checked ? 'Hay' : 'Agotado';
+      row.classList.toggle('sin-stock', !e.target.checked);
+    });
+    row.classList.toggle('sin-stock', !!cols[i].agotado);
     row.querySelectorAll('[data-cup]').forEach(inp =>
       inp.addEventListener('change', async e => {
         const f = e.target.files && e.target.files[0];
@@ -284,7 +294,7 @@ async function saveProduct(card, st, btn){
       name:p.name.trim(), category:p.category, description:p.description,
       image:p.image.trim(), image_scale:p.image_scale, in_stock:p.in_stock,
       features:p.features.filter(f=>f.trim()!==''), gallery:p.gallery,
-      colors:p.colors.filter(c=>c.img && c.name.trim()!==''),
+      colors:p.colors.filter(c=>c.img && c.name.trim()!=='').map(c=>({...c, agotado:!!c.agotado})),
       is_hero:p.is_hero, is_featured:p.is_featured,
       compare_at_price:p.compare_at_price, stock_qty:p.stock_qty,
     }).eq('id', p.id).select('id');

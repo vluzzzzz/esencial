@@ -1895,3 +1895,36 @@ svg{ -webkit-user-select:none; user-select:none; }
 @media(max-width:768px){
   .rv-carrusel .rv-card{ padding:14px 16px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V28 — colores agotados y el color comprado en las reseñas
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Un color sin stock sigue a la vista, apagado y con una barra cruzada. Se
+   muestra en vez de esconderlo para que se vea que el producto viene en ese
+   color, aunque hoy no haya. */
+.ppage-color-swatch.agotado{
+  cursor:not-allowed; opacity:.4; position:relative;
+}
+.ppage-color-swatch.agotado img{ filter:grayscale(1); }
+.ppage-color-swatch.agotado::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to top left,
+    transparent calc(50% - 1px), rgba(0,0,0,.55) 50%, transparent calc(50% + 1px));
+  border-radius:inherit; pointer-events:none;
+}
+.ppage-color-swatch.agotado:hover{ transform:none; }
+.color-agotado-txt{
+  font-size:11px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  color:#c0392b; margin-left:6px;
+}
+
+/* El color que compró quien dejó la reseña. */
+.rv-color{
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:7px; font-size:11px; color:var(--gray-mid);
+}
+.rv-color-mini{
+  width:13px; height:13px; border-radius:50%; flex:none;
+  object-fit:cover; border:1px solid rgba(0,0,0,.12);
+}

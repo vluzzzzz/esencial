@@ -198,3 +198,10 @@ input[type=date]{
   .color-fila{flex-wrap:wrap}
   .color-fila input[type=text]{flex-basis:100%; order:-1}
 }
+
+.color-stock{display:flex; align-items:center; gap:7px; flex:none; cursor:pointer; user-select:none}
+.color-stock input{width:17px; height:17px; cursor:pointer; accent-color:var(--green)}
+.color-stock span{font-size:12px; font-weight:600; color:var(--muted)}
+.color-fila.sin-stock{background:#fafafa; border-style:dashed}
+.color-fila.sin-stock .color-minis img{filter:grayscale(1); opacity:.5}
+.color-fila.sin-stock .color-stock span{color:var(--red)}
