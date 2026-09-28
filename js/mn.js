@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Trust.init();                       // pinta la tira de confianza
   CatPage.init();
   Ofertas.init();
+  ProtegerImagenes.init();
 
   // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la fila de
   //    ofertas con los datos reales. El panel se pinta solo al abrirlo, así

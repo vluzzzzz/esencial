@@ -1608,3 +1608,32 @@ body:has(#topbar) .nav{top:auto}
   .ppage-bottom .ppage-rv-head .stars.lg .star{ font-size:22px; }
   .ppage-rv-n{ font-size:25px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V20 — protección de las imágenes
+   El JS está en js/pi.js, con el interruptor para elegir cuánto se bloquea.
+   ════════════════════════════════════════════════════════════════════════════ */
+img{
+  /* Sin esto el navegador deja tirar la foto al escritorio y queda guardada.
+     El JS ya niega el arrastre, pero esto lo corta antes de que arranque, así
+     no se ve ni la sombra de la imagen siguiendo al puntero. */
+  -webkit-user-drag:none;
+     -khtml-user-drag:none;
+        -moz-user-drag:none;
+          -o-user-drag:none;
+  user-drag:none;
+
+  /* La pulsación larga en iOS abre el menú de "guardar imagen" sin pasar por
+     el evento contextmenu. Esto es lo único que lo evita. */
+  -webkit-touch-callout:none;
+
+  /* Una imagen seleccionada se puede arrastrar junto con el texto. */
+  -webkit-user-select:none;
+     -moz-user-select:none;
+      -ms-user-select:none;
+          user-select:none;
+}
+
+/* Los medios de pago y los iconos son dibujos del código, no archivos: no hay
+   nada que guardar, pero seleccionarlos por accidente se ve mal. */
+svg{ -webkit-user-select:none; user-select:none; }
