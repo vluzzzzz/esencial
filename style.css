@@ -1420,3 +1420,42 @@ body:has(#topbar) .nav{top:auto}
   .cpage-back{ top:12px; left:12px; padding:7px 13px; font-size:12px; }
   .cpage-banner .slot{ aspect-ratio:16/9; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V16 — nav: marca a la izquierda, buscador al medio, contacto y carrito
+   ════════════════════════════════════════════════════════════════════════════ */
+.nav{ justify-content:space-between; gap:24px; }
+.nav-logo a{ gap:11px; text-decoration:none; }
+.nav-marca{
+  font-family:var(--font-display); font-size:23px; letter-spacing:.07em;
+  text-transform:uppercase; line-height:1; white-space:nowrap;
+  color:#fff; transition:opacity .25s ease;
+}
+.nav-logo a:hover .nav-marca{ opacity:.82; }
+
+/* El buscador queda centrado de verdad: ocupa el hueco del medio y se
+   estira por igual hacia los dos lados. */
+.nav-buscador{ flex:1 1 auto; min-width:0; max-width:620px; margin:0 auto; }
+
+.nav-right{ gap:6px; }
+.nav-right .icon-btn{ width:38px; height:38px; }
+.nav-right .icon-btn svg{ width:21px; height:21px; }
+/* El de contacto va dibujado con trazo, no relleno, como el resto de iconos. */
+.nav-right a.icon-btn svg{ fill:none; stroke:currentColor; }
+
+@media(max-width:1100px){
+  .nav-marca{ font-size:20px; }
+  .nav-buscador{ max-width:420px; }
+}
+@media(max-width:860px){
+  .nav-marca{ display:none; }   /* queda solo el logo, para no apretar la barra */
+}
+/* Acá ya no entran los tres en una línea: la barra baja a su propio renglón
+   y la marca vuelve a verse, porque arriba queda lugar de sobra. */
+@media(max-width:768px){
+  .nav{ flex-wrap:wrap; height:auto; padding:10px 16px 12px; row-gap:10px; }
+  .nav-logo{ order:1; }
+  .nav-right{ order:2; }
+  .nav-buscador{ order:3; flex-basis:100%; max-width:none; margin:0; }
+  .nav-marca{ display:inline; font-size:19px; }
+}

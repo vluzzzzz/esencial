@@ -30,15 +30,11 @@
 <header class="nav" role="banner">
   <div class="nav-logo">
     <a href="#inicio" aria-label="Esencial Tech · Inicio">
-      <img src="images/logo-cinta.png" alt="Esencial Tech" width="58" height="58">
+      <img src="images/logo-cinta.png" alt="" width="58" height="58">
+      <span class="nav-marca">Esencial Tech</span>
     </a>
   </div>
-  <nav class="nav-center" aria-label="Navegación principal">
-    <a href="#inicio">Inicio</a>
-    <a href="#panel" data-cat-abrir="todos">Productos</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
-  <!-- BUSCADOR — filtra la grilla en vivo (js/bs.js) -->
+  <!-- BUSCADOR — abre la sección de resultados (js/bs.js) -->
   <div class="nav-buscador">
     <div class="buscador">
       <svg class="buscador-lupa" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14"/></svg>
@@ -47,6 +43,9 @@
     </div>
   </div>
   <div class="nav-right">
+    <a class="icon-btn" href="#contacto" aria-label="Contacto" title="Contacto">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 16 0"/><rect x="2.5" y="12" width="4" height="6" rx="1.6"/><rect x="17.5" y="12" width="4" height="6" rx="1.6"/><path d="M20 18v.8a2.7 2.7 0 0 1-2.7 2.7H13"/></svg>
+    </a>
     <button class="icon-btn cart-trigger" aria-label="Carrito">
       <svg class="icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>
       <span class="cart-count" id="cartCount">0</span>
