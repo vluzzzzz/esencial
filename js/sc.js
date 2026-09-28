@@ -127,6 +127,7 @@ const CatPage=(()=>{
 
   // Pinta el contenido. 'dentro' es lo que se pidió, 'fuera' el resto.
   function pintar(subT,titT,dentro,fuera,vacioT,cat){
+    clonarPieEn('cpageFooter');
     banner.innerHTML = cat ? Banners.bannerCategoria(cat) : '';
     banner.hidden = !cat;
     sub.textContent=subT;
@@ -180,6 +181,14 @@ const CatPage=(()=>{
 
     document.getElementById('cpageBack')?.addEventListener('click',cerrar);
     overlay?.addEventListener('click',cerrar);
+
+    // Los enlaces del pie apuntan a la home, que está detrás. Sin cerrar
+    // primero, el visitante se quedaría acá mientras la página de abajo salta
+    // a otra parte. "Productos" es la excepción: sirve para abrir esto mismo.
+    document.getElementById('cpageFooter')?.addEventListener('click',e=>{
+      const a=e.target.closest('a');
+      if(a&&!a.dataset.catAbrir)cerrar();
+    });
     // Escape cierra, salvo que arriba esté abierta la ficha de un producto.
     document.addEventListener('keydown',e=>{
       if(e.key!=='Escape')return;

@@ -185,18 +185,10 @@ const ProductModal=(()=>{
     if(temp&&!colorVars(key)){isTemp=true;updateArrow();renderTempThumbs();}
   }
 
-  // El pie de la ficha es el mismo de la home, clonado. Así se escribe una
-  // sola vez: lo que cambies en el <footer> de index.html sale también acá.
-  // Se copia al abrir la primera ficha, no al arrancar, porque js/tr.js pinta
-  // los medios de pago después y un clon temprano saldría sin ellos.
-  // Los id del clon se borran: un id repetido rompe getElementById.
-  function clonarPie(){
-    const destino=document.getElementById('ppageFooter'),pie=document.querySelector('body > .footer');
-    if(!destino||!pie||destino.childElementCount)return;
-    const copia=pie.cloneNode(true);
-    copia.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
-    destino.appendChild(copia);
-  }
+  // El pie se copia al abrir la primera ficha, no al arrancar, porque
+  // js/tr.js pinta los medios de pago después y un clon temprano saldría
+  // sin ellos. La copia en sí la hace clonarPieEn(), en js/sd.js.
+  const clonarPie=()=>clonarPieEn('ppageFooter');
 
   // Abrir por slug, sin una tarjeta de la que salir: lo usa el buscador de la
   // nav. Si ese producto sí está pintado y a la vista, se abre desde él para

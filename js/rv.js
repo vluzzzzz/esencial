@@ -190,9 +190,14 @@ const REVIEWS = [
 // todos muestran su número. Subilo o bajalo cuando quieras.
 const RESENAS_MINIMAS_VISIBLES = 5;
 
-// Cuántas se muestran en la sección de la portada. Con más de cien, pintarlas
-// todas alargaría la página sin sumar nada: se ven las más nuevas.
-const RESENAS_EN_PORTADA = 12;
+// Cuántas entran al carrusel de la portada. Con más de cien, meterlas todas
+// haría un recorrido larguísimo sin sumar nada: van las más nuevas.
+const RESENAS_EN_PORTADA = 14;
+
+// Velocidad del carrusel de la portada, en píxeles por segundo. Más chico =
+// más lento. Va despacio a propósito: son textos para leer, no una cinta de
+// avisos, y a más de 40 no se alcanza a terminar una reseña.
+const RESENAS_VELOCIDAD = 26;
 
 // Hasta qué alto se ven las reseñas en la ficha antes del degradado y el
 // botón "Ver más reseñas". En píxeles.
@@ -284,8 +289,33 @@ const Reviews = (() => {
         </div>
         ${barras(dist, total)}
       </div>
-      <div class="rv-lista">${vistas.map(r => tarjeta(r)).join('')}</div>
-      <p class="rv-pie">Se muestran las ${vistas.length} más recientes de ${total}. En cada producto están todas las suyas.</p>`;
+      <div class="rv-carrusel" aria-label="Reseñas de clientes">
+        <div class="rv-pista" id="rvPista"></div>
+      </div>
+      <p class="rv-pie">En cada producto están todas sus reseñas.</p>`;
+
+    pintarPista(vistas);
+  }
+
+  // Carrusel automático, una sola fila. Va solo, como la cinta de arriba: el
+  // visitante no lo maneja. La animación corre de 0 a -50%, así que la pista
+  // lleva el contenido duplicado y el salto al reiniciar no se ve.
+  function pintarPista(lista) {
+    const pista = document.getElementById('rvPista');
+    if (!pista) return;
+    const una = lista.map(r => tarjeta(r)).join('');
+    pista.innerHTML = una + una;
+
+    if (reduceMotion()) { pista.style.animation = 'none'; return; }
+
+    // La duración se calcula según lo que mide el recorrido. Si fuera fija, al
+    // cambiar la cantidad de reseñas el carrusel andaría más rápido o más
+    // lento sin motivo: el trayecto cambia y el tiempo no.
+    requestAnimationFrame(() => {
+      const recorrido = pista.scrollWidth / 2;
+      if (!recorrido) return;
+      pista.style.animationDuration = Math.round(recorrido / RESENAS_VELOCIDAD) + 's';
+    });
   }
 
   // Mini estrellas para la grilla de productos

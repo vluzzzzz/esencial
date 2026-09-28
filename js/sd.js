@@ -94,6 +94,18 @@ function extraData(p){
   return out;
 }
 
+// El pie de la home, copiado dentro de otra sección que se abre encima (la
+// ficha de producto y la de categoría). Así se escribe una sola vez: lo que
+// cambies en el <footer> de index.html sale en las tres.
+// Los id del clon se borran, porque un id repetido rompe getElementById.
+function clonarPieEn(destinoId){
+  const destino=document.getElementById(destinoId),pie=document.querySelector('body > .footer');
+  if(!destino||!pie||destino.childElementCount)return;
+  const copia=pie.cloneNode(true);
+  copia.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
+  destino.appendChild(copia);
+}
+
 function tierOne(slug){
   const t = PRICE_TIERS[slug] || [];
   return (t.find(x => x.qty === 1) || t[0] || {}).price || 0;
