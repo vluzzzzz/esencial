@@ -20,7 +20,8 @@ const BANNERS = [
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#productos' },
   { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#productos' },
   { desktop:'', mobile:'', archivo:'bannercuatro.png', alt:'Banner 4', link:'#productos' },
-  { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#productos' },
+  // Quinto banner en pausa. Para traerlo de vuelta, borrá las dos barras:
+  // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#productos' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
