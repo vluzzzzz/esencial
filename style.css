@@ -1727,3 +1727,32 @@ svg{ -webkit-user-select:none; user-select:none; }
 @media(max-width:768px){
   .ppage-rv-mas{ width:100%; padding:13px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V23 — la marca un poco más grande y el buscador al centro de verdad
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* El buscador quedaba corrido a la derecha, y no era el `margin:auto`: con
+   `space-between`, ese auto lo centra en el espacio que SOBRA, no en la
+   pantalla. Como el bloque del logo mide casi 200 px y el de los iconos
+   menos de 90, el sobrante está desplazado y el buscador con él.
+
+   La cura es darles el mismo ancho a los dos costados: con `flex:1 1 0`
+   ambos crecen por igual, así que lo del medio cae en el centro exacto. */
+.nav-logo{ flex:1 1 0; min-width:0; }
+.nav-right{ flex:1 1 0; justify-content:flex-end; }
+.nav-buscador{ flex:0 1 620px; margin:0; }
+
+.nav-marca{ font-size:26px; }
+
+@media(max-width:1100px){
+  .nav-marca{ font-size:23px; }
+  .nav-buscador{ flex:0 1 440px; }
+}
+@media(max-width:768px){
+  /* Acá el buscador ya baja a su propio renglón: los costados vuelven a
+     medir lo que necesitan, si no los iconos quedarían muy separados. */
+  .nav-logo,.nav-right{ flex:0 0 auto; }
+  .nav-buscador{ flex:1 1 100%; }
+  .nav-marca{ font-size:21px; }
+}
