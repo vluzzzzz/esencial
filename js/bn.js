@@ -16,7 +16,8 @@
    'desktop'. El orden de esta lista es el orden en que se ven.
    ════════════════════════════════════════════════════════════════════════════ */
 const BANNERS = [
-  { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
+  // principalhero.png en pausa. Para traerlo de vuelta, borrá las dos barras:
+  // { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#ofertas' },
   { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#ofertas' },
   { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe', link:'#ofertas' },
