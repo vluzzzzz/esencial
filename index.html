@@ -96,28 +96,6 @@
   <div class="cat-grid" id="catGrid"></div>
 </section>
 
-<!-- PANEL — se abre dentro de la página al tocar una categoría o al buscar.
-     No es otra ventana: aparece acá abajo con los productos de esa categoría
-     y, más abajo, el resto del catálogo. -->
-<section class="panel-section" id="panel" hidden aria-live="polite">
-  <div class="panel-head">
-    <div>
-      <p class="panel-sub" id="panelSub"></p>
-      <h2 class="panel-titulo" id="panelTitulo"></h2>
-    </div>
-    <button class="panel-close" id="panelClose" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      Cerrar
-    </button>
-  </div>
-  <p class="panel-vacio" id="panelVacio" role="status" hidden></p>
-  <div class="productos-grid" id="panelGrid"></div>
-  <div class="panel-mas" id="panelMas" hidden>
-    <h3 class="panel-mas-titulo">El resto del catálogo</h3>
-    <div class="productos-grid" id="panelMasGrid"></div>
-  </div>
-</section>
-
 <!-- ══ ¿POR QUÉ ELEGIRNOS? ══ -->
 <!-- BANNER PROMO — hueco de 2400 × 600. La ruta se pone en js/bn.js -->
 <section class="promo-section" aria-label="Promoción">
@@ -273,6 +251,31 @@
     <p class="footer-copy">© 2026 AirPods Store. Todos los derechos reservados.</p>
   </div>
 </footer>
+
+<!-- SECCIÓN DE CATEGORÍA — se abre encima de la página, en limpio: arriba
+     solo el banner de esa categoría (hueco de 1920 × 420, la ruta se pone en
+     js/bn.js → CATEGORIAS[].banner), después sus productos y abajo el resto
+     del catálogo. No es una ventana nueva. -->
+<div class="cpage-overlay" id="cpageOverlay"></div>
+<div class="cpage" id="cpage" style="display:none">
+  <button class="cpage-back" id="cpageBack" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg>
+    Volver
+  </button>
+  <div class="cpage-banner" id="cpageBanner"></div>
+  <div class="cpage-body">
+    <div class="cpage-head">
+      <p class="cpage-sub" id="cpageSub"></p>
+      <h2 class="cpage-titulo" id="cpageTitulo"></h2>
+    </div>
+    <p class="cpage-vacio" id="cpageVacio" role="status" hidden></p>
+    <div class="productos-grid" id="cpageGrid"></div>
+    <div class="cpage-mas" id="cpageMas" hidden>
+      <h3 class="cpage-mas-titulo">El resto del catálogo</h3>
+      <div class="productos-grid" id="cpageMasGrid"></div>
+    </div>
+  </div>
+</div>
 
 <div class="ppage-overlay" id="ppageOverlay"></div>
 <div class="ppage" id="ppage" style="display:none">

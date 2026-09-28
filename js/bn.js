@@ -57,13 +57,18 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    'arriba' es la línea chica y 'titulo' la grande. 'desde' es el precio del
    recuadro; si lo dejás vacío no se muestra el recuadro.
    'cat' es la categoría del catálogo (js/sd.js) que se abre al hacer clic.
+   'banner' es la imagen ancha que encabeza esa sección cuando se abre:
+   va sola arriba de todo, sin nada más. Medida → 1920 × 420 px.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 const CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000' },
-  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500'  },
-  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', cat:'iphone',     img:'images/iphone.png',         medida:'800 × 500'  },
-  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerArchivo:'banner-audifonos.png'  },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerArchivo:'banner-smartwatch.png' },
+  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', cat:'iphone',     img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerArchivo:'banner-iphone.png'     },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'', bannerArchivo:'banner-cargadores.png' },
 ];
+
+// Banner de la sección "todo el catálogo" (el enlace Productos de la nav).
+const BANNER_TODOS = { banner:'', bannerArchivo:'banner-catalogo.png' };
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
@@ -151,6 +156,14 @@ const Banners = (() => {
     if (el) el.innerHTML = CATEGORIAS.map(categoria).join('');
   }
 
+  // Banner que encabeza la sección de una categoría. Mientras no haya imagen
+  // se ve el hueco punteado con la medida, igual que los demás.
+  function bannerCategoria(cat) {
+    const c = CATEGORIAS.find(x => x.cat === cat) || BANNER_TODOS;
+    const item = { desktop: c.banner || '', mobile: '', archivo: c.bannerArchivo, alt: c.titulo || 'Catálogo' };
+    return media(item, '1920', '420', 'cpage-banner-media', true);
+  }
+
   function renderOfertaLateral() {
     const el = document.getElementById('ofertaLateral');
     if (!el) return;
@@ -198,5 +211,5 @@ const Banners = (() => {
     renderPromo();
   }
 
-  return { init, get swiper(){ return swiper; } };
+  return { init, bannerCategoria, get swiper(){ return swiper; } };
 })();

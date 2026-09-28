@@ -29,6 +29,11 @@ const REVIEWS = [
   { name:'Sebastián O.',  stars:5, product:'airpods-pro-2',             date:'2026-08-04', verified:false, text:'Segunda compra en la tienda. Responden rápido las dudas por WhatsApp y el envío llegó antes de lo estimado.' },
   { name:'Antonia G.',    stars:5, product:'apple-watch-serie-10',      date:'2026-07-30', verified:false, text:'Todo perfecto, gracias. Llegó en dos días y bien embalado.' },
 ];
+
+// Cuántas reseñas hace falta tener para mostrar el número entre paréntesis
+// al lado de las estrellas. Con una o dos, el "(1)" resta más de lo que suma:
+// se ven solo las estrellas. Subilo o bajalo cuando quieras.
+const RESENAS_MINIMAS_VISIBLES = 13;
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
@@ -117,7 +122,8 @@ const Reviews = (() => {
     const lista = porProducto(slug);
     if (!lista.length) return '';
     const { media, total } = resumen(lista);
-    return `<span class="card-stars">${estrellas(Math.round(media), 'xs')}<span class="card-stars-n">(${total})</span></span>`;
+    const n = total >= RESENAS_MINIMAS_VISIBLES ? `<span class="card-stars-n">(${total})</span>` : '';
+    return `<span class="card-stars">${estrellas(Math.round(media), 'xs')}${n}</span>`;
   }
 
   // Bloque dentro de la ficha de producto

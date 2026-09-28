@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Banners.init();Reviews.init();Buscador.init();
   Cart.init();NavScroll.init();ProductModal.init();Checkout.init();
   Trust.init();                       // pinta la tira de confianza
-  Panel.init();
+  CatPage.init();
   Ofertas.init();
 
   // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la fila de

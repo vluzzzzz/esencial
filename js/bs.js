@@ -16,7 +16,7 @@ const Buscador = (() => {
     if (!input) return;
     const q = input.value;
     limpiar.hidden = !q.trim();
-    Panel.buscar(q);
+    CatPage.buscar(q);
   }
 
   function init() {
@@ -27,7 +27,7 @@ const Buscador = (() => {
     input.addEventListener('input', debounce(filtrar, 150));
 
     input.addEventListener('keydown', e => {
-      if (e.key === 'Enter')  { e.preventDefault(); filtrar(); if (input.value.trim()) Panel.mostrar(); }
+      if (e.key === 'Enter')  { e.preventDefault(); filtrar(); if (input.value.trim()) CatPage.mostrar(); }
       if (e.key === 'Escape' && input.value) { input.value = ''; filtrar(); }
     });
 

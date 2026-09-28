@@ -7,7 +7,12 @@ const ProductModal=(()=>{
   const fmt=n=>'$'+Number(n).toLocaleString('es-CL');
   const getCardImg=c=>c?.querySelector('.card-img-wrap img')||c?.querySelector('.csl-img img')||null;
   const lockScroll=()=>{document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';};
-  const unlockScroll=()=>{document.documentElement.style.overflow='';document.body.style.overflow='';};
+  // Si la ficha se abrió desde la sección de una categoría, esa sección sigue
+  // abierta detrás y tiene que quedarse con el scroll bloqueado.
+  const unlockScroll=()=>{
+    if(typeof CatPage!=='undefined'&&CatPage.estaAbierta())return;
+    document.documentElement.style.overflow='';document.body.style.overflow='';
+  };
 
   function cleanAllVT(card){
     const ci=getCardImg(card),pi=document.getElementById('ppageImg');
@@ -78,14 +83,11 @@ const ProductModal=(()=>{
     const lista=[...resto.filter(p=>p.cat===mia),...resto.filter(p=>p.cat!==mia)].slice(0,8);
     if(!lista.length){el.innerHTML='';el.hidden=true;return;}
     el.hidden=false;
+    // Misma tarjeta que en el resto de la web, no una versión chica aparte.
     el.innerHTML=`<h3 class="ppage-sim-titulo">Productos similares</h3>
-      <div class="ppage-sim-row">${lista.map(p=>
-        `<button class="sim-card" data-goto="${escAttr(p.slug)}">
-            <span class="sim-img">${p.image?`<img src="${escAttr(p.image)}" alt="" loading="lazy">`:''}</span>
-            <span class="sim-name">${escTxt(p.name)}</span>
-            <span class="sim-price">${fmt(tierOne(p.slug))}</span>
-          </button>`
-      ).join('')}</div>`;
+      <div class="ppage-sim-row productos-grid">${lista.map(cardHTML).join('')}</div>`;
+    el.querySelectorAll('.product-card').forEach(c=>c.style.setProperty('--card-img-scale',c.dataset.imgScale??0.75));
+    Trust.decorarTarjetas();
   }
 
   // Cambiar de producto sin cerrar: se rellena la MISMA ficha y se sube arriba.
@@ -355,10 +357,12 @@ const ProductModal=(()=>{
 
     backBtn.addEventListener('click',close);overlay.addEventListener('click',close);
 
-    // Clic en un producto similar → se abre ese sin salir de la ficha.
+    // Clic en un producto similar → se rellena la misma ficha, no se abre otra.
+    // El botón de carrito de esa tarjeta lo atiende el oyente de abajo.
     document.getElementById('ppageSimilares')?.addEventListener('click',e=>{
-      const b=e.target.closest('[data-goto]');
-      if(b)irA(b.dataset.goto);
+      if(e.target.closest('.card-cart'))return;
+      const c=e.target.closest('.product-card');
+      if(c&&!c.classList.contains('out-of-stock'))irA(c.dataset.id);
     });
 
     document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});

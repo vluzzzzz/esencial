@@ -120,9 +120,13 @@ const Trust = (() => {
       }
 
       const info = card.querySelector('.card-info');
+      // El hueco de las estrellas ya está en la tarjeta y mide siempre lo
+      // mismo, tenga o no reseñas: así las tarjetas quedan parejas entre sí.
       if (info && !card.querySelector('.card-stars')) {
+        const hueco = info.querySelector('.card-stars-wrap');
         const estrellas = Reviews.miniEstrellas(slug);
-        if (estrellas) info.querySelector('.card-name')?.insertAdjacentHTML('afterend', estrellas);
+        if (hueco) hueco.innerHTML = estrellas;
+        else if (estrellas) info.querySelector('.card-name')?.insertAdjacentHTML('afterend', estrellas);
       }
 
       if (info && !card.querySelector('.stock-aviso')) {

@@ -54,13 +54,13 @@ const Ofertas=(()=>{
   return{init};
 })();
 
-// Panel de resultados. Una sola sección que sirve para dos cosas: los
-// productos de una categoría (con el resto del catálogo abajo) y los
-// resultados del buscador. Antes había una grilla fija con todo; ahora los
-// productos aparecen recién cuando el visitante pide verlos.
-const Panel=(()=>{
-  let sec,sub,titulo,grid,masWrap,masGrid,vacio;
-  let catActual='';
+// Sección de categoría. No es otra ventana ni una franja más de la home: se
+// abre encima, en blanco, con el banner de esa categoría arriba de todo y
+// nada más. Debajo van sus productos y, más abajo, el resto del catálogo.
+// La misma sección sirve para los resultados del buscador.
+const CatPage=(()=>{
+  let sec,overlay,banner,sub,titulo,grid,masWrap,masGrid,vacio;
+  let abierta=false;
 
   const NOMBRES={
     smartwatch:'Smartwatch',
@@ -70,43 +70,63 @@ const Panel=(()=>{
     todos:'Todo el catálogo',
   };
 
+  const lock  =()=>{document.documentElement.style.overflow='hidden';document.body.style.overflow='hidden';};
+  const unlock=()=>{document.documentElement.style.overflow='';document.body.style.overflow='';};
+
   function mostrar(){
-    if(!sec)return;
-    sec.hidden=false;
-    requestAnimationFrame(()=>{
-      const y=sec.getBoundingClientRect().top+window.scrollY-90;
-      window.scrollTo({top:y,behavior:reduceMotion()?'auto':'smooth'});
-    });
+    if(!sec||abierta)return;
+    abierta=true;
+    sec.style.display='block';
+    overlay.classList.add('active');
+    sec.classList.add('active');
+    sec.scrollTop=0;
+    lock();
+    if(typeof gsap!=='undefined'&&!reduceMotion()){
+      gsap.fromTo(overlay,{opacity:0},{opacity:1,duration:.25,ease:'power2.out'});
+      gsap.fromTo(sec,{opacity:0,y:26},{opacity:1,y:0,duration:.4,ease:'power3.out'});
+    }
   }
 
   function cerrar(){
-    if(!sec)return;
-    sec.hidden=true;catActual='';
-    document.querySelectorAll('.cat-card.activa').forEach(c=>c.classList.remove('activa'));
+    if(!sec||!abierta)return;
+    abierta=false;
+    const fin=()=>{
+      sec.style.display='none';sec.classList.remove('active');
+      overlay.classList.remove('active');
+      if(typeof gsap!=='undefined')gsap.set(sec,{clearProps:'opacity,transform'});
+      unlock();
+    };
+    if(typeof gsap!=='undefined'&&!reduceMotion()){
+      gsap.to(overlay,{opacity:0,duration:.2,ease:'power2.in'});
+      gsap.to(sec,{opacity:0,y:20,duration:.25,ease:'power2.in',onComplete:fin});
+    }else fin();
+  }
+
+  // Pinta el contenido. 'dentro' es lo que se pidió, 'fuera' el resto.
+  function pintar(subT,titT,dentro,fuera,vacioT,cat){
+    banner.innerHTML = cat ? Banners.bannerCategoria(cat) : '';
+    banner.hidden = !cat;
+    sub.textContent=subT;
+    titulo.textContent=titT;
+    vacio.hidden=dentro.length>0;
+    if(!dentro.length)vacio.textContent=vacioT;
+
+    pintarProductos(grid,dentro);
+    masWrap.hidden=!fuera.length;
+    if(fuera.length)pintarProductos(masGrid,fuera);
+    else masGrid.innerHTML='';
+    animarProductos(grid);animarProductos(masGrid);
   }
 
   function abrir(cat){
     if(!sec)return;
-    // Tocar dos veces la misma categoría la cierra.
-    if(catActual===cat){cerrar();return;}
-    catActual=cat;
-
     const dentro = cat==='todos' ? CATALOGO.slice() : porCategoria(cat);
     const fuera  = cat==='todos' ? []               : CATALOGO.filter(p=>p.cat!==cat);
-
-    sub.textContent   = cat==='todos' ? 'Catálogo Mayor 2026' : 'Categoría';
-    titulo.textContent= NOMBRES[cat] || cat;
-    vacio.hidden=dentro.length>0;
-    if(!dentro.length) vacio.textContent='Todavía no hay productos en esta categoría.';
-
-    pintarProductos(grid,dentro);
-    masWrap.hidden=!fuera.length;
-    if(fuera.length) pintarProductos(masGrid,fuera);
-    else masGrid.innerHTML='';
-
-    animarProductos(grid);animarProductos(masGrid);
-
-    document.querySelectorAll('.cat-card').forEach(c=>c.classList.toggle('activa',c.dataset.cat===cat));
+    pintar(
+      cat==='todos' ? 'Catálogo Mayor 2026' : 'Categoría',
+      NOMBRES[cat]||cat, dentro, fuera,
+      'Todavía no hay productos en esta categoría.', cat
+    );
     mostrar();
   }
 
@@ -117,35 +137,34 @@ const Panel=(()=>{
     if(!sec)return;
     const t=norm(q);
     if(!t){cerrar();return;}
-    catActual='buscar:'+t;
-
     const hit=CATALOGO.filter(p=>norm(`${p.name} ${p.slug} ${p.desc||''}`).includes(t));
-    sub.textContent='Resultados de búsqueda';
-    titulo.textContent=`"${q.trim()}"`;
-    vacio.hidden=hit.length>0;
-    if(!hit.length) vacio.textContent=`Sin resultados para "${q.trim()}"`;
-
-    pintarProductos(grid,hit);
-    masWrap.hidden=true;masGrid.innerHTML='';
-    animarProductos(grid);
-    document.querySelectorAll('.cat-card.activa').forEach(c=>c.classList.remove('activa'));
-    sec.hidden=false;
+    pintar('Resultados de búsqueda',`"${q.trim()}"`,hit,[],`Sin resultados para "${q.trim()}"`,'');
+    mostrar();
   }
 
   function init(){
-    sec=document.getElementById('panel');
+    sec=document.getElementById('cpage');
     if(!sec)return;
-    sub    =document.getElementById('panelSub');
-    titulo =document.getElementById('panelTitulo');
-    grid   =document.getElementById('panelGrid');
-    masWrap=document.getElementById('panelMas');
-    masGrid=document.getElementById('panelMasGrid');
-    vacio  =document.getElementById('panelVacio');
+    overlay=document.getElementById('cpageOverlay');
+    banner =document.getElementById('cpageBanner');
+    sub    =document.getElementById('cpageSub');
+    titulo =document.getElementById('cpageTitulo');
+    grid   =document.getElementById('cpageGrid');
+    masWrap=document.getElementById('cpageMas');
+    masGrid=document.getElementById('cpageMasGrid');
+    vacio  =document.getElementById('cpageVacio');
+    sec.style.display='none';
 
-    document.getElementById('panelClose')?.addEventListener('click',cerrar);
+    document.getElementById('cpageBack')?.addEventListener('click',cerrar);
+    overlay?.addEventListener('click',cerrar);
+    // Escape cierra, salvo que arriba esté abierta la ficha de un producto.
+    document.addEventListener('keydown',e=>{
+      if(e.key!=='Escape')return;
+      if(document.getElementById('ppage')?.classList.contains('active'))return;
+      cerrar();
+    });
 
-    // Las tarjetas de categoría y el enlace "Productos" de la nav abren el panel
-    // acá mismo, sin salir de la página ni abrir otra ventana.
+    // Las tarjetas de categoría y el enlace "Productos" de la nav abren esto.
     document.addEventListener('click',e=>{
       const t=e.target.closest('[data-cat-abrir]');
       if(!t)return;
@@ -154,7 +173,7 @@ const Panel=(()=>{
     });
   }
 
-  return{init,abrir,buscar,cerrar,mostrar};
+  return{init,abrir,buscar,cerrar,mostrar,estaAbierta:()=>abierta};
 })();
 
 const Carousel3D=(()=>{
