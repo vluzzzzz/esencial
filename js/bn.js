@@ -55,7 +55,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    recuadro; si lo dejás vacío no se muestra el recuadro.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 const CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', img:'', archivo:'cat-audifonos.png',  medida:'800 × 1000', link:'#productos' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', img:'images/cat-audifonos.png', medida:'800 × 1000', link:'#productos' },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', img:'', archivo:'cat-smartwatch.png', medida:'800 × 500',  link:'#productos' },
   { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', img:'', archivo:'cat-iphone.png',     medida:'800 × 500',  link:'#productos' },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  img:'', archivo:'cat-cargadores.png', medida:'800 × 1000', link:'#productos' },
