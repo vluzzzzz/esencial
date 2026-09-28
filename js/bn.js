@@ -71,7 +71,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
 let CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerArchivo:'banner-audifonos.png'  },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerArchivo:'banner-smartwatch.png' },
-  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', cat:'iphone',     img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerArchivo:'banner-iphone.png'     },
+  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerArchivo:'banner-celulares.png'  },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'', bannerArchivo:'banner-cargadores.png' },
 ];
 

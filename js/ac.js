@@ -2,7 +2,12 @@
 
 const sb = window.sb;
 const BUCKET = 'site-images';
-const CATS = [['audifonos','Audífonos'],['relojes','Relojes'],['accesorios','Accesorios']];
+const CATS = [
+  ['audifonos','Audífonos'],
+  ['smartwatch','Smartwatch'],
+  ['celulares','Celulares'],
+  ['cargadores','Cargadores'],
+];
 
 const $ = (s, r = document) => r.querySelector(s);
 const fmt = n => '$' + Number(n || 0).toLocaleString('es-CL');

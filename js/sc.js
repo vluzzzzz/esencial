@@ -93,7 +93,7 @@ const CatPage=(()=>{
   const NOMBRES={
     smartwatch:'Smartwatch',
     audifonos:'Audífonos',
-    iphone:'Accesorios para iPhone',
+    celulares:'Celulares',
     cargadores:'Cargadores',
     todos:'Todo el catálogo',
   };

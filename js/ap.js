@@ -58,6 +58,13 @@ function buildCard(p){
     </label>
 
     <div class="row2">
+      <label class="fld"><span>Categoría</span>
+        <select data-f="category">
+          ${CATS.map(([v,t])=>`<option value="${v}"${(p.category||'audifonos')===v?' selected':''}>${escH(t)}</option>`).join('')}
+          ${CATS.some(([v])=>v===(p.category||'audifonos'))?'':`<option value="${escH(p.category)}" selected>${escH(p.category)} (fuera de la lista)</option>`}
+        </select>
+        <p class="note-stock">Es la que se abre al tocar la tarjeta de categoría en la portada.</p>
+      </label>
       <label class="fld"><span>Escala imagen</span>
         <input type="number" step="0.05" data-f="scale" value="${p.image_scale ?? 0.85}">
       </label>
@@ -114,6 +121,7 @@ function bindCard(card){
   card.querySelector('[data-f=desc]').addEventListener('input', e => st.p.description = e.target.value);
   const imgInput = card.querySelector('[data-f=image]');
   imgInput.addEventListener('input', e => { st.p.image = e.target.value; const t = card.querySelector('[data-h=thumb]'); t.src = e.target.value; t.style.visibility = 'visible'; });
+  card.querySelector('[data-f=category]').addEventListener('change', e => st.p.category = e.target.value);
   card.querySelector('[data-f=scale]').addEventListener('input', e => st.p.image_scale = parseFloat(e.target.value) || 0.85);
   card.querySelector('[data-f=stock]').addEventListener('change', e => st.p.in_stock = e.target.checked);
   // Campo vacío → null, para que la web no muestre ni descuento ni aviso de stock.
