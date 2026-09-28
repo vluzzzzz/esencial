@@ -124,3 +124,61 @@ textarea{resize:vertical; min-height:90px}
 .empty{text-align:center; color:var(--muted); padding:40px 0}
 .spin{display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:sp .7s linear infinite; vertical-align:-3px}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* ════════════════════════════════════════════════════════════════════════
+   Secciones del sitio — banners, categorías, portada y reseñas (js/as.js)
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Los <select> no heredaban el estilo de los <input> y se veían como los del
+   sistema, distintos en cada navegador. */
+select{
+  width:100%; font:inherit; padding:13px 15px; border:1px solid var(--line);
+  border-radius:12px; background:#fff; color:var(--ink); outline:none;
+  transition:.15s; cursor:pointer;
+}
+select:focus{border-color:#000}
+input[type=date]{
+  width:100%; font:inherit; padding:12px 15px; border:1px solid var(--line);
+  border-radius:12px; background:#fff; color:var(--ink); outline:none;
+}
+
+.aviso-sql{border-left:4px solid var(--red)}
+.aviso-sql code{
+  background:#f0f0f2; padding:2px 7px; border-radius:6px;
+  font-size:13px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+/* Flechas y borrar, arriba a la derecha de cada tarjeta. */
+.fila-ctrl{display:flex; gap:8px; flex:none}
+.fila-ctrl .btn{padding:8px 13px}
+
+/* Elegir productos para las filas de la portada. */
+.pick-lista{display:flex; flex-direction:column; gap:8px}
+.pick{
+  display:flex; align-items:center; gap:12px;
+  padding:9px 12px; border:1px solid var(--line); border-radius:12px; background:#fff;
+}
+.pick.on{border-color:var(--black); background:#fafafa}
+.pick .img-thumb{width:44px; height:44px}
+.pick-nom{flex:1; font-weight:500; font-size:14px}
+.pick .btn{padding:8px 14px; flex:none}
+
+/* Barra de guardar: queda pegada abajo mientras haya cambios, así no hay que
+   buscar el botón después de editar diez tarjetas. */
+.guardar-barra{
+  position:sticky; bottom:16px; z-index:5;
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  margin-top:22px; padding:16px 22px;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  box-shadow:0 8px 28px rgba(0,0,0,.14);
+}
+.guardar-barra[hidden]{display:none}
+.guardar-aviso{font-size:14px; font-weight:600; color:var(--red)}
+.guardar-barra .btn{flex:none}
+
+@media(max-width:640px){
+  .tabs{flex-wrap:wrap}
+  .tab{padding:9px 16px; font-size:14px}
+  .pick{flex-wrap:wrap}
+  .pick-nom{flex-basis:100%; order:-1}
+}

@@ -7,21 +7,26 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://sfcuiptbnsqvnzzraoee.supabase.co" crossorigin>
+  <!-- solo las dos familias que usa el CSS: Barlow, Anton y Caveat ya no se usaban -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <!-- el banner es lo primero que se ve: que empiece a bajar antes que el JS -->
   <link rel="preload" as="image" href="images/bannerdos.png" fetchpriority="high">
   <script>
-
+    // Al recargar, el navegador devuelve la página donde estaba. Acá siempre
+    // se arranca desde arriba. Va antes que todo para que no se vea el salto.
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   </script>
 </head>
 <body>
 
+<!-- CINTA — los mensajes se editan en js/bn.js (constante CINTA) -->
 <div class="topbar" id="topbar" aria-label="Avisos de la tienda">
   <div class="topbar-track" id="topbarTrack"></div>
 </div>
 
+<!-- NAVBAR -->
 <header class="nav" role="banner">
   <div class="nav-logo">
     <a href="#inicio" aria-label="Esencial Tech · Inicio">
@@ -29,11 +34,13 @@
       <span class="nav-marca">Esencial Tech</span>
     </a>
   </div>
+  <!-- BUSCADOR — abre la sección de resultados (js/bs.js) -->
   <div class="nav-buscador">
     <div class="buscador">
       <svg class="buscador-lupa" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14"/></svg>
       <input type="search" id="buscadorInput" class="buscador-input" placeholder="Busca audífonos, relojes, cargadores…" autocomplete="off" aria-label="Buscar productos" role="combobox" aria-expanded="false" aria-controls="buscadorSug" aria-autocomplete="list">
       <button class="buscador-clear" id="buscadorClear" aria-label="Limpiar búsqueda" hidden>&times;</button>
+      <!-- sugerencias con miniatura — las pinta js/bs.js -->
       <div class="buscador-sug" id="buscadorSug" role="listbox" aria-label="Sugerencias" hidden></div>
     </div>
   </div>
@@ -48,6 +55,8 @@
   </div>
 </header>
 
+<!-- BANNERS — se administran en /admin → Banners. Lo de js/bn.js es el
+     valor de arranque, por si todavía no hay nada guardado. -->
 <section class="bnr-section" id="inicio" aria-label="Promociones">
   <div class="swiper bnr-swiper">
     <div class="swiper-wrapper" id="bnrWrapper"></div>
@@ -62,9 +71,13 @@
 </section>
 
 
+<!-- TIRA DE CONFIANZA -->
 <section class="tira" id="tiraConfianza" aria-label="Por qué comprar acá"></section>
 
-
+<!-- ══ OFERTAS ══ -->
+<!-- Fila horizontal: a la izquierda un hueco de 620 × 860 para tu imagen
+     (la ruta se pone en js/bn.js → OFERTA_LATERAL) y a la derecha las
+     tarjetas. Qué productos salen y en qué orden se elige en js/sc.js. -->
 <section class="ofertas-section" id="ofertas" aria-labelledby="ofertasTitulo">
   <div class="ofertas-header">
     <p class="ofertas-subtitulo">Precios por unidad, desde 3 unidades combinables</p>
@@ -76,6 +89,7 @@
   </div>
 </section>
 
+<!-- CATEGORÍAS — 4 huecos. Las rutas se ponen en js/bn.js -->
 <section class="cat-section" id="categorias">
   <div class="cat-header">
     <p class="cat-subtitulo">Explorá por tipo</p>
@@ -84,7 +98,11 @@
   <div class="cat-grid" id="catGrid"></div>
 </section>
 
-
+<!-- ══ MÁS PRODUCTOS ══ -->
+<!-- Segunda fila, a lo ancho. Qué productos salen se elige en js/sc.js, en la
+     lista MAS_PRODUCTOS. Acá estaba el hueco del banner promo; el código que
+     lo pinta sigue en js/bn.js, así que para traerlo de vuelta basta con
+     devolver un <div id="promoBanner"> donde lo quieras. -->
 <section class="mas-section" id="mas" aria-labelledby="masTitulo">
   <div class="mas-header">
     <h2 class="mas-titulo" id="masTitulo">Más productos</h2>
@@ -92,6 +110,7 @@
   <div class="mas-row" id="masRow"></div>
 </section>
 
+<!-- VALORACIONES -->
 <section class="reviews-section" id="reviews">
   <div class="reviews-header">
     <p class="reviews-subtitulo">Lo que dicen quienes ya compraron</p>
@@ -247,7 +266,10 @@
   </div>
 </footer>
 
-
+<!-- SECCIÓN DE CATEGORÍA — se abre encima de la página, en limpio: arriba
+     solo el banner de esa categoría (hueco de 1920 × 420, la ruta se pone en
+     js/bn.js → CATEGORIAS[].banner), después sus productos y abajo el resto
+     del catálogo. No es una ventana nueva. -->
 <div class="cpage-overlay" id="cpageOverlay"></div>
 <div class="cpage" id="cpage" style="display:none">
   <button class="cpage-back" id="cpageBack" type="button">
@@ -267,7 +289,8 @@
       <div class="productos-grid" id="cpageMasGrid"></div>
     </div>
   </div>
-
+  <!-- el pie de la home, clonado acá por js/sc.js: la sección termina como
+       termina la página, no cortada en seco -->
   <div class="cpage-footer" id="cpageFooter"></div>
 </div>
 
@@ -469,6 +492,7 @@
 <script defer src="js/cc.js"></script>
 <script defer src="js/pm.js"></script>
 <script defer src="js/sc.js"></script>
+<script defer src="js/cf.js"></script>
 <script defer src="js/pi.js"></script>
 <script defer src="js/mn.js"></script>
 <!-- BOTÓN FLOTANTE DE WHATSAPP -->

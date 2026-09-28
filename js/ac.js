@@ -49,7 +49,13 @@ async function boot(){
 }
 
 function showLogin(){ $('#login').classList.remove('hidden'); $('#app').classList.add('hidden'); }
-function showApp(){ $('#login').classList.add('hidden'); $('#app').classList.remove('hidden'); loadProducts(); }
+function showApp(){
+  $('#login').classList.add('hidden');
+  $('#app').classList.remove('hidden');
+  loadProducts();
+  // Las otras pestañas viven en js/as.js, que se carga después.
+  if (typeof Secciones !== 'undefined') Secciones.init().catch(e => console.error('Secciones:', e));
+}
 
 async function onLogin(e){
   e.preventDefault();

@@ -14,8 +14,12 @@
    Los que faltan muestran el hueco punteado con el nombre de archivo que
    esperan. Guardás la imagen con ese nombre en images/ y la pegás en
    'desktop'. El orden de esta lista es el orden en que se ven.
+
+   ⚠ Desde que existe /admin, esta lista es solo el punto de partida: si hay
+   algo guardado en el panel, eso gana y lo de acá no se usa. Editá en el
+   panel salvo que quieras cambiar el valor de arranque.
    ════════════════════════════════════════════════════════════════════════════ */
-const BANNERS = [
+let BANNERS = [
   // principalhero.png en pausa. Para traerlo de vuelta, borrá las dos barras:
   // { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#ofertas' },
@@ -61,7 +65,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    'banner' es la imagen ancha que encabeza esa sección cuando se abre:
    va sola arriba de todo, sin nada más. Medida → 1920 × 420 px.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
-const CATEGORIAS = [
+let CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerArchivo:'banner-audifonos.png'  },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerArchivo:'banner-smartwatch.png' },
   { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', cat:'iphone',     img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerArchivo:'banner-iphone.png'     },

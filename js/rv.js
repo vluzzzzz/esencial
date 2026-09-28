@@ -15,8 +15,12 @@
 
    Están agrupadas por producto para que sea fácil encontrarlas y editarlas.
    El orden de la lista no importa: la portada las ordena por fecha.
+
+   ⚠ Desde que existe /admin, esta lista es solo el punto de partida: si hay
+   algo guardado en el panel, eso gana y lo de acá no se usa. Editá en el
+   panel salvo que quieras cambiar el valor de arranque.
    ════════════════════════════════════════════════════════════════════════════ */
-const REVIEWS = [
+let REVIEWS = [
 
   /* ── Max Magnéticos · 8 reseñas · 4,5 ────────────────────────────────── */
   { name:'Ignacio T.',     stars:5, product:'airpods-max', date:'2026-09-12', verified:false, text:'La calidad de sonido es otro nivel. Muy cómodos para usar horas seguidas.' },

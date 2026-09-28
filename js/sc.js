@@ -6,10 +6,14 @@ const NavScroll=(()=>{function init(){const nav=document.querySelector('.nav');w
    ZONA EDITABLE — qué productos salen en cada fila de la portada, y en qué
    orden. Son los slugs del catálogo (js/sd.js); si ponés uno que no existe,
    se saltea sin romper nada.
+
+   ⚠ Desde que existe /admin, esta lista es solo el punto de partida: si hay
+   algo guardado en el panel, eso gana y lo de acá no se usa. Editá en el
+   panel salvo que quieras cambiar el valor de arranque.
    ════════════════════════════════════════════════════════════════════════════ */
 
 // Fila de arriba, con la imagen al costado. Va antes de las categorías.
-const OFERTAS = [
+let OFERTAS = [
   'airpods-pro-2',
   'apple-watch-ultra-3',
   'airpods-4',
@@ -19,7 +23,7 @@ const OFERTAS = [
 
 // Fila de abajo, a lo ancho. Va después de las categorías. Acá están los seis
 // que no salen arriba, así que entre las dos filas se ve todo el catálogo.
-const MAS_PRODUCTOS = [
+let MAS_PRODUCTOS = [
   'apple-watch-serie-10',
   'apple-watch-black-ultra-2',
   'airpods-3',

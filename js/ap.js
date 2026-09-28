@@ -289,5 +289,3 @@ async function createProduct(){
   }
 }
 
-
-boot();   // arranca cuando ya están definidas todas las funciones

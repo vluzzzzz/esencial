@@ -45,6 +45,23 @@
     <div class="wrap">
       <div class="tabs">
         <button class="tab active" data-tab="catalogo">Catálogo</button>
+        <button class="tab" data-tab="banners">Banners</button>
+        <button class="tab" data-tab="categorias">Categorías</button>
+        <button class="tab" data-tab="filas">Portada</button>
+        <button class="tab" data-tab="resenas">Reseñas</button>
+      </div>
+
+      <!-- Solo aparece si falta correr supabase/add-site-config.sql -->
+      <div class="card aviso-sql hidden" id="avisoSql">
+        <h2>Falta un paso en la base de datos</h2>
+        <p class="hint">
+          Las secciones de Banners, Categorías, Portada y Reseñas guardan en la
+          tabla <code>site_config</code>, que todavía no existe. Abrí Supabase →
+          SQL Editor, pegá el contenido de
+          <code>supabase/add-site-config.sql</code> y dale Run. Después recargá
+          esta página.
+        </p>
+        <p class="hint">Mientras tanto la tienda sigue andando con lo que está escrito en los archivos <code>js/</code>.</p>
       </div>
 
       <section id="tab-catalogo">
@@ -64,6 +81,90 @@
         <!-- Lista de productos (render dinámico) -->
         <div id="list"><div class="empty">Cargando productos…</div></div>
       </section>
+
+      <!-- ── BANNERS ───────────────────────────────────── -->
+      <section id="tab-banners" class="hidden">
+        <p class="title-kicker">Lo primero que se ve</p>
+        <h1 class="title-big">Banners</h1>
+        <div class="card">
+          <p class="hint">
+            Se muestran en bucle, en el orden de esta lista. Medida
+            recomendada: <b>1920 × 560</b> para escritorio y <b>1080 × 1080</b>
+            para móvil. Si no cargás la de móvil se usa la de escritorio.
+          </p>
+          <button class="btn btn-dark" data-add="banner" style="flex:none">Agregar banner</button>
+        </div>
+        <div id="listBanners"><div class="empty">Cargando…</div></div>
+        <div class="guardar-barra" data-save="banners" hidden>
+          <span class="guardar-aviso">Hay cambios sin guardar</span>
+          <button class="btn btn-dark">Guardar banners</button>
+        </div>
+      </section>
+
+      <!-- ── CATEGORÍAS ────────────────────────────────── -->
+      <section id="tab-categorias" class="hidden">
+        <p class="title-kicker">El puzzle de la portada</p>
+        <h1 class="title-big">Categorías</h1>
+        <div class="card">
+          <p class="hint">
+            El diseño está armado para <b>cuatro</b>: la primera y la cuarta
+            son altas, la segunda y la tercera bajas. Con otra cantidad se ve,
+            pero pierde esa forma.
+          </p>
+          <p class="hint">
+            <b>Categoría del catálogo</b> es la que se abre al tocar la
+            tarjeta, y tiene que coincidir con la del producto en la pestaña
+            Catálogo. Si no coincide, la sección se abre vacía.
+          </p>
+          <button class="btn btn-dark" data-add="categoria" style="flex:none">Agregar categoría</button>
+        </div>
+        <div id="listCategorias"><div class="empty">Cargando…</div></div>
+        <div class="guardar-barra" data-save="categorias" hidden>
+          <span class="guardar-aviso">Hay cambios sin guardar</span>
+          <button class="btn btn-dark">Guardar categorías</button>
+        </div>
+      </section>
+
+      <!-- ── PORTADA ───────────────────────────────────── -->
+      <section id="tab-filas" class="hidden">
+        <p class="title-kicker">Qué productos se ven primero</p>
+        <h1 class="title-big">Portada</h1>
+        <div class="card">
+          <p class="hint">
+            Marcá los productos de cada fila y ordenalos con las flechas. Los
+            que no marques siguen en la tienda: se llega a ellos por las
+            categorías y el buscador.
+          </p>
+        </div>
+        <div id="listFilas"><div class="empty">Cargando…</div></div>
+        <div class="guardar-barra" data-save="filas" hidden>
+          <span class="guardar-aviso">Hay cambios sin guardar</span>
+          <button class="btn btn-dark">Guardar portada</button>
+        </div>
+      </section>
+
+      <!-- ── RESEÑAS ───────────────────────────────────── -->
+      <section id="tab-resenas" class="hidden">
+        <p class="title-kicker">Lo que dicen los clientes</p>
+        <h1 class="title-big">Reseñas</h1>
+        <div class="card">
+          <div class="img-row">
+            <select id="filtroResena"></select>
+            <button class="btn btn-dark" data-add="resena" style="flex:none">Agregar reseña</button>
+          </div>
+          <p class="hint" id="resumenResenas"></p>
+          <p class="hint">
+            <b>Compra verificada</b> deja el sello a la vista. Encendelo solo
+            cuando tengas la venta respaldada: es una afirmación sobre tu
+            tienda y el SERNAC puede pedirte que la sostengas.
+          </p>
+        </div>
+        <div id="listResenas"><div class="empty">Cargando…</div></div>
+        <div class="guardar-barra" data-save="reviews" hidden>
+          <span class="guardar-aviso">Hay cambios sin guardar</span>
+          <button class="btn btn-dark">Guardar reseñas</button>
+        </div>
+      </section>
     </div>
   </div>
 
@@ -73,5 +174,6 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/ac.js"></script>
   <script src="js/ap.js"></script>
+  <script src="js/as.js"></script>
 </body>
 </html>

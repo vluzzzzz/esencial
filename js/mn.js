@@ -18,11 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
   Filas.init();
   ProtegerImagenes.init();
 
-  // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la fila de
-  //    ofertas con los datos reales. El panel se pinta solo al abrirlo, así
-  //    que siempre sale con lo último que llegó.
-  loadCatalog().then(ok => {
-    if (!ok) return;
-    Filas.init();
-  }).catch(err => console.error('Catálogo:', err));
+  // ── 2. Después, sin bloquear. Las dos consultas salen juntas, no una tras
+  //    otra: no dependen entre sí y en serie tardarían el doble.
+  //
+  //    El catálogo se aplica primero porque las filas de la portada guardan
+  //    slugs, y esos slugs tienen que existir en el catálogo nuevo antes de
+  //    que la configuración mande a repintarlas.
+  loadCatalog()
+    .then(ok => { if (ok) Filas.init(); })
+    .catch(err => console.error('Catálogo:', err));
+
+  SiteConfig.cargar()
+    .catch(err => console.error('Configuración:', err));
 });
