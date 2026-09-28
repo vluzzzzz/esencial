@@ -5,7 +5,8 @@
 --  solo los correos de la lista.
 --
 --  PASO 1 · Poné los correos que tienen permiso, entre comillas y separados
---           por coma. El tuyo y el del cliente.
+--           por coma. El tuyo y el del cliente. TODO EN MINÚSCULAS: Supabase
+--           guarda los correos así, y la comparación distingue mayúsculas.
 --  PASO 2 · Pegá todo en Supabase → SQL Editor → Run.
 --
 --  Para sumar o sacar a alguien después, cambiás la lista y volvés a correrlo.
@@ -13,9 +14,9 @@
 
 create or replace function public.es_admin()
 returns boolean language sql stable as $$
-  select (auth.jwt() ->> 'email') in (
-    'TU-CORREO@ejemplo.com',
-    'CORREO-DEL-CLIENTE@ejemplo.com'
+  select lower(auth.jwt() ->> 'email') in (
+    'tu-correo@ejemplo.com',
+    'correo-del-cliente@ejemplo.com'
   );
 $$;
 
