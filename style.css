@@ -1459,3 +1459,43 @@ body:has(#topbar) .nav{top:auto}
   .nav-buscador{ order:3; flex-basis:100%; max-width:none; margin:0; }
   .nav-marca{ display:inline; font-size:19px; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V17 — botón flotante de WhatsApp
+   ════════════════════════════════════════════════════════════════════════════ */
+/* Va por encima de la sección de categoría (z-index 251) pero por debajo de
+   la ficha de producto (301), que ya tiene su propio botón de WhatsApp. */
+.wa-flotante{
+  position:fixed; left:24px; bottom:24px; z-index:260;
+  display:flex; align-items:center; gap:0;
+  height:56px; padding:0 17px; border-radius:999px;
+  background:#25D366; color:#fff; text-decoration:none;
+  box-shadow:0 8px 24px rgba(37,211,102,.38), 0 2px 8px rgba(0,0,0,.14);
+  transition:gap .3s var(--ease-smooth), padding .3s var(--ease-smooth),
+             transform .25s var(--ease-spring), box-shadow .25s var(--ease-smooth);
+}
+.wa-flotante svg{ width:28px; height:28px; fill:currentColor; flex-shrink:0; }
+/* El texto está pero mide cero: se despliega al pasar el ratón. Así no tapa
+   la página y en móvil queda un botón redondo y limpio. */
+.wa-flotante-txt{
+  font-family:var(--font-body); font-size:15px; font-weight:600;
+  white-space:nowrap; max-width:0; overflow:hidden;
+  transition:max-width .3s var(--ease-smooth);
+}
+.wa-flotante:hover{
+  gap:10px; padding-right:22px; transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(37,211,102,.45), 0 2px 8px rgba(0,0,0,.16);
+}
+.wa-flotante:hover .wa-flotante-txt{ max-width:140px; }
+.wa-flotante:active{ transform:translateY(0) scale(.97); }
+
+@media(max-width:768px){
+  .wa-flotante{ left:16px; bottom:16px; height:50px; padding:0 14px; }
+  .wa-flotante svg{ width:25px; height:25px; }
+  /* En táctil no hay "pasar el ratón": queda siempre redondo. */
+  .wa-flotante:hover{ gap:0; padding-right:14px; }
+  .wa-flotante:hover .wa-flotante-txt{ max-width:0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .wa-flotante,.wa-flotante-txt{ transition:none; }
+}
