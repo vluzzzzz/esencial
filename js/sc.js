@@ -37,10 +37,18 @@ let MAS_PRODUCTOS = [
 // Pinta una lista de productos dentro de un contenedor y la deja lista para
 // usar: escala de imagen, estrellas, descuento y stock.
 function pintarProductos(el, lista){
-  if(!el) return;
-  el.innerHTML = lista.map(cardHTML).join('');
+  if(!el) return false;
+  // Si lo que hay que pintar es idéntico a lo que ya está, no se toca nada.
+  // Esto corre dos veces: al arrancar con lo de los archivos y de nuevo
+  // cuando contesta Supabase. Sin esta comparación, la segunda vuelta borra
+  // y rehace tarjetas iguales, y se ve el parpadeo.
+  const nuevo = lista.map(cardHTML).join('');
+  if (nuevo.replace(/\s+/g,'') === (el.dataset.pintado||'')) return false;
+  el.innerHTML = nuevo;
+  el.dataset.pintado = nuevo.replace(/\s+/g,'');
   el.querySelectorAll('.product-card').forEach(c=>c.style.setProperty('--card-img-scale',c.dataset.imgScale??0.75));
   if(typeof Trust!=='undefined') Trust.decorarTarjetas();
+  return true;
 }
 
 // Entrada suave de las tarjetas al aparecer en pantalla.
@@ -49,6 +57,11 @@ function animarProductos(el){
   const cards=el.querySelectorAll('.product-card');
   if(!cards.length) return;
   if(reduceMotion()){gsap.set(cards,{opacity:1,y:0});return;}
+  // La entrada se anima una sola vez. Si se repite en cada repintado, las
+  // tarjetas que el visitante ya estaba mirando se apagan de golpe y vuelven:
+  // eso es lo que se veía como un parpadeo al contestar Supabase.
+  if(el.dataset.animado){gsap.set(cards,{opacity:1,y:0});return;}
+  el.dataset.animado='1';
   gsap.set(cards,{opacity:0,y:40});
   const obs=new IntersectionObserver(entries=>{
     entries.forEach(e=>{
