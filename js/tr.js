@@ -96,7 +96,7 @@ const Trust = (() => {
       { i:'envio',   t:'Envío a todo Chile',   s:'Despacho en 24 h hábiles' },
       { i:'escudo',  t:'Garantía de 6 meses',  s:'Cambio por falla de fábrica' },
       { i:'candado', t:'Pago seguro',          s:'Procesado por Mercado Pago' },
-      { i:'estrella',t:`${String(media).replace('.', ',')} de 5 estrellas`, s:`${total} clientes ya opinaron` },
+      { i:'estrella',t:`${Number(media).toFixed(1).replace('.', ',')} de 5 estrellas`, s:`${total} clientes ya opinaron` },
     ];
     return items.map(x => `<div class="tira-item">
         <span class="tira-icono">${ICONOS[x.i]}</span>
