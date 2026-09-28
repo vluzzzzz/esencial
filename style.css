@@ -1556,3 +1556,9 @@ body:has(#topbar) .nav{top:auto}
   .bsc-nombre{ font-size:13px; }
   .bsc-precio{ font-size:16px; }
 }
+
+/* ── Pie de la sección de reseñas ─────────────────────────────────────────── */
+.rv-pie{
+  margin-top:26px; text-align:center;
+  font-size:13px; color:var(--gray-mid);
+}
