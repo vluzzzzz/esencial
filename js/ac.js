@@ -1,8 +1,5 @@
 'use strict';
-/* ============================================================================
- *  Panel admin — Catálogo (Supabase)
- *  Login (Supabase Auth) + CRUD de productos + subida de imágenes a Storage.
- * ========================================================================== */
+
 const sb = window.sb;
 const BUCKET = 'site-images';
 const CATS = [['audifonos','Audífonos'],['relojes','Relojes'],['accesorios','Accesorios']];
@@ -30,13 +27,11 @@ function toast(msg, isErr){
   toastT = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-/* ── Estado ─────────────────────────────────────────────── */
-let products = [];           // lista cargada
-const work = new Map();      // id -> { p, tiers } copia de trabajo
+let products = [];           
+const work = new Map();      
 
-/* ── Auth ───────────────────────────────────────────────── */
 async function boot(){
-  if (!sb) {                       // Supabase sin configurar → aviso y corta
+  if (!sb) {                      
     $('#notConfigured').classList.remove('hidden');
     $('#login').classList.add('hidden');
     return;
@@ -70,7 +65,7 @@ async function onLogin(e){
   showApp();
 }
 
-/* ── Cargar productos ───────────────────────────────────── */
+
 async function loadProducts(){
   const list = $('#list');
   list.innerHTML = '<div class="empty">Cargando productos…</div>';
