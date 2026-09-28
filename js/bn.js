@@ -29,7 +29,7 @@ const BANNERS = [
 const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#ofertas' };
 
 // Imagen alta de la izquierda en la fila de ofertas → 620 × 860 px
-const OFERTA_LATERAL = { desktop:'', mobile:'', archivo:'oferta-lateral.png', alt:'Despacho a todo Chile', link:'#ofertas' };
+const OFERTA_LATERAL = { desktop:'images/banneroferta.png', mobile:'', alt:'Ofertas del mes', link:'#ofertas' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
