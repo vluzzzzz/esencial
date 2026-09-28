@@ -97,10 +97,17 @@
   <div class="cat-grid" id="catGrid"></div>
 </section>
 
-<!-- ══ ¿POR QUÉ ELEGIRNOS? ══ -->
-<!-- BANNER PROMO — hueco de 2400 × 600. La ruta se pone en js/bn.js -->
-<section class="promo-section" aria-label="Promoción">
-  <div class="promo" id="promoBanner"></div>
+<!-- ══ MÁS PRODUCTOS ══ -->
+<!-- Segunda fila, a lo ancho. Qué productos salen se elige en js/sc.js, en la
+     lista MAS_PRODUCTOS. Acá estaba el hueco del banner promo; el código que
+     lo pinta sigue en js/bn.js, así que para traerlo de vuelta basta con
+     devolver un <div id="promoBanner"> donde lo quieras. -->
+<section class="mas-section" id="mas" aria-labelledby="masTitulo">
+  <div class="mas-header">
+    <p class="mas-subtitulo">Todo el catálogo mayorista</p>
+    <h2 class="mas-titulo" id="masTitulo">Más productos</h2>
+  </div>
+  <div class="mas-row" id="masRow"></div>
 </section>
 
 <!-- VALORACIONES -->

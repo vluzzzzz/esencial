@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Cart.init();NavScroll.init();ProductModal.init();Checkout.init();
   Trust.init();                       // pinta la tira de confianza
   CatPage.init();
-  Ofertas.init();
+  Filas.init();
   ProtegerImagenes.init();
 
   // ── 2. Después, sin bloquear. Si Supabase responde, se repinta la fila de
@@ -23,6 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //    que siempre sale con lo último que llegó.
   loadCatalog().then(ok => {
     if (!ok) return;
-    Ofertas.init();
+    Filas.init();
   }).catch(err => console.error('Catálogo:', err));
 });

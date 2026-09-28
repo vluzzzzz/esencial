@@ -1,17 +1,31 @@
-// sc — nav pegada, fila de ofertas y panel de resultados
+// sc — nav pegada, filas de productos y sección de categoría
 'use strict';
 const NavScroll=(()=>{function init(){const nav=document.querySelector('.nav');window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40),{passive:true});}return{init};})();
 
 /* ════════════════════════════════════════════════════════════════════════════
-   ZONA EDITABLE — qué productos salen en la fila de ofertas, y en qué orden.
-   Son los slugs del catálogo (js/sd.js). Si ponés uno que no existe, se saltea.
+   ZONA EDITABLE — qué productos salen en cada fila de la portada, y en qué
+   orden. Son los slugs del catálogo (js/sd.js); si ponés uno que no existe,
+   se saltea sin romper nada.
    ════════════════════════════════════════════════════════════════════════════ */
+
+// Fila de arriba, con la imagen al costado. Va antes de las categorías.
 const OFERTAS = [
   'airpods-pro-2',
   'apple-watch-ultra-3',
   'airpods-4',
   'bateria-magsafe',
   'cargador-tipo-c',
+];
+
+// Fila de abajo, a lo ancho. Va después de las categorías. Acá están los seis
+// que no salen arriba, así que entre las dos filas se ve todo el catálogo.
+const MAS_PRODUCTOS = [
+  'apple-watch-serie-10',
+  'apple-watch-black-ultra-2',
+  'airpods-3',
+  'airpods-max',
+  'cargador-lightning',
+  'cargador-samsung-45w',
 ];
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
@@ -42,14 +56,23 @@ function animarProductos(el){
   cards.forEach(c=>obs.observe(c));
 }
 
-const Ofertas=(()=>{
-  function init(){
-    const row=document.getElementById('ofertasRow');
+// Las dos filas de la portada. Se vuelve a llamar cuando contesta Supabase,
+// así que pintar de nuevo tiene que ser inofensivo: lo es, porque cada fila
+// se rehace desde cero.
+const Filas=(()=>{
+  function una(id, slugs, reserva){
+    const row=document.getElementById(id);
     if(!row)return;
-    const elegidos=OFERTAS.map(findProduct).filter(Boolean);
-    const lista=elegidos.length?elegidos:CATALOGO.slice(0,5);
+    const elegidos=slugs.map(findProduct).filter(Boolean);
+    // Si ningún slug de la lista existe en el catálogo, la fila no se queda
+    // vacía: se rellena con los primeros del catálogo.
+    const lista=elegidos.length?elegidos:CATALOGO.slice(0,reserva);
     pintarProductos(row,lista);
     animarProductos(row);
+  }
+  function init(){
+    una('ofertasRow', OFERTAS, 5);
+    una('masRow', MAS_PRODUCTOS, 6);
   }
   return{init};
 })();
