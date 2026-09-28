@@ -39,8 +39,8 @@ let CATALOGO = [
   {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpods-3gen.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
   {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
   {slug:'airpods-max',              cat:'audifonos',  name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
-  {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4-pro.webp',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
-  {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/buds2-pro.webp',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
+  {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4black.png',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
+  {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/budspro2.png',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
   {slug:'bateria-magsafe',          cat:'celulares',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
   {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargador-tipo-c.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
@@ -248,7 +248,9 @@ const FEATURES={
   'buds2-pro':['Cancelación de ruido activa','Diseño compacto y liviano','Sonido envolvente','Resistencia al agua IPX7'],
 };            // fallback — loadCatalog() lo sobreescribe desde Supabase
 // { slug: [imgPrincipal, ...secundarias] } — desde Supabase (vacío = usa fallback hardcodeado)
-const GALLERY={};
+const GALLERY={
+  'buds2-pro':['images/budspro2.png','images/budspro2imagen2.png'],
+};
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).
 /* Cada color lleva 'agotado'. En true sigue a la vista pero en gris y no se
    puede elegir, y desde /admin se vuelve a encender sin perder las fotos. */
