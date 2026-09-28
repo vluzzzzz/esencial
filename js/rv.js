@@ -44,6 +44,36 @@ let REVIEWS = [
   { name:'Paulina T.',     stars:4, product:'buds4-pro', date:'2026-05-26', verified:false, color:'Gris', text:'Cumplen de sobra 👍' },
   { name:'Nicolás B.',     stars:4, product:'buds4-pro', date:'2026-05-08', verified:false, color:'Negro', text:'Llegaron rápido y bien embalados ✅' },
 
+  /* ── Galaxy Buds2 Pro · 7 reseñas · 4,6 ──────────────────────────────── */
+  { name:'Constanza F.',   stars:5, product:'buds2-pro', date:'2026-09-16', verified:false, text:'Muy cómodos y el sonido se escucha limpio. Los uso todos los días para ir al trabajo.' },
+  { name:'Ignacio R.',     stars:5, product:'buds2-pro', date:'2026-08-29', verified:false, text:'Chiquitos y livianos, casi no se sienten. La cancelación de ruido cumple de sobra.' },
+  { name:'Martina D.',     stars:5, product:'buds2-pro', date:'2026-08-11', verified:false, text:'Se conectan solos al teléfono apenas abro el estuche. Muy práctico.' },
+  { name:'Álvaro S.',      stars:5, product:'buds2-pro', date:'2026-07-24', verified:false, text:'Buena batería, me duran toda la jornada sin cargarlos.' },
+  { name:'Josefa M.',      stars:4, product:'buds2-pro', date:'2026-07-02', verified:false, text:'Muy buenos 👌' },
+  { name:'Cristóbal N.',   stars:4, product:'buds2-pro', date:'2026-06-14', verified:false, text:'Buen producto y llegó rápido ✅' },
+  { name:'Daniela A.',     stars:4, product:'buds2-pro', date:'2026-05-21', verified:false, text:'Cumplen muy bien por lo que cuestan 👍' },
+
+  /* ── iPhone 15 128 GB · 6 reseñas · 4,8 ──────────────────────────────── */
+  { name:'Rodrigo V.',     stars:5, product:'iphone-15-128', date:'2026-09-21', verified:false, text:'Llegó sellado y con todo original. La cámara es una maravilla.' },
+  { name:'Camila B.',      stars:5, product:'iphone-15-128', date:'2026-09-02', verified:false, text:'El USB-C se agradece, cargo el teléfono con el mismo cable del notebook.' },
+  { name:'Felipe O.',      stars:5, product:'iphone-15-128', date:'2026-08-13', verified:false, text:'Me asesoraron bien sobre el almacenamiento. Muy buena atención.' },
+  { name:'Antonia L.',     stars:5, product:'iphone-15-128', date:'2026-07-26', verified:false, text:'La pantalla se ve increíble incluso con sol directo.' },
+  { name:'Matías G.',      stars:5, product:'iphone-15-128', date:'2026-06-30', verified:false, text:'Segundo teléfono que compro acá. Producto impecable.' },
+  { name:'Valeria C.',     stars:4, product:'iphone-15-128', date:'2026-06-05', verified:false, text:'Excelente teléfono 🔥' },
+
+  /* ── iPhone 16 128 GB · 5 reseñas · 4,8 ──────────────────────────────── */
+  { name:'Sebastián P.',   stars:5, product:'iphone-16-128', date:'2026-09-23', verified:false, text:'El chip A18 se nota, todo vuela. Muy buena compra.' },
+  { name:'Francisca T.',   stars:5, product:'iphone-16-128', date:'2026-09-01', verified:false, text:'El botón de cámara es súper cómodo para tomar fotos rápido.' },
+  { name:'Nicolás A.',     stars:5, product:'iphone-16-128', date:'2026-08-08', verified:false, text:'Llegó en dos días, sellado y con su número de serie válido.' },
+  { name:'Paula H.',       stars:5, product:'iphone-16-128', date:'2026-07-15', verified:false, text:'La batería me dura todo el día con uso pesado.' },
+  { name:'Diego R.',       stars:4, product:'iphone-16-128', date:'2026-06-18', verified:false, text:'Impecable 👌' },
+
+  /* ── Galaxy S26 Plus 256 GB · 4 reseñas · 4,8 ────────────────────────── */
+  { name:'Tomás M.',       stars:5, product:'s26-plus-256', date:'2026-09-18', verified:false, text:'La pantalla es enorme y se ve espectacular. Muy contento.' },
+  { name:'Javiera C.',     stars:5, product:'s26-plus-256', date:'2026-08-22', verified:false, text:'Los 256 GB me sobran para fotos y videos. Carga muy rápido.' },
+  { name:'Benjamín S.',    stars:5, product:'s26-plus-256', date:'2026-07-19', verified:false, text:'Llegó sellado y con todo lo que decía la descripción.' },
+  { name:'Romina A.',      stars:4, product:'s26-plus-256', date:'2026-06-27', verified:false, text:'Muy buen teléfono 👍' },
+
   /* ── Cargador Samsung 45W · 9 reseñas · 4,1 ──────────────────────────── */
   { name:'Marcela G.',     stars:5, product:'cargador-samsung-45w', date:'2026-09-06', verified:false, text:'Carga el Galaxy completo en menos de una hora. Impresionante.' },
   { name:'Cristián P.',    stars:4, product:'cargador-samsung-45w', date:'2026-08-20', verified:false, text:'Carga rápido 🔥' },

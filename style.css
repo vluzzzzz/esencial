@@ -1982,7 +1982,7 @@ svg{ -webkit-user-select:none; user-select:none; }
    más. Las flechas se esconden: ahí se arrastra con el dedo. */
 @media(max-width:900px){
   .ofertas-row.carru-pista > .product-card,
-  .mas-row.carru-pista     > .product-card{ flex:0 0 min(62vw,240px); }
+  .mas-row.carru-pista     > .product-card{ flex:0 0 min(46vw,215px); }
   .carru-arr{ display:none; }
   .carru-pista{ gap:12px; scroll-padding-left:16px; }
 }
@@ -1993,8 +1993,16 @@ svg{ -webkit-user-select:none; user-select:none; }
     margin-left:-16px; margin-right:-16px;
     padding-left:16px; padding-right:16px;
   }
+  /* Dos tarjetas y media a la vista: con una y media, cada producto ocupaba
+     casi toda la pantalla y había que arrastrar mucho para ver la fila. */
   .ofertas-row.carru-pista > .product-card,
-  .mas-row.carru-pista     > .product-card{ flex:0 0 min(58vw,220px); }
+  .mas-row.carru-pista     > .product-card{ flex:0 0 min(43vw,185px); }
+  .carru-pista .card-info{ padding:11px 12px 13px !important; }
+  .carru-pista .card-name{ font-size:12.5px !important; }
   .mas-row.carru-pista .card-price,
-  .ofertas-row.carru-pista .card-price{ font-size:22px !important; }
+  .ofertas-row.carru-pista .card-price{ font-size:19px !important; }
+  .carru-pista .card-desde{ font-size:9px; }
+  .carru-pista .card-cart{ width:33px !important; height:33px !important; }
+  .carru-pista .card-cart svg{ width:16px; height:16px; }
+  .carru-pista .card-foot{ gap:7px; }
 }

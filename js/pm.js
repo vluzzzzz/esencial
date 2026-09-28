@@ -22,12 +22,12 @@ const ProductModal=(()=>{
     if(pi){pi.style.viewTransitionName='';pi.style.transition='';pi.style.opacity='';}
   }
 
-  const PRODUCT_IMAGES={'apple-watch-ultra-3':'images/ultra3black.png','apple-watch-serie-10':'images/serie-10.webp','airpods-4':'images/airpods-4gen.webp','airpods-pro-2':'images/airpods-pro-2.webp','airpods-3':'images/airpods-3gen.webp','bateria-magsafe':'images/bateria-magsafe.webp','airpods-max':'images/max-magneticos.webp','cargador-lightning':'images/cargador-lightning.webp','cargador-tipo-c':'images/cargadorcompletotipoc.png','cargador-samsung-45w':'images/cargador-samsung-45w.webp','buds4-pro':'images/buds4black.png','buds2-pro':'images/budspro2.png'};
+  const PRODUCT_IMAGES={'apple-watch-ultra-3':'images/ultra3black.png','apple-watch-serie-10':'images/serie-10.webp','airpods-4':'images/airpods-4gen.webp','airpods-pro-2':'images/airpods-pro-2.webp','airpods-3':'images/airpods-3gen.webp','bateria-magsafe':'images/bateria-magsafe.webp','airpods-max':'images/max-magneticos.webp','cargador-lightning':'images/cargador-lightning.webp','cargador-tipo-c':'images/cargadorcompletotipoc.png','cargador-samsung-45w':'images/cargador-samsung-45w.webp','buds4-pro':'images/buds4black.png','buds2-pro':'images/budspro2.png','iphone-15-128':'images/iphone-15.webp','iphone-16-128':'images/iphone-16.webp','s26-plus-256':'images/s26-plus.webp'};
   const slug=n=>n.toLowerCase().replace(/\s+/g,'-').replace(/[áä]/g,'a').replace(/[éë]/g,'e').replace(/[íï]/g,'i').replace(/[óö]/g,'o').replace(/[úü]/g,'u').replace(/[^a-z0-9-]/g,'');
-  const TWO=['bateria-magsafe','cargador-lightning','cargador-tipo-c','cargador-samsung-45w','buds4-pro','buds2-pro'];
+  const TWO=['bateria-magsafe','cargador-lightning','cargador-tipo-c','cargador-samsung-45w','buds4-pro','buds2-pro','iphone-15-128','iphone-16-128','s26-plus-256'];
   const FILE_PREFIX={'airpods-4':'airpods-4ta-generacion','airpods-3':'airpods-3ra-generacion','airpods-max':'max-magneticos','cargador-lightning':'cargador-lightning-completo','cargador-tipo-c':'cargador-tipo-c-completo'};
   const buildImgList=(src,key)=>{const s=slug(key),fk=FILE_PREFIX[s]||s,v1=PRODUCT_IMAGES[s]||src;return TWO.includes(s)?[v1,`images/${fk}-v2.webp`]:[v1,`images/${fk}-v2.webp`,`images/${fk}-v3.webp`];};
-  const IMG_SCALES={'apple-watch-ultra-3':[1,1,1],'apple-watch-serie-10':[1,1,.75],'airpods-4':[1,1,1.3],'airpods-pro-2':[1,1,1],'airpods-3':[1,1,1],'bateria-magsafe':[1,1,1],'airpods-max':[1,1,1],'cargador-lightning':[1,1.4,1],'cargador-tipo-c':[1,1,1],'cargador-samsung-45w':[1,1,1],'buds4-pro':[1,1,1],'buds2-pro':[1,1,1]};
+  const IMG_SCALES={'apple-watch-ultra-3':[1,1,1],'apple-watch-serie-10':[1,1,.75],'airpods-4':[1,1,1.3],'airpods-pro-2':[1,1,1],'airpods-3':[1,1,1],'bateria-magsafe':[1,1,1],'airpods-max':[1,1,1],'cargador-lightning':[1,1.4,1],'cargador-tipo-c':[1,1,1],'cargador-samsung-45w':[1,1,1],'buds4-pro':[1,1,1],'buds2-pro':[1,1,1],'iphone-15-128':[1,1,1],'iphone-16-128':[1,1,1],'s26-plus-256':[1,1,1]};
   const colorVars=k=>(typeof COLOR_VARIANTS!=='undefined')?COLOR_VARIANTS[k]:null;
   const _isColorNav=()=>!!(currentProduct&&colorVars(currentProduct.key));
 
