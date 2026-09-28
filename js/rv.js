@@ -303,8 +303,9 @@ const Reviews = (() => {
     const { total, media } = resumen(lista);
     el.innerHTML = `
       <div class="ppage-rv-head">
-        ${estrellas(Math.round(media), 'sm')}
-        <span class="ppage-rv-n">${nota(media)} · ${total} ${total === 1 ? 'reseña' : 'reseñas'}</span>
+        ${estrellas(Math.round(media), 'lg')}
+        <span class="ppage-rv-n">${nota(media)}</span>
+        <span class="ppage-rv-total">${total} ${total === 1 ? 'reseña' : 'reseñas'}</span>
       </div>
       <div class="ppage-rv-lista">${lista.map(r => tarjeta(r, false)).join('')}</div>`;
   }

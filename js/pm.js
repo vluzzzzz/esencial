@@ -146,6 +146,7 @@ const ProductModal=(()=>{
   }
 
   function populate(p,temp){
+    clonarPie();
     const key=p.slug;
     const base=tierOne(key)||Number(p.price)||0;
     tiers = PRICE_TIERS[key] || [{ qty: 1, price: base }];
@@ -174,6 +175,19 @@ const ProductModal=(()=>{
     document.getElementById('ppageColorHint')?.classList.remove('show');
     document.getElementById('ppageColorsRow')?.classList.remove('shake');
     if(temp&&!colorVars(key)){isTemp=true;updateArrow();renderTempThumbs();}
+  }
+
+  // El pie de la ficha es el mismo de la home, clonado. Así se escribe una
+  // sola vez: lo que cambies en el <footer> de index.html sale también acá.
+  // Se copia al abrir la primera ficha, no al arrancar, porque js/tr.js pinta
+  // los medios de pago después y un clon temprano saldría sin ellos.
+  // Los id del clon se borran: un id repetido rompe getElementById.
+  function clonarPie(){
+    const destino=document.getElementById('ppageFooter'),pie=document.querySelector('body > .footer');
+    if(!destino||!pie||destino.childElementCount)return;
+    const copia=pie.cloneNode(true);
+    copia.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
+    destino.appendChild(copia);
   }
 
   // Abrir por slug, sin una tarjeta de la que salir: lo usa el buscador de la
@@ -380,6 +394,18 @@ const ProductModal=(()=>{
     ppage.style.display='none';overlay.style.opacity='0';
 
     backBtn.addEventListener('click',close);overlay.addEventListener('click',close);
+
+    // Los enlaces del pie apuntan a secciones de la home, que está detrás de
+    // la ficha. Sin cerrarla primero, el visitante quedaría atrapado mirando
+    // una ficha mientras la página de abajo salta a otra parte. Si además hay
+    // una sección de categoría abierta, también hay que cerrarla; la
+    // excepción es "Productos", que justamente sirve para abrirla.
+    document.getElementById('ppageFooter')?.addEventListener('click',e=>{
+      const a=e.target.closest('a');
+      if(!a)return;
+      close();
+      if(!a.dataset.catAbrir&&typeof CatPage!=='undefined')CatPage.cerrar();
+    });
 
     // Clic en un producto similar → se rellena la misma ficha, no se abre otra.
     // El botón de carrito de esa tarjeta lo atiende el oyente de abajo.

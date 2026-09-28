@@ -1560,3 +1560,51 @@ body:has(#topbar) .nav{top:auto}
   margin-top:26px; text-align:center;
   font-size:13px; color:var(--gray-mid);
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V19 — la ficha termina como una página: reseñas en columnas y pie abajo
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Cabecera de las reseñas ──────────────────────────────────────────────── */
+.ppage-bottom .ppage-rv-head{
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:22px; padding-bottom:0;
+}
+.ppage-bottom .ppage-rv-head .stars.lg .star{ font-size:26px; }
+.ppage-rv-n{
+  font-family:var(--font-display); font-size:30px; line-height:1;
+  letter-spacing:.01em; color:var(--black);
+}
+.ppage-rv-total{
+  font-family:var(--font-body); font-size:14px; font-weight:500;
+  color:var(--gray-mid);
+}
+
+/* ── Reseñas en columnas ──────────────────────────────────────────────────────
+   Con `columns` en vez de `grid` las tarjetas se acomodan por altura y no
+   quedan huecos: un comentario de dos palabras no fuerza a los de al lado a
+   estirarse. Cada tarjeta ya trae `break-inside: avoid`, así que ninguna se
+   parte entre dos columnas.                                                 */
+.ppage-bottom .ppage-rv-lista{
+  display:block;
+  columns:3; column-gap:14px;
+}
+.ppage-bottom .ppage-rv-lista .rv-card{ margin:0 0 14px; }
+
+/* ── El pie, a lo ancho de la ficha ───────────────────────────────────────── */
+/* El relleno de abajo de .ppage-bottom era el aire del final de la ficha.
+   Ahora ese aire lo da el pie, así que sobra: sin esto quedaba un hueco
+   blanco de 90 px entre los similares y el pie. */
+.ppage-bottom{ padding-bottom:56px; }
+.ppage-footer .footer{ border-radius:0; }
+
+@media(max-width:1100px){
+  .ppage-bottom .ppage-rv-lista{ columns:2; }
+}
+@media(max-width:768px){
+  .ppage-bottom{ padding-bottom:40px; }
+  .ppage-bottom .ppage-rv-lista{ columns:1; }
+  .ppage-bottom .ppage-rv-head{ margin-bottom:16px; }
+  .ppage-bottom .ppage-rv-head .stars.lg .star{ font-size:22px; }
+  .ppage-rv-n{ font-size:25px; }
+}
