@@ -60,11 +60,14 @@ Abrí `supabase/acceso-admin.sql`, cambiá los dos correos de ejemplo por el
 tuyo y el del cliente, y corrélo en el **SQL Editor** igual que el paso 1.
 
 ```sql
-select (auth.jwt() ->> 'email') in (
+select lower(auth.jwt() ->> 'email') in (
   'tucorreo@gmail.com',
   'correodelcliente@gmail.com'
 );
 ```
+
+Los correos van **en minusculas**. Supabase los guarda asi y la comparacion
+distingue mayusculas: con `Juan@gmail.com` en la lista, el permiso falla.
 
 Con esto, aunque alguien consiga entrar, no puede tocar nada si su correo no
 está en la lista.
