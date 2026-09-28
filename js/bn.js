@@ -57,7 +57,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
 const CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', img:'images/cat-audifonos.png', medida:'800 × 1000', link:'#productos' },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', img:'images/smarwacth.png', medida:'800 × 500',  link:'#productos' },
-  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', img:'', archivo:'cat-iphone.png',     medida:'800 × 500',  link:'#productos' },
+  { arriba:'Accesorios',  titulo:'iPhone',     desde:'$13.000', img:'images/iphone.png', medida:'800 × 500',  link:'#productos' },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  img:'images/cat-cargadores.png', medida:'800 × 1000', link:'#productos' },
 ];
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
