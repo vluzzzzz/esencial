@@ -43,18 +43,6 @@ let REVIEWS = [
   { name:'Benjamín T.',    stars:4, product:'cargador-samsung-45w', date:'2026-05-04', verified:false, text:'Muy buen cargador.' },
   { name:'Susana C.',      stars:4, product:'cargador-samsung-45w', date:'2026-04-09', verified:false, text:'Buen precio para esta potencia 👌' },
 
-  /* ── Apple Watch Black Ultra 2 · 10 reseñas · 4,7 ────────────────────── */
-  { name:'Valentina R.',   stars:5, product:'apple-watch-black-ultra-2', date:'2026-09-16', verified:false, text:'El negro se ve espectacular en persona. Resistente y la batería dura muchísimo.' },
-  { name:'Joaquín S.',     stars:5, product:'apple-watch-black-ultra-2', date:'2026-09-01', verified:false, text:'El acabado negro no se marca con las llaves ni con el escritorio. Muy sólido.' },
-  { name:'Fernanda C.',    stars:5, product:'apple-watch-black-ultra-2', date:'2026-08-17', verified:false, text:'Es el que más me piden en la tienda. Compré seis y se vendieron en dos semanas.' },
-  { name:'Benjamín A.',    stars:5, product:'apple-watch-black-ultra-2', date:'2026-08-03', verified:false, text:'El cristal de zafiro se nota, ni un rayón después de dos meses de uso diario.' },
-  { name:'Maximiliano B.', stars:5, product:'apple-watch-black-ultra-2', date:'2026-07-21', verified:false, text:'Lo uso en obra todo el día y aguanta golpes, polvo y agua sin problema.' },
-  { name:'Emilia P.',      stars:5, product:'apple-watch-black-ultra-2', date:'2026-07-07', verified:false, text:'Llegó antes de lo estimado. Envío rápido y bien protegido.' },
-  { name:'Vicente M.',     stars:5, product:'apple-watch-black-ultra-2', date:'2026-06-19', verified:false, text:'La batería me dura dos días completos con notificaciones activadas.' },
-  { name:'Javiera O.',     stars:4, product:'apple-watch-black-ultra-2', date:'2026-06-02', verified:false, text:'Excelente reloj 🔥' },
-  { name:'Trinidad L.',    stars:4, product:'apple-watch-black-ultra-2', date:'2026-05-15', verified:false, text:'Muy lindo 😍' },
-  { name:'Agustín V.',     stars:4, product:'apple-watch-black-ultra-2', date:'2026-04-24', verified:false, text:'Buen producto 👍' },
-
   /* ── Batería MagSafe · 11 reseñas · 4,6 ──────────────────────────────── */
   { name:'Francisca L.',   stars:5, product:'bateria-magsafe', date:'2026-09-17', verified:false, text:'Se pega firme al iPhone y carga sin cables. Justo lo que buscaba para viajar.' },
   { name:'Roberto S.',     stars:5, product:'bateria-magsafe', date:'2026-09-02', verified:false, text:'Cabe en el bolsillo con el teléfono pegado. Muy práctica para el día.' },
@@ -82,7 +70,7 @@ let REVIEWS = [
   { name:'Bernardita P.',  stars:4, product:'cargador-lightning', date:'2026-04-08', verified:false, text:'Segunda compra del mismo 🔥' },
   { name:'Jorge F.',       stars:4, product:'cargador-lightning', date:'2026-03-22', verified:false, text:'Buena atención y el cargador cumple.' },
 
-  /* ── AirPods 3ra Generación · 13 reseñas · 4,3 ───────────────────────── */
+  /* ── AirPods Pro 3 · 13 reseñas · 4,3 ───────────────────────── */
   { name:'Susana L.',      stars:5, product:'airpods-3', date:'2026-09-14', verified:false, text:'Cómodos para todo el día. No aprietan como los que traen gomita.' },
   { name:'Ariel P.',       stars:5, product:'airpods-3', date:'2026-08-31', verified:false, text:'La carga MagSafe es práctica, los dejo en la misma base del teléfono.' },
   { name:'Priscila M.',    stars:5, product:'airpods-3', date:'2026-08-18', verified:false, text:'Resisten el sudor sin problema. Los uso corriendo tres veces por semana.' },

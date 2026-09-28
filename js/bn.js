@@ -15,6 +15,9 @@
    esperan. Guardás la imagen con ese nombre en images/ y la pegás en
    'desktop'. El orden de esta lista es el orden en que se ven.
 
+   'producto' es el slug al que lleva el banner: al hacer clic se abre la
+   ficha de ese producto. Si en su lugar ponés 'link', va a esa ancla.
+
    ⚠ Desde que existe /admin, esta lista es solo el punto de partida: si hay
    algo guardado en el panel, eso gana y lo de acá no se usa. Editá en el
    panel salvo que quieras cambiar el valor de arranque.
@@ -22,9 +25,9 @@
 let BANNERS = [
   // principalhero.png en pausa. Para traerlo de vuelta, borrá las dos barras:
   // { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
-  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3 desde $11.500 por unidad',   link:'#ofertas' },
-  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Series 11 desde $25.990 por unidad', link:'#ofertas' },
-  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe', link:'#ofertas' },
+  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3',        producto:'airpods-3' },
+  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
+  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
   // Quinto banner en pausa. Para traerlo de vuelta, borrá las dos barras:
   // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#ofertas' },
 ];
@@ -103,7 +106,14 @@ const Banners = (() => {
 
   function slide(item, i) {
     const inner = media(item, '1920', '560', 'bnr-media', i === 0);
-    return item.link && item.desktop
+    if (!item.desktop) return `<div class="swiper-slide bnr-slide">${inner}</div>`;
+
+    if (item.producto) {
+      return `<div class="swiper-slide bnr-slide">
+          <a href="#" class="bnr-link" data-producto="${escAttr(item.producto)}">${inner}</a>
+        </div>`;
+    }
+    return item.link
       ? `<div class="swiper-slide bnr-slide"><a href="${escAttr(item.link)}" class="bnr-link">${inner}</a></div>`
       : `<div class="swiper-slide bnr-slide">${inner}</div>`;
   }

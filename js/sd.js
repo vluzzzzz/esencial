@@ -10,17 +10,18 @@ let PRODUCTS=[
   {id:3,key:'airpods-max',name:'AirPods Max',price:'$26.990',rawPrice:26990,image:'images/airpodsmax.webp',bgLabel:'AIRPODS MAX',scale:1.4,offsetX:50,offsetY:-20},
 ];
 const PRICE_TIERS={
-  'apple-watch-ultra-3':[{qty:1,price:29990},{qty:3,price:27990},{qty:5,price:25990},{qty:10,price:23990}],
-  'apple-watch-serie-10':[{qty:1,price:29990},{qty:3,price:27990},{qty:5,price:25990},{qty:10,price:23990}],
-  'apple-watch-black-ultra-2':[{qty:1,price:29990},{qty:3,price:27990},{qty:5,price:25990},{qty:10,price:23990}],
-  'airpods-4':[{qty:1,price:15000},{qty:3,price:13500},{qty:5,price:12500},{qty:10,price:11500}],
+  'apple-watch-ultra-3':[{qty:1,price:27500},{qty:3,price:27500},{qty:5,price:27500},{qty:10,price:27500}],
+  'apple-watch-serie-10':[{qty:1,price:27500},{qty:3,price:27500},{qty:5,price:27500},{qty:10,price:27500}],
+  'airpods-4':[{qty:1,price:20000},{qty:3,price:13000},{qty:5,price:12000},{qty:10,price:11500}],
+  'airpods-3':[{qty:1,price:25000},{qty:3,price:15500},{qty:5,price:15000},{qty:10,price:14500}],
   'airpods-pro-2':[{qty:1,price:14000},{qty:3,price:12500},{qty:5,price:11500},{qty:10,price:10500}],
-  'airpods-3':[{qty:1,price:14000},{qty:3,price:12500},{qty:5,price:11500},{qty:10,price:10500}],
-  'bateria-magsafe':[{qty:1,price:13000},{qty:3,price:11500},{qty:5,price:10500},{qty:10,price:9500}],
   'airpods-max':[{qty:1,price:26990},{qty:3,price:24990},{qty:5,price:22990},{qty:10,price:20990}],
-  'cargador-lightning':[{qty:1,price:5000},{qty:3,price:4500},{qty:5,price:4000},{qty:10,price:3500}],
-  'cargador-tipo-c':[{qty:1,price:5000},{qty:3,price:4500},{qty:5,price:4000},{qty:10,price:3500}],
-  'cargador-samsung-45w':[{qty:1,price:6000},{qty:3,price:5500},{qty:5,price:5000},{qty:10,price:4500}],
+  'buds4-pro':[{qty:1,price:16000},{qty:3,price:16000},{qty:5,price:16000},{qty:10,price:16000}],
+  'buds2-pro':[{qty:1,price:14000},{qty:3,price:14000},{qty:5,price:14000},{qty:10,price:14000}],
+  'bateria-magsafe':[{qty:1,price:15000},{qty:3,price:15000},{qty:5,price:15000},{qty:10,price:15000}],
+  'cargador-lightning':[{qty:1,price:5000},{qty:3,price:5000},{qty:5,price:5000},{qty:10,price:4500}],
+  'cargador-tipo-c':[{qty:1,price:6000},{qty:3,price:6000},{qty:5,price:6000},{qty:10,price:4500}],
+  'cargador-samsung-45w':[{qty:1,price:6000},{qty:3,price:6000},{qty:5,price:6000},{qty:10,price:6000}],
 };
 const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 0;let p=t[0].price;for(const r of t)if(qty>=r.qty)p=r.price;return p;};
 
@@ -33,13 +34,14 @@ const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 
    loadCatalog() lo reemplaza entero si Supabase responde.                   */
 let CATALOGO = [
   {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/apple-watch-ultra-3.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
-  {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 10',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
-  {slug:'apple-watch-black-ultra-2',cat:'smartwatch', name:'Apple Watch Black Ultra 2',  image:'images/black-ultra-2.webp',       desc:'Edición Black del Ultra 2. Acabado en negro carbón, titanio negro y cristal de zafiro. Máxima resistencia y estilo.'},
+  {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
   {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
+  {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpods-3gen.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
   {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
-  {slug:'airpods-3',                cat:'audifonos',  name:'AirPods 3ra Generación',     image:'images/airpods-3gen.webp',        desc:'Audio espacial, audio adaptativo y resistencia al agua IPX4. Diseño rediseñado y cómodo para uso diario.'},
+  {slug:'airpods-max',              cat:'audifonos',  name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
+  {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4-pro.webp',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
+  {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/buds2-pro.webp',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
   {slug:'bateria-magsafe',          cat:'iphone',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
-  {slug:'airpods-max',              cat:'iphone',     name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
   {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargador-tipo-c.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
   {slug:'cargador-samsung-45w',     cat:'cargadores', name:'Cargador Samsung 45W',       image:'images/cargador-samsung-45w.webp',desc:'Cargador ultra rápido Samsung 45W. Compatible con toda la línea Galaxy. Carga completa en menos de una hora.'},
@@ -225,15 +227,16 @@ async function loadCatalog(){
 const FEATURES={
   'airpods-pro-2':['Cancelación activa de ruido','Audio espacial personalizado','Hasta 30 horas de batería','Resistencia al agua IPX4'],
   'airpods-4':['Audio adaptativo','Cancelación activa de ruido','Diseño rediseñado','Hasta 30 horas con estuche'],
-  'airpods-3':['Audio espacial','Resistencia al agua IPX4','Carga MagSafe','Hasta 30 horas con estuche'],
+  'airpods-3':['Cancelación activa de ruido','Audio espacial personalizado','Resistencia al agua','Hasta 30 horas con estuche'],
   'apple-watch-ultra-3':['Caja de titanio aeroespacial','Pantalla Always-On 49mm','Hasta 60 horas de batería','GPS de doble frecuencia'],
   'apple-watch-serie-10':['Pantalla OLED más grande','Detección de apnea del sueño','Carga rápida','Diseño más delgado'],
-  'apple-watch-black-ultra-2':['Acabado negro carbón','Titanio negro premium','Cristal de zafiro','Hasta 60 horas de batería'],
   'bateria-magsafe':['Carga magnética MagSafe','Compacta y liviana','Compatible iPhone 12 en adelante','Sin cables'],
   'airpods-max':['Compatibles con MagSafe','Fijación magnética perfecta','Carga inalámbrica optimizada','Múltiples colores'],
   'cargador-lightning':['Cable Lightning incluido','Adaptador de corriente','Compatible iPhone/iPad/AirPods','Carga rápida'],
   'cargador-tipo-c':['Cable USB-C incluido','Compatible iPhone 15+','iPad Pro y MacBook','Carga rápida 20W'],
   'cargador-samsung-45w':['Carga ultra rápida 45W','Compatible línea Galaxy','Cable USB-C incluido','Carga completa en ~1 hora'],
+  'buds4-pro':['Cancelación de ruido activa','Audio de alta resolución','Compatible con Galaxy','Estuche con carga inalámbrica'],
+  'buds2-pro':['Cancelación de ruido activa','Diseño compacto y liviano','Sonido envolvente','Resistencia al agua IPX7'],
 };            // fallback — loadCatalog() lo sobreescribe desde Supabase
 // { slug: [imgPrincipal, ...secundarias] } — desde Supabase (vacío = usa fallback hardcodeado)
 const GALLERY={};

@@ -25,9 +25,10 @@ let OFERTAS = [
 // que no salen arriba, así que entre las dos filas se ve todo el catálogo.
 let MAS_PRODUCTOS = [
   'apple-watch-serie-10',
-  'apple-watch-black-ultra-2',
   'airpods-3',
   'airpods-max',
+  'buds4-pro',
+  'buds2-pro',
   'cargador-lightning',
   'cargador-samsung-45w',
 ];
