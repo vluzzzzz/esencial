@@ -1552,12 +1552,6 @@ body:has(#topbar) .nav{top:auto}
   .bsc-precio{ font-size:16px; }
 }
 
-/* ── Pie de la sección de reseñas ─────────────────────────────────────────── */
-.rv-pie{
-  margin-top:26px; text-align:center;
-  font-size:13px; color:var(--gray-mid);
-}
-
 /* ════════════════════════════════════════════════════════════════════════════
    V19 — la ficha termina como una página: reseñas en columnas y pie abajo
    ════════════════════════════════════════════════════════════════════════════ */
@@ -1855,7 +1849,6 @@ svg{ -webkit-user-select:none; user-select:none; }
   .rv-carrusel{ overflow-x:auto; }
 }
 
-.rv-pie{ margin-top:26px; }
 
 /* ── El pie de la sección de categoría ───────────────────────────────────── */
 .cpage-footer .footer{ border-radius:0; }
@@ -1866,4 +1859,39 @@ svg{ -webkit-user-select:none; user-select:none; }
   .rv-carrusel .rv-card{ flex:0 0 280px; width:280px; }
   .rv-pista{ gap:12px; }
   .cpage-body{ padding-bottom:40px; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V27 — las tarjetas del carrusel, todas del mismo tamaño
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Antes cada una medía según su texto: al lado de "Suenan excelente." caía
+   una de cuatro renglones y la fila quedaba dispareja.
+
+   Ahora la altura la manda la más alta y todas la copian, con dos límites
+   para que ninguna se dispare: el nombre del producto en un renglón y el
+   comentario en tres. Lo que sobra se corta con puntos suspensivos. */
+.rv-pista{ align-items:stretch; }
+
+.rv-carrusel .rv-card{
+  display:flex; flex-direction:column;
+  padding:16px 18px;
+}
+
+/* El nombre del producto puede ser largo ("Cargador Lightning Completo") y
+   sumaría un renglón de más en unas tarjetas sí y en otras no. */
+.rv-carrusel .rv-prod{
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+.rv-carrusel .rv-text{
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+  overflow:hidden;
+  /* Reserva los tres renglones aunque el texto sea "👍👍", así el bloque de
+     abajo no se mueve de tarjeta en tarjeta. */
+  min-height:calc(3 * 1.55em);
+}
+
+@media(max-width:768px){
+  .rv-carrusel .rv-card{ padding:14px 16px; }
 }

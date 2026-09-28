@@ -292,7 +292,7 @@ const Reviews = (() => {
       <div class="rv-carrusel" aria-label="Reseñas de clientes">
         <div class="rv-pista" id="rvPista"></div>
       </div>
-      <p class="rv-pie">En cada producto están todas sus reseñas.</p>`;
+`;
 
     pintarPista(vistas);
   }
