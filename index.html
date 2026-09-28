@@ -85,7 +85,15 @@
   </div>
   <div class="ofertas-wrap">
     <div class="oferta-lateral" id="ofertaLateral"></div>
-    <div class="ofertas-row" id="ofertasRow"></div>
+    <div class="carru">
+      <button class="carru-arr carru-prev" data-carru="ofertasRow" aria-label="Anterior" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg>
+      </button>
+      <div class="ofertas-row carru-pista" id="ofertasRow"></div>
+      <button class="carru-arr carru-next" data-carru="ofertasRow" aria-label="Siguiente" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 7.4 10 6l6 6-6 6-1.4-1.4 4.6-4.6z"/></svg>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -107,7 +115,15 @@
   <div class="mas-header">
     <h2 class="mas-titulo" id="masTitulo">Más productos</h2>
   </div>
-  <div class="mas-row" id="masRow"></div>
+  <div class="carru">
+    <button class="carru-arr carru-prev" data-carru="masRow" aria-label="Anterior" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4-4.6-4.6z"/></svg>
+    </button>
+    <div class="mas-row carru-pista" id="masRow"></div>
+    <button class="carru-arr carru-next" data-carru="masRow" aria-label="Siguiente" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.6 7.4 10 6l6 6-6 6-1.4-1.4 4.6-4.6z"/></svg>
+    </button>
+  </div>
 </section>
 
 <!-- VALORACIONES -->

@@ -1928,3 +1928,73 @@ svg{ -webkit-user-select:none; user-select:none; }
   width:13px; height:13px; border-radius:50%; flex:none;
   object-fit:cover; border:1px solid rgba(0,0,0,.12);
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V29 — filas de productos como carrusel horizontal
+   ════════════════════════════════════════════════════════════════════════════ */
+
+.carru{ position:relative; min-width:0; }
+
+/* La pista es un contenedor con desplazamiento propio. Antes era una rejilla
+   que envolvía en dos líneas; ahora las tarjetas van una al lado de la otra y
+   se recorren con las flechas o arrastrando en el teléfono. */
+.carru-pista{
+  display:flex !important;
+  gap:14px;
+  overflow-x:auto; overflow-y:hidden;
+  scroll-snap-type:x proximity;
+  scroll-behavior:smooth;
+  /* Sin este relleno la sombra de la tarjeta al pasar el ratón queda cortada
+     por el borde del contenedor. */
+  padding:4px 2px 10px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  overscroll-behavior-x:contain;
+}
+.carru-pista::-webkit-scrollbar{ display:none; }
+.carru-pista > .product-card{ scroll-snap-align:start; }
+
+/* El ancho de la tarjeta ya no lo reparte una rejilla: se fija acá. */
+.ofertas-row.carru-pista > .product-card{ flex:0 0 190px; }
+.mas-row.carru-pista     > .product-card{ flex:0 0 200px; }
+
+.carru-arr{
+  position:absolute; top:44%; transform:translateY(-50%);
+  z-index:4; width:40px; height:40px; border-radius:50%;
+  display:grid; place-items:center; cursor:pointer;
+  background:var(--white); border:1px solid var(--gray-light);
+  box-shadow:0 4px 16px rgba(0,0,0,.14);
+  transition:background .2s, color .2s, transform .2s var(--ease-spring);
+}
+.carru-arr svg{ width:22px; height:22px; fill:currentColor; }
+.carru-arr:hover{ background:var(--black); color:var(--white); transform:translateY(-50%) scale(1.07); }
+.carru-arr[hidden]{ display:none; }
+.carru-prev{ left:-14px; }
+.carru-next{ right:-14px; }
+
+@media(max-width:1100px){
+  .ofertas-row.carru-pista > .product-card{ flex:0 0 185px; }
+  .mas-row.carru-pista     > .product-card{ flex:0 0 195px; }
+}
+
+/* En el teléfono la imagen lateral va arriba y las dos filas quedan
+   horizontales, con la tarjeta siguiente asomando para que se note que hay
+   más. Las flechas se esconden: ahí se arrastra con el dedo. */
+@media(max-width:900px){
+  .ofertas-row.carru-pista > .product-card,
+  .mas-row.carru-pista     > .product-card{ flex:0 0 min(62vw,240px); }
+  .carru-arr{ display:none; }
+  .carru-pista{ gap:12px; scroll-padding-left:16px; }
+}
+@media(max-width:768px){
+  /* Se sale del margen de la sección para que la fila llegue hasta el borde
+     de la pantalla, como en cualquier tienda en el teléfono. */
+  .carru-pista{
+    margin-left:-16px; margin-right:-16px;
+    padding-left:16px; padding-right:16px;
+  }
+  .ofertas-row.carru-pista > .product-card,
+  .mas-row.carru-pista     > .product-card{ flex:0 0 min(58vw,220px); }
+  .mas-row.carru-pista .card-price,
+  .ofertas-row.carru-pista .card-price{ font-size:22px !important; }
+}

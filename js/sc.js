@@ -77,6 +77,59 @@ function animarProductos(el){
 // Las dos filas de la portada. Se vuelve a llamar cuando contesta Supabase,
 // así que pintar de nuevo tiene que ser inofensivo: lo es, porque cada fila
 // se rehace desde cero.
+/* Carrusel horizontal de tarjetas. No usa Swiper: la pista es un contenedor
+   con desplazamiento nativo, así en el teléfono se arrastra con el dedo y con
+   la inercia del sistema. Las flechas solo empujan ese desplazamiento. */
+const Carru=(()=>{
+  function paso(pista){
+    const card=pista.querySelector('.product-card');
+    if(!card)return pista.clientWidth;
+    const est=getComputedStyle(pista);
+    const gap=parseFloat(est.columnGap||est.gap)||14;
+    const ancho=card.getBoundingClientRect().width+gap;
+    // Avanza casi una pantalla, dejando una tarjeta a la vista como pista de
+    // que la fila sigue. Con una sola visible, avanza de a una.
+    const caben=Math.max(1,Math.floor(pista.clientWidth/ancho));
+    return ancho*(caben>1?caben-1:1);
+  }
+
+  // Las flechas se esconden en las puntas: una flecha que no hace nada
+  // enseña mal dónde termina la fila.
+  function actualizar(pista){
+    const caja=pista.closest('.carru');
+    if(!caja)return;
+    const prev=caja.querySelector('.carru-prev'),next=caja.querySelector('.carru-next');
+    const sobra=pista.scrollWidth-pista.clientWidth;
+    const x=pista.scrollLeft;
+    if(prev)prev.hidden=sobra<8||x<8;
+    if(next)next.hidden=sobra<8||x>=sobra-8;
+  }
+
+  function conectar(pista){
+    if(!pista||pista.dataset.carruListo)return;
+    const caja=pista.closest('.carru');
+    if(!caja)return;
+    pista.dataset.carruListo='1';
+    caja.querySelectorAll('.carru-arr').forEach(b=>b.addEventListener('click',()=>{
+      const d=b.classList.contains('carru-next')?1:-1;
+      pista.scrollBy({left:paso(pista)*d,behavior:reduceMotion()?'auto':'smooth'});
+    }));
+    pista.addEventListener('scroll',()=>actualizar(pista),{passive:true});
+    window.addEventListener('resize',()=>actualizar(pista),{passive:true});
+  }
+
+  // Después de pintar hay que esperar un cuadro: hasta que el navegador no
+  // calcula posiciones, scrollWidth y clientWidth valen lo mismo y las
+  // flechas quedarían escondidas siempre.
+  function revisar(pista){
+    if(!pista)return;
+    conectar(pista);
+    requestAnimationFrame(()=>requestAnimationFrame(()=>actualizar(pista)));
+  }
+
+  return{revisar};
+})();
+
 const Filas=(()=>{
   function una(id, slugs, reserva){
     const row=document.getElementById(id);
@@ -87,6 +140,7 @@ const Filas=(()=>{
     const lista=elegidos.length?elegidos:CATALOGO.slice(0,reserva);
     pintarProductos(row,lista);
     animarProductos(row);
+    Carru.revisar(row);
   }
   function init(){
     una('ofertasRow', OFERTAS, 5);
