@@ -61,7 +61,7 @@ const Secciones = (() => {
       .upsert({ key: clave, value }, { onConflict: 'key' });
 
     if (btn) { btn.disabled = false; btn.textContent = textoBoton(clave); }
-    if (error) { toast('No se pudo guardar: ' + error.message, true); return; }
+    if (error) { toast(mensajeError(error), true); return; }
 
     sucio.delete(clave);
     pintarBarras();

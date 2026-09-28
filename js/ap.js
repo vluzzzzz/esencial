@@ -225,14 +225,15 @@ async function saveProduct(card, st, btn){
   btn.disabled = true; const orig = btn.textContent; btn.innerHTML = '<span class="spin"></span>';
   try {
     const p = st.p;
-    const { error: e1 } = await sb.from('products').update({
+    const { data: d1, error: e1 } = await sb.from('products').update({
       name:p.name.trim(), category:p.category, description:p.description,
       image:p.image.trim(), image_scale:p.image_scale, in_stock:p.in_stock,
       features:p.features.filter(f=>f.trim()!==''), gallery:p.gallery,
       is_hero:p.is_hero, is_featured:p.is_featured,
       compare_at_price:p.compare_at_price, stock_qty:p.stock_qty,
-    }).eq('id', p.id);
+    }).eq('id', p.id).select('id');
     if (e1) throw e1;
+    if (!d1 || !d1.length) throw new Error('SIN_PERMISO');
 
     // reemplazar tramos
     const { error: e2 } = await sb.from('price_tiers').delete().eq('product_id', p.id);
@@ -242,10 +243,21 @@ async function saveProduct(card, st, btn){
 
     toast('Producto guardado');
   } catch (err) {
-    toast('Error al guardar: ' + err.message, true);
+    toast(mensajeError(err), true);
   } finally {
     btn.disabled = false; btn.textContent = orig;
   }
+}
+
+function mensajeError(err){
+  const m = String(err && err.message || err);
+  if (m === 'SIN_PERMISO' || /row-level security/i.test(m))
+    return 'Tu cuenta no tiene permiso para guardar. Avisale al administrador que sume tu correo.';
+  if (/JWT|not authenticated|session/i.test(m))
+    return 'Se cerró la sesión. Volvé a entrar y probá de nuevo.';
+  if (/Failed to fetch|NetworkError/i.test(m))
+    return 'Sin conexión con el servidor. Revisá internet y probá de nuevo.';
+  return 'Error al guardar: ' + m;
 }
 
 async function undoProduct(card, id){
