@@ -92,6 +92,11 @@ function buildCard(p){
       <div data-box="features"></div>
       <button class="btn btn-ghost" data-act="add-feature" style="padding:8px 14px;font-size:13px;margin-bottom:18px">+ Agregar característica</button>
 
+      <h4>Colores</h4>
+      <p class="note-stock" style="margin:-6px 0 10px">Cada color necesita su foto grande y su miniatura. Con uno o más, el producto pide elegir color antes de comprar y deja de mostrar la galería.</p>
+      <div data-box="colors"></div>
+      <button class="btn btn-ghost" data-act="add-color" style="padding:8px 14px;font-size:13px;margin-bottom:18px">+ Agregar color</button>
+
       <h4>Imágenes secundarias (galería del detalle)</h4>
       <p class="note-stock" style="margin:-6px 0 10px">Son las fotos extra que se ven al abrir el producto. La de arriba es la principal.</p>
       <div class="gallery" data-box="gallery"></div>
@@ -135,6 +140,7 @@ function bindCard(card){
     if (!act) return;
     if (act === 'adv') { card.querySelector('[data-box=adv]').classList.toggle('hidden'); e.target.closest('.adv-toggle').classList.toggle('open'); }
     if (act === 'add-feature') { st.p.features.push(''); renderFeatures(card, st); }
+    if (act === 'add-color')   { st.p.colors.push({name:'',img:'',swatch:''}); renderColors(card, st); }
     if (act === 'save') await saveProduct(card, st, e.target);
     if (act === 'undo') await undoProduct(card, id);
     if (act === 'delete') await deleteProduct(id, e.target);
@@ -146,6 +152,7 @@ function bindCard(card){
 
   renderTiers(card, st);
   renderFeatures(card, st);
+  renderColors(card, st);
   renderGallery(card, st);
 }
 
@@ -176,6 +183,54 @@ function renderFeatures(card, st){
     const i = +row.dataset.i;
     row.querySelector('[data-feat]').addEventListener('input', e => st.p.features[i] = e.target.value);
     row.querySelector('[data-del]').addEventListener('click', () => { st.p.features.splice(i,1); renderFeatures(card, st); });
+  });
+}
+
+function renderColors(card, st){
+  const box = card.querySelector('[data-box=colors]');
+  const cols = st.p.colors;
+  if (!cols.length) {
+    box.innerHTML = '<p class="note-stock" style="margin:0 0 12px">Sin colores. El producto se muestra con su imagen principal y la galería.</p>';
+    return;
+  }
+  box.innerHTML = cols.map((c,i)=>`
+    <div class="color-fila" data-ci="${i}">
+      <div class="color-minis">
+        <img src="${escH(c.img||'')}" alt="" title="Foto grande" onerror="this.style.visibility='hidden'">
+        <img class="sw" src="${escH(c.swatch||'')}" alt="" title="Miniatura" onerror="this.style.visibility='hidden'">
+      </div>
+      <input type="text" data-c="name" value="${escH(c.name||'')}" placeholder="Nombre. Ej: Negro">
+      <button class="btn btn-dark file-btn" style="flex:none;padding:8px 12px;font-size:13px">Foto
+        <input type="file" accept="image/*" data-cup="img">
+      </button>
+      <button class="btn btn-dark file-btn" style="flex:none;padding:8px 12px;font-size:13px">Mini
+        <input type="file" accept="image/*" data-cup="swatch">
+      </button>
+      <button class="btn btn-ghost" data-cmove="-1" ${i===0?'disabled':''} style="flex:none;padding:8px 11px">↑</button>
+      <button class="btn btn-ghost" data-cmove="1" ${i===cols.length-1?'disabled':''} style="flex:none;padding:8px 11px">↓</button>
+      <button class="btn btn-danger" data-cdel style="flex:none;padding:8px 12px;font-size:13px">Quitar</button>
+    </div>`).join('');
+
+  box.querySelectorAll('.color-fila').forEach(row => {
+    const i = +row.dataset.ci;
+    row.querySelector('[data-c=name]').addEventListener('input', e => cols[i].name = e.target.value);
+    row.querySelectorAll('[data-cup]').forEach(inp =>
+      inp.addEventListener('change', async e => {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        const btn = e.target.parentElement, antes = btn.childNodes[0].nodeValue;
+        btn.childNodes[0].nodeValue = '…';
+        try { cols[i][e.target.dataset.cup] = await uploadFile(f); renderColors(card, st); }
+        catch (err) { toast('No se pudo subir: ' + err.message, true); btn.childNodes[0].nodeValue = antes; }
+      }));
+    row.querySelector('[data-cdel]').addEventListener('click', () => { cols.splice(i,1); renderColors(card, st); });
+    row.querySelectorAll('[data-cmove]').forEach(b =>
+      b.addEventListener('click', () => {
+        const j = i + (+b.dataset.cmove);
+        if (j < 0 || j >= cols.length) return;
+        [cols[i], cols[j]] = [cols[j], cols[i]];
+        renderColors(card, st);
+      }));
   });
 }
 
@@ -229,6 +284,7 @@ async function saveProduct(card, st, btn){
       name:p.name.trim(), category:p.category, description:p.description,
       image:p.image.trim(), image_scale:p.image_scale, in_stock:p.in_stock,
       features:p.features.filter(f=>f.trim()!==''), gallery:p.gallery,
+      colors:p.colors.filter(c=>c.img && c.name.trim()!==''),
       is_hero:p.is_hero, is_featured:p.is_featured,
       compare_at_price:p.compare_at_price, stock_qty:p.stock_qty,
     }).eq('id', p.id).select('id');

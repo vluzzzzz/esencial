@@ -183,6 +183,11 @@ async function loadCatalog(){
       FEATURES[p.slug] = p.features || [];
       // imágenes del detalle = principal + secundarias (galería)
       GALLERY[p.slug] = [p.image, ...(p.gallery || [])].filter(Boolean);
+      // Colores desde el panel. Sin ellos se respeta lo que esté escrito acá
+      // abajo en COLOR_VARIANTS, si no los colores aparecían un instante y se
+      // borraban al llegar la respuesta de la base.
+      const cols = Array.isArray(p.colors) ? p.colors.filter(c => c && c.img) : [];
+      if (cols.length) COLOR_VARIANTS[p.slug] = cols;
     });
 
     // HERO (carrusel principal)
