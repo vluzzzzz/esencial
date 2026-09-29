@@ -684,7 +684,6 @@ body:has(#topbar) .nav{top:38px}
 .entrega-icono svg{width:18px;height:18px}
 .entrega-fecha{font-size:12px;font-weight:600;line-height:1.25}
 .entrega-label{font-size:11px;color:var(--gray-mid)}
-.entrega-nota{font-size:11px;color:var(--gray-mid);text-align:center;margin-top:11px;line-height:1.4}
 
 /* ── Añadidos de la ficha ────────────────────────────────────────────────── */
 .ppage-meta{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:8px}

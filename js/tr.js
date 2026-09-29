@@ -61,8 +61,7 @@ const Trust = (() => {
             <span class="entrega-fecha">${p.fecha}</span>
             <span class="entrega-label">${p.label}</span>
           </div>`).join('')}
-      </div>
-      <p class="entrega-nota">Fechas estimadas en días hábiles para envíos dentro de Chile.</p>`;
+      </div>`;
   }
 
   /* ── Iconos ────────────────────────────────────────────────────────────── */
