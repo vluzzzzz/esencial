@@ -2156,27 +2156,39 @@ svg{ -webkit-user-select:none; user-select:none; }
    V33 — el banner deja de pisar la nav al desplazar en el teléfono
    ════════════════════════════════════════════════════════════════════════════ */
 
-/* El carrusel del banner lo mueve Swiper con translate3d, y eso lo promueve a
-   una capa de GPU propia. La nav no tenía capa: en Android, una capa de GPU
-   puede pintarse sobre un elemento que no la tiene aunque el z-index diga lo
-   contrario, y por eso el banner se comía el borde del buscador justo durante
-   el desplazamiento. Subir el z-index no alcanzaba porque el conflicto no era
-   de orden, sino de composición.
-
-   Con translateZ(0) la nav también pasa a ser una capa. Ahí sí las dos se
-   comparan por z-index y la nav queda arriba siempre. */
+/* Cinta, nav y banner son tres bloques, uno debajo del otro, y así se quedan.
+   El lío venía de los efectos que los promovían a capas de la tarjeta
+   gráfica: cuando el navegador recompone esas capas al desplazar, una puede
+   pintarse sobre otra aunque en el papel esté debajo. La cura es que no haya
+   capas de más en esta parte de la página, no apilar más parches encima. */
 .nav{
-  transform:translateZ(0);
-  -webkit-backface-visibility:hidden;
-          backface-visibility:hidden;
-  isolation:isolate;
   position:relative;
   z-index:60;
 }
+.bnr-section{ z-index:1; }
 
-/* Y del otro lado: la sección del banner no puede pintar fuera de sus
-   límites. Si por lo que sea intentara subir, queda recortada en su borde. */
-.bnr-section{
-  contain:paint;
-  z-index:1;
+/* La cinta llevaba un desvanecido en los bordes hecho con mask-image. Ese
+   efecto obliga a la tarjeta gráfica a componer la cinta aparte, y al estar
+   pegada a la nav arrastraba a sus vecinos. Se cambia por un degradado
+   encima, que se ve igual y no crea ninguna capa. */
+.topbar{
+  -webkit-mask-image:none !important;
+          mask-image:none !important;
 }
+.topbar::before,
+.topbar::after{
+  content:''; position:absolute; top:0; bottom:0; width:6%;
+  z-index:2; pointer-events:none;
+}
+.topbar::before{ left:0;  background:linear-gradient(to right,var(--celeste),transparent); }
+.topbar::after { right:0; background:linear-gradient(to left, var(--celeste),transparent); }
+
+/* La cinta se anima sin parar. Con will-change queda pegada a la tarjeta
+   gráfica todo el tiempo, y esa capa permanente al lado de la nav es lo que
+   desordenaba el pintado al desplazar en el teléfono. La animación anda
+   igual de fluida sin él: son cuatro textos moviéndose en línea recta. */
+.topbar-track{ will-change:auto; }
+
+/* El carrusel del banner queda recortado dentro de su caja, sin pintar
+   afuera. Es lo único que hace falta de este lado. */
+.bnr-swiper{ overflow:hidden; }
