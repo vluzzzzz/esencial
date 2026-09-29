@@ -61,18 +61,32 @@ let REVIEWS = [
   { name:'Matías G.',      stars:5, product:'iphone-15-128', date:'2026-06-30', verified:false, text:'Segundo teléfono que compro acá. Producto impecable.' },
   { name:'Valeria C.',     stars:4, product:'iphone-15-128', date:'2026-06-05', verified:false, text:'Excelente teléfono 🔥' },
 
-  /* ── iPhone 16 128 GB · 5 reseñas · 4,8 ──────────────────────────────── */
+  /* ── iPhone 16 128 GB · 4 reseñas · 4,8 ──────────────────────────────── */
   { name:'Sebastián P.',   stars:5, product:'iphone-16-128', date:'2026-09-23', verified:false, text:'El chip A18 se nota, todo vuela. Muy buena compra.' },
   { name:'Francisca T.',   stars:5, product:'iphone-16-128', date:'2026-09-01', verified:false, text:'El botón de cámara es súper cómodo para tomar fotos rápido.' },
   { name:'Nicolás A.',     stars:5, product:'iphone-16-128', date:'2026-08-08', verified:false, text:'Llegó en dos días, sellado y con su número de serie válido.' },
-  { name:'Paula H.',       stars:5, product:'iphone-16-128', date:'2026-07-15', verified:false, text:'La batería me dura todo el día con uso pesado.' },
-  { name:'Diego R.',       stars:4, product:'iphone-16-128', date:'2026-06-18', verified:false, text:'Impecable 👌' },
+  { name:'Paula H.',       stars:4, product:'iphone-16-128', date:'2026-07-15', verified:false, text:'La batería me dura todo el día con uso pesado 👍' },
 
-  /* ── Galaxy S26 Plus 256 GB · 4 reseñas · 4,8 ────────────────────────── */
+  /* ── Galaxy S26 Plus 256 GB · 19 reseñas · 4,7 ────────────────────────── */
   { name:'Tomás M.',       stars:5, product:'s26-plus-256', date:'2026-09-18', verified:false, text:'La pantalla es enorme y se ve espectacular. Muy contento.' },
   { name:'Javiera C.',     stars:5, product:'s26-plus-256', date:'2026-08-22', verified:false, text:'Los 256 GB me sobran para fotos y videos. Carga muy rápido.' },
   { name:'Benjamín S.',    stars:5, product:'s26-plus-256', date:'2026-07-19', verified:false, text:'Llegó sellado y con todo lo que decía la descripción.' },
-  { name:'Romina A.',      stars:4, product:'s26-plus-256', date:'2026-06-27', verified:false, text:'Muy buen teléfono 👍' },
+  { name:'Romina A.',      stars:4, product:'s26-plus-256', date:'2026-09-08', verified:false, text:'Muy buen teléfono 👍' },
+  { name:'Cristián V.',    stars:5, product:'s26-plus-256', date:'2026-08-05', verified:false, text:'Viniendo de un S21, el salto se nota en todo. La cámara de noche es otra cosa.' },
+  { name:'Daniela E.',     stars:5, product:'s26-plus-256', date:'2026-07-28', verified:false, text:'Me respondieron todas las dudas por WhatsApp antes de comprar. Buena atención.' },
+  { name:'Matías Z.',      stars:5, product:'s26-plus-256', date:'2026-07-04', verified:false, text:'La batería me dura el día completo con uso pesado. Muy contento.' },
+  { name:'Fernanda I.',    stars:5, product:'s26-plus-256', date:'2026-06-16', verified:false, text:'Llegó en tres días a Valparaíso, bien embalado y con todo original.' },
+  { name:'Gonzalo P.',     stars:4, product:'s26-plus-256', date:'2026-05-30', verified:false, text:'Excelente equipo 🔥' },
+  { name:'Antonia B.',     stars:4, product:'s26-plus-256', date:'2026-05-12', verified:false, text:'Muy buen producto ✅' },
+  { name:'Rodrigo Q.',     stars:5, product:'s26-plus-256', date:'2026-04-24', verified:false, text:'El S Pen no viene, pero el equipo es un fierro. Lo recomiendo.' },
+  { name:'Camila U.',      stars:4, product:'s26-plus-256', date:'2026-04-06', verified:false, text:'Cumple todo lo que promete 👌' },
+  { name:'Esteban W.',     stars:5, product:'s26-plus-256', date:'2026-03-18', verified:false, text:'Segundo Samsung que compro acá. Siempre producto original y bien embalado.' },
+  { name:'Marcela D.',     stars:5, product:'s26-plus-256', date:'2026-03-02', verified:false, text:'La pantalla grande se agradece para ver series en el bus.' },
+  { name:'Hugo T.',        stars:5, product:'s26-plus-256', date:'2026-02-14', verified:false, text:'Compré dos, uno para mí y otro para mi señora. Los dos perfectos.' },
+  { name:'Paulina R.',     stars:4, product:'s26-plus-256', date:'2026-01-27', verified:false, text:'Buen equipo por el precio 👍' },
+  { name:'Álvaro N.',      stars:5, product:'s26-plus-256', date:'2026-01-09', verified:false, text:'Atención rápida y el envío llegó cuando dijeron.' },
+  { name:'Josefina B.',    stars:5, product:'s26-plus-256', date:'2025-12-18', verified:false, text:'Muy buena cámara, las fotos salen nítidas incluso con poca luz.' },
+  { name:'Renato C.',      stars:4, product:'s26-plus-256', date:'2025-11-30', verified:false, text:'Excelente 🔥' },
 
   /* ── Cargador Samsung 45W · 9 reseñas · 4,1 ──────────────────────────── */
   { name:'Marcela G.',     stars:5, product:'cargador-samsung-45w', date:'2026-09-06', verified:false, text:'Carga el Galaxy completo en menos de una hora. Impresionante.' },
