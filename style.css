@@ -582,12 +582,6 @@ body:has(#topbar) .nav{top:38px}
 .bnr-arr:hover{transform:translateY(-50%) scale(1.08)}
 .bnr-arr svg{width:22px;height:22px;fill:var(--black)}
 .bnr-arr-prev{left:14px}.bnr-arr-next{right:14px}
-.bnr-pagination{position:absolute;bottom:14px;left:0;right:0;z-index:5;display:flex;justify-content:center;gap:7px}
-.bnr-pagination .swiper-pagination-bullet{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.55);opacity:1;transition:width .3s var(--ease-smooth),background .3s}
-.bnr-pagination .swiper-pagination-bullet-active{width:22px;background:#fff}
-/* sin imágenes los puntos van sobre fondo claro */
-.bnr-swiper:has(.slot) .bnr-pagination .swiper-pagination-bullet{background:var(--gray-light)}
-.bnr-swiper:has(.slot) .bnr-pagination .swiper-pagination-bullet-active{background:var(--black)}
 
 /* ── Buscador ────────────────────────────────────────────────────────────── */
 .buscador-section{position:relative;z-index:2;max-width:640px;margin:28px auto 0;padding:0 24px}
@@ -850,7 +844,7 @@ body:has(#topbar) .nav{top:38px}
 .bnr-swiper:not(.swiper-initialized) .swiper-wrapper{display:block}
 .bnr-swiper:not(.swiper-initialized) .bnr-slide:not(:first-child){display:none}
 .bnr-swiper:not(.swiper-initialized) .bnr-arr,
-.bnr-swiper:not(.swiper-initialized) .bnr-pagination{opacity:0}
+.bnr-swiper:not(.swiper-initialized) ~ .bnr-pagination{opacity:0}
 
 /* Altura mínima para la cinta y la tira: sin esto el contenido salta hacia
    abajo cuando el JS las rellena. */
@@ -2192,3 +2186,33 @@ svg{ -webkit-user-select:none; user-select:none; }
 /* El carrusel del banner queda recortado dentro de su caja, sin pintar
    afuera. Es lo único que hace falta de este lado. */
 .bnr-swiper{ overflow:hidden; }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V34 — los puntos del carrusel, debajo del banner
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Estaban flotando sobre la imagen: en blanco se perdían contra un banner
+   claro y en oscuro contra uno oscuro. Fuera del banner el fondo es siempre
+   el mismo gris, así que el gris oscuro se lee en todos los casos. */
+.bnr-pagination{
+  position:static;
+  margin-top:14px;
+  display:flex; justify-content:center; gap:8px;
+}
+.bnr-pagination .swiper-pagination-bullet{
+  width:8px; height:8px; border-radius:99px;
+  background:var(--gray-light);
+  opacity:1;
+  transition:width .3s var(--ease-smooth), background .3s;
+}
+.bnr-pagination .swiper-pagination-bullet-active{
+  width:24px;
+  background:var(--gray-mid);
+}
+/* El hueco punteado ya no necesita su propio color: el de arriba sirve. */
+.bnr-swiper:has(.slot) ~ .bnr-pagination .swiper-pagination-bullet{ background:var(--gray-light); }
+.bnr-swiper:has(.slot) ~ .bnr-pagination .swiper-pagination-bullet-active{ background:var(--gray-mid); }
+
+@media(max-width:768px){
+  .bnr-pagination{ margin-top:11px; }
+}
