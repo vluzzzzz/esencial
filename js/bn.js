@@ -36,7 +36,8 @@ let BANNERS = [
 const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Promoción', link:'#ofertas' };
 
 // Imagen alta de la izquierda en la fila de ofertas → 620 × 714 px
-const OFERTA_LATERAL = { desktop:'images/banneroferta.png', mobile:'', alt:'Ofertas del mes', link:'#ofertas' };
+// En el teléfono va arriba y apaisada → 1080 × 470 px
+const OFERTA_LATERAL = { desktop:'images/banneroferta.png', mobile:'images/bannerofertacelu.png', alt:'Ofertas del mes', link:'#ofertas' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
