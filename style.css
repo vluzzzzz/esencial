@@ -1753,15 +1753,19 @@ svg{ -webkit-user-select:none; user-select:none; }
    ════════════════════════════════════════════════════════════════════════════ */
 .footer-redes{ display:flex; justify-content:center; gap:12px; }
 .footer-red{
-  display:inline-grid; place-items:center;
-  width:44px; height:44px; border-radius:50%;
+  display:inline-flex; align-items:center; gap:9px;
+  padding:10px 20px 10px 16px; border-radius:999px;
   border:1px solid rgba(255,255,255,.18);
   background:rgba(255,255,255,.04);
   color:rgba(255,255,255,.85); text-decoration:none;
+  font-family:var(--font-body); font-size:14px; font-weight:500;
   transition:background .25s var(--ease-smooth), color .25s,
              border-color .25s, transform .25s var(--ease-spring);
 }
-.footer-red svg{ width:21px; height:21px; fill:currentColor; }
+/* El trazado del logo llena su lienzo de borde a borde. El viewBox ampliado
+   a -2 -2 28 28 le deja aire alrededor, si no el recuadro exterior quedaba
+   cortado contra el borde del botón. */
+.footer-red svg{ width:22px; height:22px; fill:currentColor; flex:none; }
 /* El degradado es el de la marca de Instagram. */
 .footer-red:hover{
   background:linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888);
@@ -1771,7 +1775,7 @@ svg{ -webkit-user-select:none; user-select:none; }
 .footer-red:active{ transform:translateY(0); }
 
 @media(max-width:560px){
-  .footer-red{ width:42px; height:42px; }
+  .footer-red{ padding:10px 18px 10px 15px; font-size:13px; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
