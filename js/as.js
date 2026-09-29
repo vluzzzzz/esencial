@@ -237,6 +237,15 @@ const Secciones = (() => {
             </button>
           </div>
         </label>
+        <label class="fld"><span>Banner de móvil · 1080 × 810 (opcional)</span>
+          <div class="img-row">
+            <img class="img-thumb" data-h="thumbBanMob" src="${escH(c.bannerMobile || '')}" alt="" onerror="this.style.visibility='hidden'">
+            <input type="text" data-f="bannerMobile" value="${escH(c.bannerMobile || '')}" placeholder="Si lo dejás vacío se usa el de escritorio">
+            <button class="btn btn-dark file-btn" style="flex:none">Subir
+              <input type="file" accept="image/*" data-act="subirBanMob">
+            </button>
+          </div>
+        </label>
       </div>`;
     }).join('')
       + `<datalist id="catsUsadas">${usadas.map(c => `<option value="${escH(c)}">`).join('')}</datalist>`;
@@ -407,7 +416,7 @@ const Secciones = (() => {
         pintarBanners(); marcar('banners');
       }
       if (q === 'categoria') {
-        st.categorias.push({ arriba:'', titulo:'', desde:'', cat:'', img:'', banner:'' });
+        st.categorias.push({ arriba:'', titulo:'', desde:'', cat:'', img:'', banner:'', bannerMobile:'' });
         pintarCategorias(); marcar('categorias');
       }
       if (q === 'resena') {
@@ -462,7 +471,9 @@ const Secciones = (() => {
       if (!acto || !acto.startsWith('subir')) return;
       const i = tarjetaIndice(e.target);
       if (i < 0 || !st[clave][i]) return;
-      const destino = acto === 'subirMob' ? 'mobile' : acto === 'subirBan' ? 'banner'
+      const destino = acto === 'subirMob' ? 'mobile'
+                    : acto === 'subirBan' ? 'banner'
+                    : acto === 'subirBanMob' ? 'bannerMobile'
                     : clave === 'banners' ? 'desktop' : 'img';
       subir(e.target, url => { st[clave][i][destino] = url; repintar(); marcar(clave); });
     });

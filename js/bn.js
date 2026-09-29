@@ -68,16 +68,17 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    'cat' es la categoría del catálogo (js/sd.js) que se abre al hacer clic.
    'banner' es la imagen ancha que encabeza esa sección cuando se abre:
    va sola arriba de todo, sin nada más. Medida → 1920 × 420 px.
+   'bannerMobile' es la del teléfono → 1080 × 810 px. Vacío = usa la de arriba.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 let CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerArchivo:'banner-audifonos.png'  },
-  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerArchivo:'banner-smartwatch.png' },
-  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerArchivo:'banner-celulares.png'  },
-  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'', bannerArchivo:'banner-cargadores.png' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerMobile:'', bannerArchivo:'banner-audifonos.png'  },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
+  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerMobile:'', bannerArchivo:'banner-celulares.png'  },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'', bannerMobile:'', bannerArchivo:'banner-cargadores.png' },
 ];
 
 // Banner de la sección "todo el catálogo" (el enlace Productos de la nav).
-const BANNER_TODOS = { banner:'', bannerArchivo:'banner-catalogo.png' };
+const BANNER_TODOS = { banner:'', bannerMobile:'', bannerArchivo:'banner-catalogo.png' };
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
@@ -183,7 +184,7 @@ const Banners = (() => {
   // se ve el hueco punteado con la medida, igual que los demás.
   function bannerCategoria(cat) {
     const c = CATEGORIAS.find(x => x.cat === cat) || BANNER_TODOS;
-    const item = { desktop: c.banner || '', mobile: '', archivo: c.bannerArchivo, alt: c.titulo || 'Catálogo' };
+    const item = { desktop: c.banner || '', mobile: c.bannerMobile || '', archivo: c.bannerArchivo, alt: c.titulo || 'Catálogo' };
     return media(item, '1920', '420', 'cpage-banner-media', true);
   }
 

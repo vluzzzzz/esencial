@@ -1409,7 +1409,7 @@ body:has(#topbar) .nav{top:auto}
 @media(max-width:768px){
   .cpage-body{ padding:32px 16px 80px; }
   .cpage-back{ top:12px; left:12px; padding:7px 13px; font-size:12px; }
-  .cpage-banner .slot{ aspect-ratio:16/9; }
+  .cpage-banner .slot{ aspect-ratio:1080/810; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
