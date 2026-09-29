@@ -26,10 +26,10 @@
 let BANNERS = [
   // principalhero.png en pausa. Para traerlo de vuelta, borrá las dos barras:
   // { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
-  { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3',        producto:'airpods-3' },
-  { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
-  { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  { desktop:'images/bannercinco.png',   mobile:'', alt:'Celulares',           categoria:'celulares' },
+  { desktop:'images/bannerdos.png',     mobile:'images/bannerdoscelu.png',    alt:'AirPods Pro 3',        producto:'airpods-3' },
+  { desktop:'images/bannertres.png',    mobile:'images/bannertrescelu.png',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
+  { desktop:'images/bannercuatro.png',  mobile:'images/bannercuatrocelu.png', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
+  { desktop:'images/bannercinco.png',   mobile:'images/bannercincocelu.png',  alt:'Celulares',            categoria:'celulares' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
