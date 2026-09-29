@@ -39,7 +39,7 @@ let CATALOGO = [
   {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/ultra3black.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
   {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
   {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
-  {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpods-3gen.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
+  {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpodspro3uno.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
   {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
   {slug:'airpods-max',              cat:'audifonos',  name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
   {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4black.webp',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
@@ -259,6 +259,7 @@ const FEATURES={
 // { slug: [imgPrincipal, ...secundarias] } — desde Supabase (vacío = usa fallback hardcodeado)
 const GALLERY={
   'buds2-pro':['images/budspro2.webp','images/budspro2imagen2.webp'],
+  'airpods-3':['images/airpodspro3uno.webp','images/airpodspro3dos.webp'],
   'iphone-15-128':['images/iphone15uno.webp','images/iphone15dos.webp','images/iphone15tres.webp'],
   'iphone-16-128':['images/iphone16uno.webp','images/iphone16dos.webp','images/iphone16tres.webp'],
   's26-plus-256':['images/samsumg26uno.webp','images/samsumg26dos.webp','images/samsumg26tres.webp'],
