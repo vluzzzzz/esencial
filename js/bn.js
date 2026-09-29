@@ -67,12 +67,12 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    recuadro; si lo dejás vacío no se muestra el recuadro.
    'cat' es la categoría del catálogo (js/sd.js) que se abre al hacer clic.
    'banner' es la imagen ancha que encabeza esa sección cuando se abre:
-   va sola arriba de todo, sin nada más. Medida → 1920 × 420 px.
+   va sola arriba de todo, sin nada más. Medida → 1920 × 558 px.
    'bannerMobile' es la del teléfono → 1080 × 810 px. Vacío = usa la de arriba.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 let CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'', bannerMobile:'', bannerArchivo:'banner-audifonos.png'  },
-  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'images/audifonoscategorias.png', bannerMobile:'', bannerArchivo:'banner-audifonos.png'  },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'images/categoriasmarwatch.png', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
   { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'', bannerMobile:'', bannerArchivo:'banner-celulares.png'  },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'', bannerMobile:'', bannerArchivo:'banner-cargadores.png' },
 ];
@@ -185,7 +185,7 @@ const Banners = (() => {
   function bannerCategoria(cat) {
     const c = CATEGORIAS.find(x => x.cat === cat) || BANNER_TODOS;
     const item = { desktop: c.banner || '', mobile: c.bannerMobile || '', archivo: c.bannerArchivo, alt: c.titulo || 'Catálogo' };
-    return media(item, '1920', '420', 'cpage-banner-media', true);
+    return media(item, '1920', '558', 'cpage-banner-media', true);
   }
 
   function renderOfertaLateral() {

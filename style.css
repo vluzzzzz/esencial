@@ -1371,7 +1371,7 @@ body:has(#topbar) .nav{top:auto}
 .cpage-banner-media{ display:block; width:100%; }
 .cpage-banner-media img{ display:block; width:100%; height:auto; }
 .cpage-banner .slot{
-  height:auto; aspect-ratio:1920/420; border-radius:0;
+  height:auto; aspect-ratio:1920/558; border-radius:0;
   border-left:none; border-right:none;
 }
 .cpage-body{ max-width:1320px; margin:0 auto; padding:44px 24px 96px; }

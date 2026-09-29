@@ -228,7 +228,7 @@ const Secciones = (() => {
         </div>
         ${aviso}
         ${campoImagen('Foto de la tarjeta · 800 × 1000', c.img || '')}
-        <label class="fld"><span>Banner de la sección · 1920 × 420 (opcional)</span>
+        <label class="fld"><span>Banner de la sección · 1920 × 558 (opcional)</span>
           <div class="img-row">
             <img class="img-thumb" data-h="thumbBan" src="${escH(c.banner || '')}" alt="" onerror="this.style.visibility='hidden'">
             <input type="text" data-f="banner" value="${escH(c.banner || '')}" placeholder="Se ve arriba al abrir la categoría">
