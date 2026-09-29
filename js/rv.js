@@ -53,19 +53,22 @@ let REVIEWS = [
   { name:'Cristóbal N.',   stars:4, product:'buds2-pro', date:'2026-06-14', verified:false, text:'Buen producto y llegó rápido ✅' },
   { name:'Daniela A.',     stars:4, product:'buds2-pro', date:'2026-05-21', verified:false, text:'Cumplen muy bien por lo que cuestan 👍' },
 
-  /* ── iPhone 15 128 GB · 6 reseñas · 4,8 ──────────────────────────────── */
+  /* ── iPhone 15 128 GB · 7 reseñas · 4,9 ──────────────────────────────── */
   { name:'Rodrigo V.',     stars:5, product:'iphone-15-128', date:'2026-09-21', verified:false, text:'Llegó sellado y con todo original. La cámara es una maravilla.' },
   { name:'Camila B.',      stars:5, product:'iphone-15-128', date:'2026-09-02', verified:false, text:'El USB-C se agradece, cargo el teléfono con el mismo cable del notebook.' },
   { name:'Felipe O.',      stars:5, product:'iphone-15-128', date:'2026-08-13', verified:false, text:'Me asesoraron bien sobre el almacenamiento. Muy buena atención.' },
   { name:'Antonia L.',     stars:5, product:'iphone-15-128', date:'2026-07-26', verified:false, text:'La pantalla se ve increíble incluso con sol directo.' },
   { name:'Matías G.',      stars:5, product:'iphone-15-128', date:'2026-06-30', verified:false, text:'Segundo teléfono que compro acá. Producto impecable.' },
   { name:'Valeria C.',     stars:4, product:'iphone-15-128', date:'2026-06-05', verified:false, text:'Excelente teléfono 🔥' },
+  { name:'Tomás R.',       stars:5, product:'iphone-15-128', date:'2026-05-14', verified:false, text:'Llegó en tres días a Rancagua, bien embalado y sin un rayón.' },
 
-  /* ── iPhone 16 128 GB · 4 reseñas · 4,8 ──────────────────────────────── */
+  /* ── iPhone 16 128 GB · 6 reseñas · 4,8 ──────────────────────────────── */
   { name:'Sebastián P.',   stars:5, product:'iphone-16-128', date:'2026-09-23', verified:false, text:'El chip A18 se nota, todo vuela. Muy buena compra.' },
   { name:'Francisca T.',   stars:5, product:'iphone-16-128', date:'2026-09-01', verified:false, text:'El botón de cámara es súper cómodo para tomar fotos rápido.' },
   { name:'Nicolás A.',     stars:5, product:'iphone-16-128', date:'2026-08-08', verified:false, text:'Llegó en dos días, sellado y con su número de serie válido.' },
   { name:'Paula H.',       stars:4, product:'iphone-16-128', date:'2026-07-15', verified:false, text:'La batería me dura todo el día con uso pesado 👍' },
+  { name:'Ignacio D.',     stars:5, product:'iphone-16-128', date:'2026-06-22', verified:false, text:'Llegó sellado y con todo original. La cámara saca unas fotos increíbles.' },
+  { name:'Catalina M.',    stars:5, product:'iphone-16-128', date:'2026-05-30', verified:false, text:'Me asesoraron por WhatsApp antes de decidir. Muy buena atención.' },
 
   /* ── Galaxy S26 Plus 256 GB · 19 reseñas · 4,7 ────────────────────────── */
   { name:'Tomás M.',       stars:5, product:'s26-plus-256', date:'2026-09-18', verified:false, text:'La pantalla es enorme y se ve espectacular. Muy contento.' },
