@@ -16,7 +16,8 @@
    'desktop'. El orden de esta lista es el orden en que se ven.
 
    'producto' es el slug al que lleva el banner: al hacer clic se abre la
-   ficha de ese producto. Si en su lugar ponés 'link', va a esa ancla.
+   ficha de ese producto. 'categoria' abre la sección de esa categoría. Si en
+   lugar de los dos ponés 'link', va a esa ancla.
 
    ⚠ Desde que existe /admin, esta lista es solo el punto de partida: si hay
    algo guardado en el panel, eso gana y lo de acá no se usa. Editá en el
@@ -28,7 +29,7 @@ let BANNERS = [
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3',        producto:'airpods-3' },
   { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
   { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  { desktop:'images/bannercinco.png',   mobile:'', alt:'Ofertas del mes',      link:'#ofertas' },
+  { desktop:'images/bannercinco.png',   mobile:'', alt:'Celulares',           categoria:'celulares' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
@@ -110,6 +111,11 @@ const Banners = (() => {
     if (item.producto) {
       return `<div class="swiper-slide bnr-slide">
           <a href="#" class="bnr-link" data-producto="${escAttr(item.producto)}">${inner}</a>
+        </div>`;
+    }
+    if (item.categoria) {
+      return `<div class="swiper-slide bnr-slide">
+          <a href="#panel" class="bnr-link" data-cat-abrir="${escAttr(item.categoria)}">${inner}</a>
         </div>`;
     }
     return item.link
