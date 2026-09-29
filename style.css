@@ -2151,3 +2151,32 @@ svg{ -webkit-user-select:none; user-select:none; }
 /* ── Menos espacio entre la nav y el banner ─────────────────────────────── */
 .bnr-section{ margin-top:14px; }
 @media(max-width:768px){ .bnr-section{ margin-top:10px; } }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V33 — el banner deja de pisar la nav al desplazar en el teléfono
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* El carrusel del banner lo mueve Swiper con translate3d, y eso lo promueve a
+   una capa de GPU propia. La nav no tenía capa: en Android, una capa de GPU
+   puede pintarse sobre un elemento que no la tiene aunque el z-index diga lo
+   contrario, y por eso el banner se comía el borde del buscador justo durante
+   el desplazamiento. Subir el z-index no alcanzaba porque el conflicto no era
+   de orden, sino de composición.
+
+   Con translateZ(0) la nav también pasa a ser una capa. Ahí sí las dos se
+   comparan por z-index y la nav queda arriba siempre. */
+.nav{
+  transform:translateZ(0);
+  -webkit-backface-visibility:hidden;
+          backface-visibility:hidden;
+  isolation:isolate;
+  position:relative;
+  z-index:60;
+}
+
+/* Y del otro lado: la sección del banner no puede pintar fuera de sus
+   límites. Si por lo que sea intentara subir, queda recortada en su borde. */
+.bnr-section{
+  contain:paint;
+  z-index:1;
+}
