@@ -15,19 +15,19 @@ insert into public.products
 values
   ('iphone-15-128', 'iPhone 15 128 GB', 'celulares',
    'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.',
-   'images/iphone15uno.png', 0.75, true,
+   'images/iphone15uno.webp', 0.75, true,
    array['128 GB de almacenamiento','Pantalla Super Retina XDR','Cámara principal de 48 MP','Puerto USB-C'],
    '[]'::jsonb, 20),
 
   ('iphone-16-128', 'iPhone 16 128 GB', 'celulares',
    'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.',
-   'images/iphone16uno.png', 0.75, true,
+   'images/iphone16uno.webp', 0.75, true,
    array['128 GB de almacenamiento','Chip A18','Botón de Control de Cámara','Cámara principal de 48 MP'],
    '[]'::jsonb, 21),
 
   ('s26-plus-256', 'Galaxy S26 Plus 256 GB', 'celulares',
    'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.',
-   'images/samsumg26uno.png', 0.75, true,
+   'images/samsumg26uno.webp', 0.75, true,
    array['256 GB de almacenamiento','Pantalla Dynamic AMOLED','Cámara de alta resolución','Carga rápida'],
    '[]'::jsonb, 22)
 
@@ -60,18 +60,18 @@ group by p.id, p.slug, p.name, p.category;
 -- La primera es la principal; las otras dos van a la galería de la ficha, la
 -- que se recorre con la flecha.
 update public.products set
-  image   = 'images/iphone15uno.png',
-  gallery = array['images/iphone15dos.png','images/iphone15tres.png']
+  image   = 'images/iphone15uno.webp',
+  gallery = array['images/iphone15dos.webp','images/iphone15tres.webp']
 where slug = 'iphone-15-128';
 
 -- ── Fotos del iPhone 16 ─────────────────────────────────────────────────────
 update public.products set
-  image   = 'images/iphone16uno.png',
-  gallery = array['images/iphone16dos.png','images/iphone16tres.png']
+  image   = 'images/iphone16uno.webp',
+  gallery = array['images/iphone16dos.webp','images/iphone16tres.webp']
 where slug = 'iphone-16-128';
 
 -- ── Fotos del Galaxy S26 Plus ───────────────────────────────────────────────
 update public.products set
-  image   = 'images/samsumg26uno.png',
-  gallery = array['images/samsumg26dos.png','images/samsumg26tres.png']
+  image   = 'images/samsumg26uno.webp',
+  gallery = array['images/samsumg26dos.webp','images/samsumg26tres.webp']
 where slug = 's26-plus-256';

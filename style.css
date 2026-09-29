@@ -2090,11 +2090,16 @@ svg{ -webkit-user-select:none; user-select:none; }
 .nav,
 .nav.scrolled,
 .nav.nav-on-dark{
-  background:transparent !important;
+  /* Fondo del MISMO color que la página, no transparente. Se ve igual, pero
+     al ser opaco el banner no puede asomar por debajo: la animación de la nav
+     deja un transform que arma su propio contexto de apilado, y ahí el
+     z-index entre nav y banner no siempre gana. Un fondo sólido lo zanja. */
+  background:var(--off-white) !important;
   backdrop-filter:none !important; -webkit-backdrop-filter:none !important;
   box-shadow:none !important;
   border-bottom:none !important;
-  height:72px;
+  height:64px;
+  position:relative; z-index:60;
 }
 
 /* El logo es blanco puro, así que sobre fondo claro desaparece. Se invierte:
@@ -2142,3 +2147,7 @@ svg{ -webkit-user-select:none; user-select:none; }
 @media(max-width:768px){
   .nav{ height:auto; }
 }
+
+/* ── Menos espacio entre la nav y el banner ─────────────────────────────── */
+.bnr-section{ margin-top:14px; }
+@media(max-width:768px){ .bnr-section{ margin-top:10px; } }

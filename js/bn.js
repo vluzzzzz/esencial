@@ -25,11 +25,11 @@
    ════════════════════════════════════════════════════════════════════════════ */
 let BANNERS = [
   // principalhero.png en pausa. Para traerlo de vuelta, borrá las dos barras:
-  // { desktop:'images/principalhero.png', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
-  { desktop:'images/bannerdos.png',     mobile:'images/bannerdoscelu.png',    alt:'AirPods Pro 3',        producto:'airpods-3' },
-  { desktop:'images/bannertres.png',    mobile:'images/bannertrescelu.png',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
-  { desktop:'images/bannercuatro.png',  mobile:'images/bannercuatrocelu.png', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  { desktop:'images/bannercinco.png',   mobile:'images/bannercincocelu.png',  alt:'Celulares',            categoria:'celulares' },
+  // { desktop:'images/principalhero.webp', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
+  { desktop:'images/bannerdos.webp',     mobile:'images/bannerdoscelu.webp',    alt:'AirPods Pro 3',        producto:'airpods-3' },
+  { desktop:'images/bannertres.webp',    mobile:'images/bannertrescelu.webp',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
+  { desktop:'images/bannercuatro.webp',  mobile:'images/bannercuatrocelu.webp', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
+  { desktop:'images/bannercinco.webp',   mobile:'images/bannercincocelu.webp',  alt:'Celulares',            categoria:'celulares' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
@@ -37,7 +37,7 @@ const PROMO_BANNER = { desktop:'', mobile:'', archivo:'bannerpromo.png', alt:'Pr
 
 // Imagen alta de la izquierda en la fila de ofertas → 620 × 714 px
 // En el teléfono va arriba y apaisada → 1080 × 470 px
-const OFERTA_LATERAL = { desktop:'images/banneroferta.png', mobile:'images/bannerofertacelu.png', alt:'Ofertas del mes', link:'#ofertas' };
+const OFERTA_LATERAL = { desktop:'images/banneroferta.webp', mobile:'images/bannerofertacelu.webp', alt:'Ofertas del mes', link:'#ofertas' };
 
 // Mensajes de la cinta de arriba. Se repiten en bucle, uno tras otro.
 const CINTA = [
@@ -53,7 +53,7 @@ const CINTA_VELOCIDAD = 28;
 
 // Lo que separa un mensaje del otro. Es el mismo archivo que subiste; solo
 // cambia el nombre, sin la ñ, porque en una URL da problemas de servidor.
-const CINTA_SEPARADOR = 'images/logo-cinta.png';
+const CINTA_SEPARADOR = 'images/logo-cinta.webp';
 
 /* Tarjetas de categoría en puzzle. El orden de la lista es el de la pantalla:
 
@@ -71,10 +71,10 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
    'bannerMobile' es la del teléfono → 1080 × 810 px. Vacío = usa la de arriba.
    Cada hueco dice qué archivo espera y en qué medida exportarlo.          */
 let CATEGORIAS = [
-  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'images/audifonoscategorias.png', bannerMobile:'images/aurifonoscategoriacelu.png', bannerArchivo:'banner-audifonos.png'  },
-  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'images/categoriasmarwatch.png', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
-  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'images/smarthphonecategoria.png', bannerMobile:'images/smartphonecategoriacelu.png', bannerArchivo:'banner-celulares.png'  },
-  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'images/categoriacargadores.png', bannerMobile:'images/cargadorescelu.png', bannerArchivo:'banner-cargadores.png' },
+  { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.webp',  medida:'800 × 1000', banner:'images/audifonoscategorias.webp', bannerMobile:'images/aurifonoscategoriacelu.webp', bannerArchivo:'banner-audifonos.png'  },
+  { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.webp',      medida:'800 × 500',  banner:'images/categoriasmarwatch.webp', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
+  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.webp',         medida:'800 × 500',  banner:'images/smarthphonecategoria.webp', bannerMobile:'images/smartphonecategoriacelu.webp', bannerArchivo:'banner-celulares.png'  },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.webp', medida:'800 × 1000', banner:'images/categoriacargadores.webp', bannerMobile:'images/cargadorescelu.webp', bannerArchivo:'banner-cargadores.png' },
 ];
 
 // Banner de la sección "todo el catálogo" (el enlace Productos de la nav).

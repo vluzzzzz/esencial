@@ -9,12 +9,12 @@
 -- ============================================================================
 
 update public.products set
-  image   = 'images/budspro2.png',
-  gallery = array['images/budspro2imagen2.png']
+  image   = 'images/budspro2.webp',
+  gallery = array['images/budspro2imagen2.webp']
 where slug = 'buds2-pro';
 
 update public.products set
-  image = 'images/buds4black.png'
+  image = 'images/buds4black.webp'
 where slug = 'buds4-pro';
 
 select slug, name, image, gallery,
@@ -24,5 +24,5 @@ from public.products where slug in ('buds2-pro','buds4-pro');
 -- ── Cargador Tipo C ─────────────────────────────────────────────────────────
 -- Foto principal nueva. La segunda de la ficha no se toca.
 update public.products set
-  image = 'images/cargadorcompletotipoc.png'
+  image = 'images/cargadorcompletotipoc.webp'
 where slug = 'cargador-tipo-c';

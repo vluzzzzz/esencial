@@ -10,11 +10,11 @@
 
 update public.products set
   colors = '[
-    {"name":"Negro", "hex":"#1A1A1A", "img":"images/buds4black.png", "swatch":"images/minibuds4black.png"},
-    {"name":"Gris",  "hex":"#8E8E93", "img":"images/buds4gris.png",  "swatch":"images/minibuds4gris.png"},
-    {"name":"Rosa",  "hex":"#E8A0B4", "img":"images/buds4pink.png",  "swatch":"images/minibuds4pink.png"}
+    {"name":"Negro", "hex":"#1A1A1A", "img":"images/buds4black.webp", "swatch":"images/minibuds4black.webp"},
+    {"name":"Gris",  "hex":"#8E8E93", "img":"images/buds4gris.webp",  "swatch":"images/minibuds4gris.webp"},
+    {"name":"Rosa",  "hex":"#E8A0B4", "img":"images/buds4pink.webp",  "swatch":"images/minibuds4pink.webp"}
   ]'::jsonb,
-  image = 'images/buds4black.png'
+  image = 'images/buds4black.webp'
 where slug = 'buds4-pro';
 
 update public.products set

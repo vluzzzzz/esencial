@@ -13,11 +13,11 @@ insert into public.products
 values
   ('apple-watch-ultra-3', 'Apple Watch Ultra 3', 'smartwatch',
    'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.',
-   'images/ultra3black.png', 0.75, true,
+   'images/ultra3black.webp', 0.75, true,
    array['Caja de titanio aeroespacial','Pantalla Always-On 49mm','Hasta 60 horas de batería','GPS de doble frecuencia'],
-   '[{"name":"Negro","hex":"#1A1A1A","img":"images/ultra3black.png","swatch":"images/miniblackultra3.png"},
-     {"name":"Gris","hex":"#8E8E93","img":"images/ultra3gris.png","swatch":"images/minigrisultra3.png"},
-     {"name":"Naranja","hex":"#F26513","img":"images/ultra3orange.png","swatch":"images/miniorangeultra3.png"}]'::jsonb,
+   '[{"name":"Negro","hex":"#1A1A1A","img":"images/ultra3black.webp","swatch":"images/miniblackultra3.webp"},
+     {"name":"Gris","hex":"#8E8E93","img":"images/ultra3gris.webp","swatch":"images/minigrisultra3.webp"},
+     {"name":"Naranja","hex":"#F26513","img":"images/ultra3orange.webp","swatch":"images/miniorangeultra3.webp"}]'::jsonb,
    1),
 
   ('airpods-3', 'AirPods Pro 3', 'audifonos',

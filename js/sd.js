@@ -36,20 +36,20 @@ const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 
    distinta en vez de reusar la misma. Ahora todas salen del mismo lugar.
    loadCatalog() lo reemplaza entero si Supabase responde.                   */
 let CATALOGO = [
-  {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/ultra3black.png', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
+  {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/ultra3black.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
   {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
   {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
   {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpods-3gen.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
   {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
   {slug:'airpods-max',              cat:'audifonos',  name:'Max Magnéticos',             image:'images/max-magneticos.webp',      desc:'Accesorios magnéticos premium compatibles con MagSafe. Fijación perfecta y carga inalámbrica optimizada.'},
-  {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4black.png',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
-  {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/budspro2.png',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
-  {slug:'iphone-15-128',            cat:'celulares',  name:'iPhone 15 128 GB',           image:'images/iphone15uno.png',           desc:'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.'},
-  {slug:'iphone-16-128',            cat:'celulares',  name:'iPhone 16 128 GB',           image:'images/iphone16uno.png',           desc:'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.'},
-  {slug:'s26-plus-256',             cat:'celulares',  name:'Galaxy S26 Plus 256 GB',     image:'images/samsumg26uno.png',            desc:'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.'},
+  {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4black.webp',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
+  {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/budspro2.webp',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
+  {slug:'iphone-15-128',            cat:'celulares',  name:'iPhone 15 128 GB',           image:'images/iphone15uno.webp',           desc:'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.'},
+  {slug:'iphone-16-128',            cat:'celulares',  name:'iPhone 16 128 GB',           image:'images/iphone16uno.webp',           desc:'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.'},
+  {slug:'s26-plus-256',             cat:'celulares',  name:'Galaxy S26 Plus 256 GB',     image:'images/samsumg26uno.webp',            desc:'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.'},
   {slug:'bateria-magsafe',          cat:'celulares',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
-  {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargadorcompletotipoc.png',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
+  {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargadorcompletotipoc.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
   {slug:'cargador-samsung-45w',     cat:'cargadores', name:'Cargador Samsung 45W',       image:'images/cargador-samsung-45w.webp',desc:'Cargador ultra rápido Samsung 45W. Compatible con toda la línea Galaxy. Carga completa en menos de una hora.'},
 ];
 
@@ -258,24 +258,24 @@ const FEATURES={
 };            // fallback — loadCatalog() lo sobreescribe desde Supabase
 // { slug: [imgPrincipal, ...secundarias] } — desde Supabase (vacío = usa fallback hardcodeado)
 const GALLERY={
-  'buds2-pro':['images/budspro2.png','images/budspro2imagen2.png'],
-  'iphone-15-128':['images/iphone15uno.png','images/iphone15dos.png','images/iphone15tres.png'],
-  'iphone-16-128':['images/iphone16uno.png','images/iphone16dos.png','images/iphone16tres.png'],
-  's26-plus-256':['images/samsumg26uno.png','images/samsumg26dos.png','images/samsumg26tres.png'],
+  'buds2-pro':['images/budspro2.webp','images/budspro2imagen2.webp'],
+  'iphone-15-128':['images/iphone15uno.webp','images/iphone15dos.webp','images/iphone15tres.webp'],
+  'iphone-16-128':['images/iphone16uno.webp','images/iphone16dos.webp','images/iphone16tres.webp'],
+  's26-plus-256':['images/samsumg26uno.webp','images/samsumg26dos.webp','images/samsumg26tres.webp'],
 };
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).
 /* Cada color lleva 'agotado'. En true sigue a la vista pero en gris y no se
    puede elegir, y desde /admin se vuelve a encender sin perder las fotos. */
 const COLOR_VARIANTS={
   'apple-watch-ultra-3':[
-    {name:'Negro',   hex:'#1A1A1A', img:'images/ultra3black.png',  swatch:'images/miniblackultra3.png'},
-    {name:'Gris',    hex:'#8E8E93', img:'images/ultra3gris.png',   swatch:'images/minigrisultra3.png'},
-    {name:'Naranja', hex:'#F26513', img:'images/ultra3orange.png', swatch:'images/miniorangeultra3.png'},
+    {name:'Negro',   hex:'#1A1A1A', img:'images/ultra3black.webp',  swatch:'images/miniblackultra3.webp'},
+    {name:'Gris',    hex:'#8E8E93', img:'images/ultra3gris.webp',   swatch:'images/minigrisultra3.webp'},
+    {name:'Naranja', hex:'#F26513', img:'images/ultra3orange.webp', swatch:'images/miniorangeultra3.webp'},
   ],
   'buds4-pro':[
-    {name:'Negro', hex:'#1A1A1A', img:'images/buds4black.png', swatch:'images/minibuds4black.png'},
-    {name:'Gris',  hex:'#8E8E93', img:'images/buds4gris.png',  swatch:'images/minibuds4gris.png'},
-    {name:'Rosa',  hex:'#E8A0B4', img:'images/buds4pink.png',  swatch:'images/minibuds4pink.png'},
+    {name:'Negro', hex:'#1A1A1A', img:'images/buds4black.webp', swatch:'images/minibuds4black.webp'},
+    {name:'Gris',  hex:'#8E8E93', img:'images/buds4gris.webp',  swatch:'images/minibuds4gris.webp'},
+    {name:'Rosa',  hex:'#E8A0B4', img:'images/buds4pink.webp',  swatch:'images/minibuds4pink.webp'},
   ],
   'airpods-max':[
     {name:'Midnight', hex:'#1A1A1A', img:'images/max-negros.webp',  swatch:'images/black.webp'},
