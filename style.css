@@ -2047,3 +2047,36 @@ svg{ -webkit-user-select:none; user-select:none; }
   .tira-pista{ animation:none !important; }
   .tira{ overflow-x:auto !important; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V31 — el banner de categoría respeta el margen de los productos
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* Iba de borde a borde de la pantalla y quedaba desalineado con las tarjetas
+   de abajo. Ahora usa el mismo ancho y el mismo margen que .cpage-body, así
+   el banner y la primera columna de productos arrancan en la misma línea. */
+.cpage-banner{
+  max-width:1320px;
+  margin:28px auto 0;
+  padding:0 24px;
+  background:transparent;
+}
+.cpage-banner-media{ border-radius:12px; overflow:hidden; }
+.cpage-banner .slot{
+  border-radius:12px;
+  border:1.5px dashed var(--gray-light);
+}
+
+/* El cuerpo ya no necesita tanto aire arriba: lo separa el banner. */
+.cpage-body{ padding-top:30px; }
+
+/* El botón de volver quedaba sobre el banner cuando este llegaba al borde.
+   Ahora que hay margen, se corre para no taparlo. */
+.cpage-back{ top:16px; left:16px; }
+
+@media(max-width:768px){
+  /* El margen de arriba deja lugar al botón de volver, que está fijo en esa
+     esquina y sin esto quedaría encima del banner. */
+  .cpage-banner{ padding:0 16px; margin-top:58px; }
+  .cpage-body{ padding-top:24px; }
+}
