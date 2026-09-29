@@ -56,3 +56,11 @@ from public.products p
 left join public.price_tiers t on t.product_id = p.id
 where p.slug in ('iphone-15-128','iphone-16-128','s26-plus-256')
 group by p.id, p.slug, p.name, p.category;
+
+-- ── Fotos del iPhone 15 ─────────────────────────────────────────────────────
+-- La primera es la principal; las otras dos van a la galería de la ficha, la
+-- que se recorre con la flecha.
+update public.products set
+  image   = 'images/iphone15uno.png',
+  gallery = array['images/iphone15dos.png','images/iphone15tres.png']
+where slug = 'iphone-15-128';

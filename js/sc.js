@@ -24,6 +24,9 @@ let OFERTAS = [
 // Fila de abajo, a lo ancho. Va después de las categorías. Acá están los seis
 // que no salen arriba, así que entre las dos filas se ve todo el catálogo.
 let MAS_PRODUCTOS = [
+  'iphone-15-128',
+  'iphone-16-128',
+  's26-plus-256',
   'apple-watch-serie-10',
   'airpods-3',
   'airpods-max',
