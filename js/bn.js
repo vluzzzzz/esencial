@@ -73,7 +73,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.png';
 let CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.png',  medida:'800 × 1000', banner:'images/audifonoscategorias.png', bannerMobile:'images/aurifonoscategoriacelu.png', bannerArchivo:'banner-audifonos.png'  },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.png',      medida:'800 × 500',  banner:'images/categoriasmarwatch.png', bannerMobile:'', bannerArchivo:'banner-smartwatch.png' },
-  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'images/smarthphonecategoria.png', bannerMobile:'', bannerArchivo:'banner-celulares.png'  },
+  { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.png',         medida:'800 × 500',  banner:'images/smarthphonecategoria.png', bannerMobile:'images/smartphonecategoriacelu.png', bannerArchivo:'banner-celulares.png'  },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.png', medida:'800 × 1000', banner:'images/categoriacargadores.png', bannerMobile:'images/cargadorescelu.png', bannerArchivo:'banner-cargadores.png' },
 ];
 
