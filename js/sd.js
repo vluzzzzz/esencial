@@ -45,7 +45,7 @@ let CATALOGO = [
   {slug:'buds4-pro',                cat:'audifonos',  name:'Galaxy Buds4 Pro',           image:'images/buds4black.png',           desc:'Audífonos inalámbricos Samsung con cancelación de ruido y audio de alta resolución. Compatibles con toda la línea Galaxy.'},
   {slug:'buds2-pro',                cat:'audifonos',  name:'Galaxy Buds2 Pro',           image:'images/budspro2.png',           desc:'Audífonos inalámbricos Samsung, compactos y livianos, con cancelación de ruido y sonido envolvente.'},
   {slug:'iphone-15-128',            cat:'celulares',  name:'iPhone 15 128 GB',           image:'images/iphone15uno.png',           desc:'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.'},
-  {slug:'iphone-16-128',            cat:'celulares',  name:'iPhone 16 128 GB',           image:'images/iphone-16.webp',           desc:'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.'},
+  {slug:'iphone-16-128',            cat:'celulares',  name:'iPhone 16 128 GB',           image:'images/iphone16uno.png',           desc:'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.'},
   {slug:'s26-plus-256',             cat:'celulares',  name:'Galaxy S26 Plus 256 GB',     image:'images/s26-plus.webp',            desc:'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.'},
   {slug:'bateria-magsafe',          cat:'celulares',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
@@ -260,6 +260,7 @@ const FEATURES={
 const GALLERY={
   'buds2-pro':['images/budspro2.png','images/budspro2imagen2.png'],
   'iphone-15-128':['images/iphone15uno.png','images/iphone15dos.png','images/iphone15tres.png'],
+  'iphone-16-128':['images/iphone16uno.png','images/iphone16dos.png','images/iphone16tres.png'],
 };
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).
 /* Cada color lleva 'agotado'. En true sigue a la vista pero en gris y no se

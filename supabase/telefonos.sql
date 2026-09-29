@@ -64,3 +64,9 @@ update public.products set
   image   = 'images/iphone15uno.png',
   gallery = array['images/iphone15dos.png','images/iphone15tres.png']
 where slug = 'iphone-15-128';
+
+-- ── Fotos del iPhone 16 ─────────────────────────────────────────────────────
+update public.products set
+  image   = 'images/iphone16uno.png',
+  gallery = array['images/iphone16dos.png','images/iphone16tres.png']
+where slug = 'iphone-16-128';
