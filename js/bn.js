@@ -28,8 +28,7 @@ let BANNERS = [
   { desktop:'images/bannerdos.png',     mobile:'', alt:'AirPods Pro 3',        producto:'airpods-3' },
   { desktop:'images/bannertres.png',    mobile:'', alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
   { desktop:'images/bannercuatro.png',  mobile:'', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  // Quinto banner en pausa. Para traerlo de vuelta, borrá las dos barras:
-  // { desktop:'', mobile:'', archivo:'bannercinco.png',  alt:'Banner 5', link:'#ofertas' },
+  { desktop:'images/bannercinco.png',   mobile:'', alt:'Ofertas del mes',      link:'#ofertas' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
