@@ -6,9 +6,8 @@
 --  Van sin precio mayorista: un solo tramo, el de una unidad. La ficha
 --  muestra ese precio y nada de tabla por cantidad.
 --
---  Las fotos todavía no existen. Hasta subirlas desde /admin se ve el ícono
---  gris de imagen faltante. Los archivos que esperan son:
---    images/iphone-15.webp · images/iphone-16.webp · images/s26-plus.webp
+--  Las fotos van al final de este archivo: una principal y dos de galería
+--  para cada teléfono.
 -- ============================================================================
 
 insert into public.products
@@ -16,19 +15,19 @@ insert into public.products
 values
   ('iphone-15-128', 'iPhone 15 128 GB', 'celulares',
    'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.',
-   'images/iphone-15.webp', 0.75, true,
+   'images/iphone15uno.png', 0.75, true,
    array['128 GB de almacenamiento','Pantalla Super Retina XDR','Cámara principal de 48 MP','Puerto USB-C'],
    '[]'::jsonb, 20),
 
   ('iphone-16-128', 'iPhone 16 128 GB', 'celulares',
    'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.',
-   'images/iphone-16.webp', 0.75, true,
+   'images/iphone16uno.png', 0.75, true,
    array['128 GB de almacenamiento','Chip A18','Botón de Control de Cámara','Cámara principal de 48 MP'],
    '[]'::jsonb, 21),
 
   ('s26-plus-256', 'Galaxy S26 Plus 256 GB', 'celulares',
    'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.',
-   'images/s26-plus.webp', 0.75, true,
+   'images/samsumg26uno.png', 0.75, true,
    array['256 GB de almacenamiento','Pantalla Dynamic AMOLED','Cámara de alta resolución','Carga rápida'],
    '[]'::jsonb, 22)
 
@@ -70,3 +69,9 @@ update public.products set
   image   = 'images/iphone16uno.png',
   gallery = array['images/iphone16dos.png','images/iphone16tres.png']
 where slug = 'iphone-16-128';
+
+-- ── Fotos del Galaxy S26 Plus ───────────────────────────────────────────────
+update public.products set
+  image   = 'images/samsumg26uno.png',
+  gallery = array['images/samsumg26dos.png','images/samsumg26tres.png']
+where slug = 's26-plus-256';
