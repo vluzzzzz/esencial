@@ -2108,11 +2108,9 @@ svg{ -webkit-user-select:none; user-select:none; }
 .nav-right .icon-btn,
 .nav.nav-on-dark .nav-right .icon-btn{ color:var(--black) !important; opacity:1 !important; }
 .nav .icon,
-.nav.nav-on-dark .icon{ fill:var(--black) !important; opacity:.78 !important; }
-.nav-right a.icon-btn svg{ fill:none !important; stroke:var(--black); opacity:.78; }
+.nav.nav-on-dark .icon{ fill:var(--black) !important; opacity:1 !important; }
+.nav-right a.icon-btn svg{ fill:none !important; stroke:var(--black); opacity:1; stroke-width:2; }
 .nav-right .icon-btn:hover{ background:rgba(0,0,0,.055); }
-.nav-right .icon-btn:hover .icon{ opacity:1 !important; }
-.nav-right a.icon-btn:hover svg{ opacity:1; }
 .cart-count{ background:var(--black); color:#fff; }
 
 /* Buscador: blanco sobre el gris de la página, para que se lea que es un
@@ -2132,14 +2130,15 @@ svg{ -webkit-user-select:none; user-select:none; }
 .nav-buscador .buscador-input::placeholder{ color:var(--gray-mid); }
 .nav-buscador .buscador-clear{ color:var(--gray-mid); }
 
-/* La cinta azul queda pegada a la nav sin fondo, así que una línea muy suave
-   separa la nav del contenido sin cerrarla como una caja. */
-.nav::after{
-  content:''; position:absolute; left:48px; right:48px; bottom:0; height:1px;
-  background:rgba(0,0,0,.07);
+/* La nav estaba en position:static, donde z-index no hace nada. El banner,
+   en cambio, es relative con z-index 2: se pintaba por encima de la nav y al
+   desplazarse en el teléfono se comía el borde del buscador. Con relative y
+   una capa más alta, la nav siempre queda arriba. */
+.nav{
+  position:relative;
+  z-index:60;
 }
 
 @media(max-width:768px){
   .nav{ height:auto; }
-  .nav::after{ left:16px; right:16px; }
 }
