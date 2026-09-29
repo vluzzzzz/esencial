@@ -2172,10 +2172,15 @@ svg{ -webkit-user-select:none; user-select:none; }
 .topbar::before,
 .topbar::after{
   content:''; position:absolute; top:0; bottom:0; width:6%;
-  z-index:2; pointer-events:none;
+  z-index:1; pointer-events:none;
 }
 .topbar::before{ left:0;  background:linear-gradient(to right,var(--celeste),transparent); }
 .topbar::after { right:0; background:linear-gradient(to left, var(--celeste),transparent); }
+
+/* Los mensajes van por encima del degradado. Sin position propia la pista no
+   entra en el orden de apilado y el degradado le pasaba por delante, tapando
+   las letras que entraban y salían. */
+.topbar-track{ position:relative; z-index:2; }
 
 /* La cinta se anima sin parar. Con will-change queda pegada a la tarjeta
    gráfica todo el tiempo, y esa capa permanente al lado de la nav es lo que
