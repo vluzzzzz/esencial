@@ -94,14 +94,18 @@ const Trust = (() => {
     const { media, total } = Reviews.resumen();
     const items = [
       { i:'envio',   t:'Envío a todo Chile',   s:'Despacho en 24 h hábiles' },
-      { i:'escudo',  t:'Garantía de 6 meses',  s:'Cambio por falla de fábrica' },
+      { i:'escudo',  t:'Calidad garantizada',  s:'Cambio por falla de fábrica' },
       { i:'candado', t:'Pago seguro',          s:'Procesado por Mercado Pago' },
       { i:'estrella',t:`${Number(media).toFixed(1).replace('.', ',')} de 5 estrellas`, s:`${total} clientes ya opinaron` },
     ];
-    return items.map(x => `<div class="tira-item">
+    const uno = items.map(x => `<div class="tira-item">
         <span class="tira-icono">${ICONOS[x.i]}</span>
         <div><p class="tira-t">${x.t}</p><p class="tira-s">${x.s}</p></div>
       </div>`).join('');
+    // Duplicada, porque en el teléfono se desliza sola de 0 a -50% y sin la
+    // copia se vería el salto al reiniciar. En escritorio la segunda mitad
+    // queda oculta: ahí es una rejilla de cuatro y no hay movimiento.
+    return `<div class="tira-pista">${uno}${uno}</div>`;
   }
 
   /* ── Decorar tarjetas ya pintadas ──────────────────────────────────────── */

@@ -1284,10 +1284,6 @@ body:has(#topbar) .nav{top:auto}
 /* ── Fila de ofertas ────────────────────────────────────────────────────── */
 .ofertas-section{ position:relative; z-index:2; max-width:1320px; margin:0 auto; padding:72px 24px 0; }
 .ofertas-header{ margin-bottom:28px; }
-.ofertas-subtitulo{
-  font-size:13px; font-weight:500; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--celeste-deep);
-}
 .ofertas-titulo{
   font-family:var(--font-display); font-size:clamp(38px,6vw,64px);
   letter-spacing:.02em; line-height:1; margin-top:6px;
@@ -2005,4 +2001,49 @@ svg{ -webkit-user-select:none; user-select:none; }
   .carru-pista .card-cart{ width:33px !important; height:33px !important; }
   .carru-pista .card-cart svg{ width:16px; height:16px; }
   .carru-pista .card-foot{ gap:7px; }
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   V30 — la tira de confianza pasa a carrusel automático en el teléfono
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* En escritorio la pista es transparente: la rejilla de cuatro columnas sigue
+   siendo la de .tira, así que los cuatro elementos se reparten igual que
+   antes. La segunda mitad duplicada se esconde para no repetirlos. */
+.tira-pista{ display:contents; }
+.tira-pista > .tira-item:nth-child(n+5){ display:none; }
+
+@media(max-width:768px){
+  /* Acá se convierte en una sola fila que se desliza sola, como la cinta de
+     arriba. Se sale del margen para que llegue al borde de la pantalla. */
+  .tira{
+    display:block !important;
+    overflow:hidden;
+    padding:14px 0;
+    margin-left:0; margin-right:0;
+    -webkit-mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent);
+            mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent);
+  }
+  .tira-pista{
+    display:flex;
+    width:max-content;
+    gap:26px;
+    padding-left:16px;
+    animation:cinta 34s linear infinite;
+    will-change:transform;
+  }
+  /* Con la copia visible el bucle no muestra el salto al reiniciar. */
+  .tira-pista > .tira-item:nth-child(n+5){ display:flex; }
+  .tira-item{ flex:0 0 auto; }
+  .tira-t{ font-size:12.5px; white-space:nowrap; }
+  .tira-s{ font-size:11px; white-space:nowrap; }
+  .tira-icono{ width:31px; height:31px; }
+  .tira-icono svg{ width:17px; height:17px; }
+}
+
+/* Si el sistema pide menos movimiento, la fila se queda quieta y se puede
+   recorrer a mano. */
+@media (prefers-reduced-motion: reduce){
+  .tira-pista{ animation:none !important; }
+  .tira{ overflow-x:auto !important; }
 }
