@@ -206,7 +206,7 @@ const Checkout=(()=>{
         name:getRaw('chkName'),email:getEmail(),phone:getPhone(),
         rut:getRaw('chkRut'),city:getRaw('chkCity'),address:getRaw('chkAddress'),
       };
-      const items=state.cart.map(({product,qty})=>({name:product.name+(product.colorName?` (${product.colorName})`:''),qty,price:getUnitPrice(product.key,qty)}));
+      const items=state.cart.map(({product,qty})=>({name:product.name+(product.colorName?` (${product.colorName})`:''),qty,price:getUnitPrice(product.key,qty),img:product.image||''}));
       const res=await fetch('/api/create-preference',{
         method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({items,customer}),

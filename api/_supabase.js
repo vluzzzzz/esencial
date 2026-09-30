@@ -43,6 +43,7 @@ async function crearPedidoIniciado({ customer, items, total }) {
       name: String(i.name || '').slice(0, 200),
       qty: Number(i.qty) || 0,
       price: Number(i.price) || 0,
+      img: String(i.img || '').slice(0, 300),
     })),
     total: Number(total) || 0,
   };
@@ -84,7 +85,7 @@ async function guardarPedidoPagado({ customer, items, total, paymentId, mpStatus
     cliente_rut:       String(customer?.rut     || ''),
     cliente_ciudad:    String(customer?.city    || ''),
     cliente_direccion: String(customer?.address || ''),
-    items: (items || []).map(i => ({ name: String(i.name || ''), qty: Number(i.qty) || 0, price: Number(i.price) || 0 })),
+    items: (items || []).map(i => ({ name: String(i.name || ''), qty: Number(i.qty) || 0, price: Number(i.price) || 0, img: String(i.img || '') })),
     total: Number(total) || 0,
     paid_at: new Date().toISOString(),
   };

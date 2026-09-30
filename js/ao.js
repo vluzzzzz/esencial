@@ -96,7 +96,10 @@ const Pedidos = (() => {
     const lista = Array.isArray(items) ? items : [];
     if (!lista.length) return '<p class="hint">Sin detalle de productos.</p>';
     return '<table class="ped-items"><tbody>' + lista.map(i =>
-      '<tr><td>' + (Number(i.qty) || 0) + '× ' + escH(i.name) + '</td>' +
+      '<tr><td class="mini">' + (i.img
+          ? '<img src="' + escH(i.img) + '" alt="" loading="lazy">'
+          : '<span class="mini-vacia"></span>') + '</td>' +
+      '<td>' + (Number(i.qty) || 0) + '× ' + escH(i.name) + '</td>' +
       '<td class="num uni">' + fmt(i.price) + '</td>' +
       '<td class="num">' + fmt((Number(i.price) || 0) * (Number(i.qty) || 0)) + '</td></tr>'
     ).join('') + '</tbody></table>';
@@ -249,6 +252,12 @@ const Pedidos = (() => {
     document.addEventListener('click', e => {
       if (!e.target.closest('[data-act="avanzar"]')) soltarOk();
     });
+
+    // Una foto que no carga deja el hueco, no el icono de roto. El evento
+    // error no burbujea, asi que se escucha en la fase de captura.
+    cont.addEventListener('error', e => {
+      if (e.target.tagName === 'IMG') e.target.classList.add('mini-rota');
+    }, true);
 
     const sel = $('#filtroPedido');
     if (sel) sel.addEventListener('change', e => { filtro = e.target.value; pintar(); });
