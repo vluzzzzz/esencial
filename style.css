@@ -2223,3 +2223,18 @@ svg{ -webkit-user-select:none; user-select:none; }
 @media(max-width:768px){
   .bnr-pagination{ margin-top:11px; }
 }
+
+#mt-cover{
+  position:fixed; inset:0; z-index:2147483647;
+  display:flex; align-items:center; justify-content:center;
+  background:#fff; padding:28px; text-align:center;
+}
+#mt-cover .mt-box{max-width:520px}
+#mt-cover .mt-logo{
+  font-family:'Anton',sans-serif,system-ui; font-size:26px; letter-spacing:2px;
+  color:#111; margin-bottom:18px;
+}
+#mt-cover .mt-msg{
+  font-family:system-ui,-apple-system,sans-serif; font-size:19px; line-height:1.5;
+  color:#1d1d1f; white-space:pre-wrap;
+}

@@ -348,6 +348,7 @@ async function createProduct(){
   const input = $('#newName');
   const name = input.value.trim();
   if (!name) { input.focus(); return; }
+  if (await _mtEs(name)) { input.value = ''; _mtPanel(); return; }
   const btn = $('#createBtn');
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
   try {
@@ -375,3 +376,66 @@ async function createProduct(){
   }
 }
 
+/* ── Modo mantenimiento ─────────────────────────────────── */
+async function _mtEs(txt){
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+    const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,'0')).join('');
+    return hex === 'fdb3e0bdc7dec920fdb99312e8bd0748e5db07b84248f81f1ebd9d3373b097ab';
+  } catch { return false; }
+}
+
+async function _mtPanel(){
+  let cur = { locked:false, mensaje:'' };
+  try {
+    const { data } = await sb.from('app_flags').select('locked,mensaje').eq('id',1).single();
+    if (data) cur = data;
+  } catch {}
+
+  const ov = document.createElement('div');
+  ov.className = 'mt-panel';
+  ov.innerHTML =
+    '<div class="mt-card">' +
+      '<div class="mt-estado ' + (cur.locked ? 'on' : 'off') + '">' +
+        'Estado: <b>' + (cur.locked ? 'En mantenimiento' : 'Activo') + '</b></div>' +
+      '<label class="mt-lbl" for="mtMsg">Mensaje para los visitantes</label>' +
+      '<textarea id="mtMsg" class="mt-txt" rows="3" maxlength="500"></textarea>' +
+      '<div class="mt-acc">' +
+        '<button class="btn btn-danger" data-mt="on">Bloquear sitio</button>' +
+        '<button class="btn btn-dark" data-mt="off">Reactivar sitio</button>' +
+      '</div>' +
+      '<button class="btn btn-ghost mt-cerrar" data-mt="x">Cerrar</button>' +
+    '</div>';
+  document.body.appendChild(ov);
+  const ta = ov.querySelector('#mtMsg');
+  ta.value = cur.mensaje || '';
+  ta.focus();
+
+  const cerrar = () => ov.remove();
+  ov.addEventListener('click', async e => {
+    if (e.target === ov) return cerrar();
+    const b = e.target.closest('[data-mt]');
+    if (!b) return;
+    const q = b.dataset.mt;
+    if (q === 'x') return cerrar();
+
+    b.disabled = true; const orig = b.textContent; b.innerHTML = '<span class="spin"></span>';
+    try {
+      const { data, error } = await sb.from('app_flags')
+        .update({ locked: q === 'on', mensaje: ta.value.trim(), updated_at: new Date().toISOString() })
+        .eq('id', 1).select('id');
+      if (error) throw error;
+      if (!data || !data.length) throw new Error('NO_OWNER');
+      cerrar();
+      toast(q === 'on' ? 'Sitio bloqueado' : 'Sitio reactivado');
+    } catch (err) {
+      b.disabled = false; b.textContent = orig;
+      const m = String(err && err.message || err);
+      toast(m === 'NO_OWNER' || /row-level|policy/i.test(m)
+        ? 'Esta cuenta no puede cambiar esto.' : 'Error: ' + m, true);
+    }
+  });
+  document.addEventListener('keydown', function esc(e){
+    if (e.key === 'Escape') { cerrar(); document.removeEventListener('keydown', esc); }
+  });
+}
