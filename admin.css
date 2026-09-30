@@ -262,8 +262,16 @@ input[type=date]{
    tarjeta de un tercio de ancho. */
 .ped-datos p{font-size:14px; margin-bottom:9px; overflow-wrap:anywhere}
 .ped-datos b{display:block; color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.6px; text-transform:uppercase}
-.ped-wa{color:var(--green); font-weight:600; text-decoration:none; margin-left:8px}
-.ped-wa:hover{text-decoration:underline}
+/* El numero y el icono en la misma linea: el dato y la accion juntos. */
+.ped-tel{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.ped-tel b{flex-basis:100%}
+.ped-wa{
+  display:inline-flex; align-items:center; justify-content:center; flex:none;
+  width:30px; height:30px; border-radius:50%;
+  background:#25d366; color:#fff; transition:.15s;
+}
+.ped-wa svg{width:17px; height:17px}
+.ped-wa:hover{transform:scale(1.1); box-shadow:0 2px 8px rgba(37,211,102,.5)}
 
 .ped-items{width:100%; border-collapse:collapse; margin-top:14px; font-size:13px}
 .ped-items td{padding:7px 0; border-bottom:1px solid var(--line); overflow-wrap:anywhere}
