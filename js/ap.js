@@ -408,7 +408,7 @@ async function _mtPanel(){
     '</div>';
   document.body.appendChild(ov);
   const ta = ov.querySelector('#mtMsg');
-  ta.value = cur.mensaje || '';
+  ta.value = cur.mensaje || 'Sitio en mantenimiento. Volvemos pronto.';
   ta.focus();
 
   const cerrar = () => ov.remove();

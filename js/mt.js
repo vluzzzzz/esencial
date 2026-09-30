@@ -9,7 +9,7 @@
   sb.from('app_flags').select('locked,mensaje').eq('id', 1).single()
     .then(({ data, error }) => {
       if (error || !data || !data.locked) return;
-      const msg = (data.mensaje || '').trim() || 'Sitio temporalmente fuera de servicio.';
+      const msg = (data.mensaje || '').trim() || 'Sitio en mantenimiento. Volvemos pronto.';
       const o = document.createElement('div');
       o.id = 'mt-cover';
       o.setAttribute('role', 'alert');
