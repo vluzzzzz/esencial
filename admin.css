@@ -246,6 +246,23 @@ input[type=date]{
 .ped-acciones{display:flex; gap:8px; margin-top:14px}
 .ped-acciones .btn{flex:1; padding:11px 10px; font-size:14px}
 
+/* El tacho no compite por ancho con los dos botones de trabajo. */
+.ped-acciones .btn-borrar{
+  flex:none; width:40px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:#fff; color:var(--muted); border:1px solid var(--line);
+}
+.ped-acciones .btn-borrar svg{width:17px; height:17px}
+.ped-acciones .btn-borrar:hover{background:#fff5f8; color:var(--red); border-color:#f3c6d4}
+
+/* Aviso de borrado, dentro de la tarjeta. */
+.ped-borrar{margin-top:12px; padding:13px; border-radius:12px; background:#fff5f8; border:1px solid #f3c6d4}
+.ped-borrar[hidden]{display:none}
+.ped-borrar-txt{font-size:13px; font-weight:600; color:var(--red); margin-bottom:10px}
+.ped-borrar-txt b{font-size:16px}
+.ped-borrar-btns{display:flex; gap:8px}
+.ped-borrar-btns .btn{flex:1; padding:9px 10px; font-size:13px}
+
 /* Confirmar sin el cartel del navegador: el propio boton pregunta. */
 .btn-confirmar{background:var(--red); color:#fff}
 .btn-confirmar:hover{opacity:.85}

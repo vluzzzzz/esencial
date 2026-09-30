@@ -155,10 +155,17 @@ El botón oscuro avanza el estado, de a uno:
 El **enviado** baja al final y queda apagado, pero se sigue abriendo: los datos
 no se pierden nunca.
 
+Para **eliminar** un pedido está el tacho, al lado de los otros dos botones.
+Pide confirmación y después da 5 segundos con un botón **Cancelar** antes de
+borrarlo. Un pedido borrado no se recupera: se van los datos del cliente, la
+dirección y qué compró. El pago sí queda registrado en Mercado Pago.
+
 Para que esto funcione hay que hacer dos cosas una sola vez:
 
 1. Correr `supabase/add-orders.sql` en Supabase → SQL Editor → **Run**.
    (Antes tiene que estar corrido `supabase/acceso-admin.sql` con tu correo.)
+   Si ya lo corriste antes de que existiera el botón de eliminar, corré también
+   `supabase/borrar-pedidos.sql`.
 2. En Vercel → Settings → Environment Variables agregar `SUPABASE_URL` y
    `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Settings → API Keys, la
    `sb_secret_...`). Esa clave es secreta: va solo ahí.

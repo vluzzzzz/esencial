@@ -23,6 +23,8 @@ const Pedidos = (() => {
 
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
+  const ICONO_TACHO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
+
   const ICONO_WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
 
   function fecha(iso) {
@@ -124,7 +126,9 @@ const Pedidos = (() => {
       '<div class="ped-acciones">' +
         '<button class="btn btn-ghost" data-act="ver">' + (abierto ? 'Ocultar' : 'Ver pedido') + '</button>' +
         '<button class="btn btn-dark" data-act="avanzar"' + (est.sig ? '' : ' disabled') + '>' + escH(est.btn) + '</button>' +
+        '<button class="btn btn-borrar" data-act="borrar" title="Eliminar pedido" aria-label="Eliminar pedido">' + ICONO_TACHO + '</button>' +
       '</div>' +
+      '<div class="ped-borrar" hidden></div>' +
 
       '<div class="ped-detalle"' + (abierto ? '' : ' hidden') + '>' +
         '<div class="ped-datos">' +
@@ -219,6 +223,90 @@ const Pedidos = (() => {
     }
   }
 
+  /* ── Borrar ─────────────────────────────────────────────────────────── */
+
+  // Dos frenos antes de perder un pedido: primero pregunta, y despues da 5
+  // segundos para arrepentirse. Recien ahi lo borra de la base.
+  const SEGUNDOS = 5;
+  let borrando = null;
+  let cuentaT = null;
+
+  function zonaDe(id) {
+    const card = $('#listPedidos [data-id="' + id + '"]');
+    return card ? card.querySelector('.ped-borrar') : null;
+  }
+
+  function cerrarBorrar() {
+    clearInterval(cuentaT);
+    const z = borrando && zonaDe(borrando);
+    if (z) { z.innerHTML = ''; z.setAttribute('hidden', ''); }
+    borrando = null;
+  }
+
+  function preguntarBorrar(id) {
+    if (borrando === id) return;
+    cerrarBorrar();
+    const z = zonaDe(id);
+    if (!z) return;
+    borrando = id;
+    z.removeAttribute('hidden');
+    z.innerHTML = '<p class="ped-borrar-txt">¿Seguro que querés eliminar este pedido? ' +
+      'No se recupera.</p>' +
+      '<div class="ped-borrar-btns">' +
+        '<button class="btn btn-danger" data-act="borrarSi">Sí, eliminar</button>' +
+        '<button class="btn btn-ghost" data-act="borrarNo">No</button>' +
+      '</div>';
+  }
+
+  function contarBorrar(id) {
+    const z = zonaDe(id);
+    if (!z) return;
+    let quedan = SEGUNDOS;
+    const pintarCuenta = () => {
+      z.innerHTML = '<p class="ped-borrar-txt">Eliminando en <b>' + quedan + '</b>…</p>' +
+        '<div class="ped-borrar-btns">' +
+          '<button class="btn btn-dark" data-act="borrarCancelar">Cancelar</button>' +
+        '</div>';
+    };
+    pintarCuenta();
+    clearInterval(cuentaT);
+    cuentaT = setInterval(() => {
+      const zona = zonaDe(id);
+      if (borrando !== id || !zona || zona.hasAttribute('hidden')) { cerrarBorrar(); return; }
+      quedan--;
+      if (quedan > 0) { pintarCuenta(); return; }
+      clearInterval(cuentaT);
+      borrarYa(id);
+    }, 1000);
+  }
+
+  async function borrarYa(id) {
+    const z = zonaDe(id);
+    if (z) z.innerHTML = '<p class="ped-borrar-txt">Eliminando…</p>';
+    try {
+      const { data, error } = await sb.from('orders').delete().eq('id', id).select('id');
+      if (error) throw error;
+      if (!data || !data.length) throw new Error('SIN_PERMISO');
+
+      cerrarBorrar();
+      pedidos = pedidos.filter(p => p.id !== id);
+      abiertos.delete(id);
+      pintarFiltro();
+      pintar();
+      toast('Pedido eliminado');
+    } catch (err) {
+      cerrarBorrar();
+      toast(mensajeBorrar(err), true);
+    }
+  }
+
+  function mensajeBorrar(err) {
+    const m = String(err && err.message || err);
+    if (m === 'SIN_PERMISO' || /row-level security/i.test(m))
+      return 'Falta el permiso para borrar: corré supabase/borrar-pedidos.sql';
+    return mensajeError(err);
+  }
+
   /* ── Eventos ────────────────────────────────────────────────────────── */
 
   function conectar() {
@@ -234,6 +322,7 @@ const Pedidos = (() => {
       if (!id) return;
 
       if (b.dataset.act !== 'avanzar') soltarOk();
+      if (!String(b.dataset.act).startsWith('borrar')) cerrarBorrar();
 
       if (b.dataset.act === 'ver') {
         const det = card.querySelector('.ped-detalle');
@@ -246,11 +335,17 @@ const Pedidos = (() => {
         if (esperando === id) { soltarOk(); avanzar(id, b); }
         else pedirOk(id, b);
       }
+      if (b.dataset.act === 'borrar')          preguntarBorrar(id);
+      if (b.dataset.act === 'borrarSi')        contarBorrar(id);
+      if (b.dataset.act === 'borrarNo')        cerrarBorrar();
+      if (b.dataset.act === 'borrarCancelar')  cerrarBorrar();
     });
 
     // Un clic en cualquier otro lado deshace la confirmacion pendiente.
     document.addEventListener('click', e => {
       if (!e.target.closest('[data-act="avanzar"]')) soltarOk();
+      // La cuenta no se corta desde afuera: solo con Cancelar. Un clic al lado
+      // no puede dejar el borrado corriendo a ciegas ni cancelarlo sin querer.
     });
 
     // Una foto que no carga deja el hueco, no el icono de roto. El evento
@@ -260,10 +355,11 @@ const Pedidos = (() => {
     }, true);
 
     const sel = $('#filtroPedido');
-    if (sel) sel.addEventListener('change', e => { filtro = e.target.value; pintar(); });
+    if (sel) sel.addEventListener('change', e => { cerrarBorrar(); filtro = e.target.value; pintar(); });
 
     const rec = $('#recargarPedidos');
     if (rec) rec.addEventListener('click', () => {
+      cerrarBorrar();
       const orig = rec.textContent;
       rec.disabled = true;
       rec.innerHTML = '<span class="spin"></span>';

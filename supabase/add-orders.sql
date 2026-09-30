@@ -58,5 +58,9 @@ drop policy if exists "orders admin write" on public.orders;
 create policy "orders admin write" on public.orders
   for update to authenticated using ( public.es_admin() ) with check ( public.es_admin() );
 
--- Sin política de insert ni de delete para nadie: el único que inserta es el
--- servidor, con la clave de servicio, que no pasa por estas reglas.
+drop policy if exists "orders admin delete" on public.orders;
+create policy "orders admin delete" on public.orders
+  for delete to authenticated using ( public.es_admin() );
+
+-- Sin política de insert para nadie: el único que inserta es el servidor, con
+-- la clave de servicio, que no pasa por estas reglas.
