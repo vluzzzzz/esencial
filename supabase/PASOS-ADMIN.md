@@ -139,6 +139,32 @@ que se sostenga.
 flechas. Los que no marcás siguen en la tienda: se llega por las categorías y
 el buscador.
 
+## Pedidos
+
+Cada compra que Mercado Pago confirma aparece sola en **Pedidos**. No hay que
+hacer nada para que llegue.
+
+Los **nuevos** van arriba, con el borde azul: son los que todavía no atendiste.
+**Ver pedido** abre el teléfono, la dirección, el RUT y qué compró. El botón
+verde de WhatsApp escribe directo al cliente.
+
+El botón oscuro avanza el estado, de a uno:
+
+    Nuevo  →  Preparando  →  Enviado
+
+El **enviado** baja al final y queda apagado, pero se sigue abriendo: los datos
+no se pierden nunca.
+
+Para que esto funcione hay que hacer dos cosas una sola vez:
+
+1. Correr `supabase/add-orders.sql` en Supabase → SQL Editor → **Run**.
+   (Antes tiene que estar corrido `supabase/acceso-admin.sql` con tu correo.)
+2. En Vercel → Settings → Environment Variables agregar `SUPABASE_URL` y
+   `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Settings → API Keys, la
+   `sb_secret_...`). Esa clave es secreta: va solo ahí.
+
+Si falta el paso 1, la pestaña te lo avisa en pantalla.
+
 ---
 
 ## Cosas que conviene saber
@@ -154,3 +180,7 @@ los archivos del sitio. No se ve un error, se ve la tienda.
 
 **Las fotos se guardan en Supabase**, no en el repositorio. Subir una imagen
 desde el panel no toca el código.
+
+**Los datos de los clientes no son públicos.** El catálogo lo puede leer
+cualquiera —tiene que ser así, es una tienda—, pero la tabla de pedidos solo la
+leen los correos de la lista de administradores.

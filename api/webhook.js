@@ -1,6 +1,7 @@
 const { MercadoPagoConfig, Payment, MerchantOrder } = require('mercadopago');
 const { Resend } = require('resend');
 const crypto = require('crypto');
+const { UUID_RE, marcarPagado, guardarPedidoPagado, leerPedido } = require('./_supabase');
 
 function formatCLP(n) {
   return '$' + Number(n).toLocaleString('es-CL');
@@ -137,13 +138,56 @@ module.exports = async (req, res) => {
       return res.status(200).end();
     }
 
+    // external_reference ahora es el id del pedido que create-preference dejó
+    // guardado. El formato viejo (el pedido entero en JSON) se sigue aceptando
+    // para no perder los pagos que ya estaban en curso.
     let paymentData = null;
-    if (extRef) {
+    const esId = !!extRef && UUID_RE.test(String(extRef).trim());
+
+    if (extRef && !esId) {
       try { paymentData = JSON.parse(extRef); }
       catch (e) { console.warn('webhook: external_reference no es JSON válido (¿truncado?):', extRef); paymentData = null; }
     }
+
+    // Primero se guarda, después se avisa. Guardar nunca lanza: si la base
+    // falla el correo igual sale, que es el respaldo manual del dueño.
+    let guardado = 'sin-datos';
+    try {
+      if (esId) {
+        guardado = await marcarPagado(String(extRef).trim(), { paymentId, mpStatus: paymentStatus });
+        if (guardado === 'marcado') {
+          const fila = await leerPedido(String(extRef).trim());
+          if (fila) paymentData = {
+            customer: {
+              name: fila.cliente_nombre, email: fila.cliente_email, phone: fila.cliente_telefono,
+              rut: fila.cliente_rut, city: fila.cliente_ciudad, address: fila.cliente_direccion,
+            },
+            items: fila.items || [],
+            total: fila.total,
+          };
+        }
+      } else if (paymentData) {
+        guardado = await guardarPedidoPagado({ ...paymentData, paymentId, mpStatus: paymentStatus });
+      }
+    } catch (e) {
+      guardado = 'error';
+      console.error('webhook: no se pudo guardar el pedido:', e.message);
+    }
+    console.log('webhook: pedido', paymentId, '→', guardado);
+
+    // Reintento de Mercado Pago sobre un pedido ya registrado: no se repite
+    // el correo.
+    if (guardado === 'repetido') return res.status(200).end();
+
     if (!paymentData) {
-      console.log('webhook: aprobado sin external_reference utilizable, skipping email', { paymentId });
+      console.log('webhook: aprobado sin datos del pedido, no se envía correo', { paymentId });
+      return res.status(200).end();
+    }
+
+    // Mientras falte la clave de Resend el pedido ya quedó guardado igual. El
+    // día que se configure, el correo arranca solo.
+    if (!process.env.RESEND_API_KEY || !process.env.NOTIFICATION_EMAIL) {
+      console.log('webhook: sin RESEND_API_KEY / NOTIFICATION_EMAIL — el pedido quedó en la tabla orders');
       return res.status(200).end();
     }
 

@@ -60,6 +60,7 @@ function showApp(){
   loadProducts();
   // Las otras pestañas viven en js/as.js, que se carga después.
   if (typeof Secciones !== 'undefined') Secciones.init().catch(e => console.error('Secciones:', e));
+  if (typeof Pedidos !== 'undefined') Pedidos.init();
 }
 
 async function onLogin(e){

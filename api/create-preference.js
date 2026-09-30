@@ -1,4 +1,5 @@
 const { MercadoPagoConfig, Preference } = require('mercadopago');
+const { crearPedidoIniciado } = require('./_supabase');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,6 +26,17 @@ module.exports = async (req, res) => {
 
     const preference = new Preference(client);
 
+    // El pedido se guarda ANTES de ir a Mercado Pago y a MP solo viaja su id.
+    // Antes se mandaba el pedido entero dentro de external_reference: pasaba
+    // los 400 caracteres y si MP lo recortaba el pedido se perdía entero.
+    // Si la base falla no se corta la venta: se sigue sin referencia.
+    let orderId = null;
+    try {
+      orderId = await crearPedidoIniciado({ customer, items, total });
+    } catch (e) {
+      console.error('create-preference: no se pudo guardar el pedido:', e.message);
+    }
+
     // Origen del sitio: usa FRONTEND_URL si está bien; si no, lo deriva del host
     // del request (así notification_url / back_urls funcionan aunque falte la env).
     const proto = String(req.headers['x-forwarded-proto'] || 'https').split(',')[0];
@@ -50,11 +62,7 @@ module.exports = async (req, res) => {
         pending: `${origin}/cancel`,
       },
       notification_url: `${origin}/api/webhook`,
-      external_reference: JSON.stringify({
-        customer,
-        items: items.map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-        total,
-      }),
+      ...(orderId ? { external_reference: orderId } : {}),
       auto_return: 'approved',
       purpose: 'wallet_purchase',
     };
@@ -62,7 +70,7 @@ module.exports = async (req, res) => {
     console.log('create-preference', {
       notification_url: body.notification_url,
       back_success: body.back_urls.success,
-      extRefLen: body.external_reference.length,
+      orderId,
       frontendUrlEnv: process.env.FRONTEND_URL || null,
     });
 

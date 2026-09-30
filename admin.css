@@ -205,3 +205,49 @@ input[type=date]{
 .color-fila.sin-stock{background:#fafafa; border-style:dashed}
 .color-fila.sin-stock .color-minis img{filter:grayscale(1); opacity:.5}
 .color-fila.sin-stock .color-stock span{color:var(--red)}
+
+/* ── Pedidos ────────────────────────────────────────────── */
+.resumen-alerta{color:var(--red); font-weight:600}
+
+.ped{border-left:4px solid var(--line); margin-bottom:14px}
+.ped-nuevo{border-left-color:var(--blue)}
+.ped-preparando{border-left-color:#f5a623}
+/* El enviado se apaga entero, no solo el texto: el contenido sigue ahí y se
+   lee bien al abrirlo. */
+.ped-enviado{opacity:.55}
+.ped-enviado:hover{opacity:1}
+
+.ped-top{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
+.ped-quien{flex:1; min-width:150px}
+.ped-nombre{font-weight:600; font-size:16px}
+.ped-fecha{font-size:13px; color:var(--muted)}
+.ped-total{font-weight:700; font-size:18px; flex:none}
+
+.ped-chip{
+  flex:none; padding:5px 13px; border-radius:999px;
+  font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.4px;
+}
+.ped-chip-nuevo{background:#e6f1fd; color:var(--blue)}
+.ped-chip-preparando{background:#fdf1dd; color:#a96b00}
+.ped-chip-enviado{background:#f0f0f2; color:var(--muted)}
+
+.ped-acciones{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
+.ped-acciones .btn{flex:none}
+
+.ped-detalle{margin-top:16px; padding-top:16px; border-top:1px solid var(--line)}
+.ped-detalle[hidden]{display:none}
+.ped-datos p{font-size:14px; margin-bottom:5px}
+.ped-datos b{display:inline-block; min-width:92px; color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase}
+.ped-wa{color:var(--green); font-weight:600; text-decoration:none; margin-left:8px}
+.ped-wa:hover{text-decoration:underline}
+
+.ped-items{width:100%; border-collapse:collapse; margin-top:14px; font-size:14px}
+.ped-items td{padding:7px 0; border-bottom:1px solid var(--line)}
+.ped-items .num{text-align:right; white-space:nowrap; padding-left:14px}
+.ped-suma{margin-top:12px; text-align:right; font-size:16px}
+
+@media(max-width:640px){
+  .ped-total{width:100%; order:3}
+  .ped-acciones .btn{flex:1}
+  .ped-datos b{display:block; min-width:0}
+}

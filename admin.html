@@ -49,6 +49,7 @@
         <button class="tab" data-tab="categorias">Categorías</button>
         <button class="tab" data-tab="filas">Portada</button>
         <button class="tab" data-tab="resenas">Reseñas</button>
+        <button class="tab" data-tab="pedidos">Pedidos</button>
       </div>
 
       <!-- Solo aparece si falta correr supabase/add-site-config.sql -->
@@ -165,6 +166,23 @@
           <button class="btn btn-dark">Guardar reseñas</button>
         </div>
       </section>
+
+      <!-- ── PEDIDOS ─────────────────────────────────────── -->
+      <section id="tab-pedidos" class="hidden">
+        <p class="title-kicker">Compras confirmadas</p>
+        <div class="card">
+          <div class="img-row">
+            <select id="filtroPedido"></select>
+          </div>
+          <p class="hint" id="resumenPedidos"></p>
+          <p class="hint">
+            Un pedido aparece acá recién cuando Mercado Pago confirma el pago.
+            Los nuevos van arriba; al marcarlos como enviados bajan y quedan
+            apagados, pero los datos se siguen pudiendo abrir.
+          </p>
+        </div>
+        <div id="listPedidos"><div class="empty">Cargando…</div></div>
+      </section>
     </div>
   </div>
 
@@ -174,6 +192,7 @@
   <script src="js/supabase-config.js"></script>
   <script src="js/ac.js"></script>
   <script src="js/ap.js"></script>
+  <script src="js/ao.js"></script>
   <script src="js/as.js"></script>
 </body>
 </html>

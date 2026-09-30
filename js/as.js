@@ -404,7 +404,7 @@ const Secciones = (() => {
     // Pestañas
     $$('.tab').forEach(t => t.addEventListener('click', () => {
       $$('.tab').forEach(x => x.classList.toggle('active', x === t));
-      ['catalogo','banners','categorias','filas','resenas'].forEach(n =>
+      ['catalogo','banners','categorias','filas','resenas','pedidos'].forEach(n =>
         $('#tab-' + n).classList.toggle('hidden', n !== t.dataset.tab));
     }));
 
