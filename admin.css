@@ -304,10 +304,9 @@ input[type=date]{
 .ped-items{width:100%; border-collapse:collapse; margin-top:14px; font-size:13px}
 .ped-items td{padding:7px 0; border-bottom:1px solid var(--line); overflow-wrap:anywhere}
 .ped-items .num{text-align:right; white-space:nowrap; padding-left:10px}
-.ped-items .mini{width:52px; padding-right:10px}
-.ped-items .mini-caja{display:block; width:46px; height:46px}
-.ped-items .mini-caja img{display:block; width:100%; height:100%; object-fit:contain}
-.ped-items .mini-caja img.mini-rota{visibility:hidden}
+.ped-items .ped-foto{width:52px; padding-right:10px}
+.ped-items .ped-foto img{display:block; width:46px; height:46px; object-fit:contain}
+.ped-items .ped-foto img.ped-foto-rota{visibility:hidden}
 /* El precio por unidad se cae primero: el subtotal es el que importa. */
 .ped-items .uni{display:none}
 .ped-suma{margin-top:12px; text-align:right; font-size:15px}
