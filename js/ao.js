@@ -98,13 +98,43 @@ const Pedidos = (() => {
     const lista = Array.isArray(items) ? items : [];
     if (!lista.length) return '<p class="hint">Sin detalle de productos.</p>';
     return '<table class="ped-items"><tbody>' + lista.map(i =>
-      '<tr><td class="mini">' + (i.img
+      '<tr><td class="mini"><span class="mini-caja">' + (i.img
           ? '<img src="' + escH(i.img) + '" alt="" loading="lazy">'
-          : '<span class="mini-vacia"></span>') + '</td>' +
+          : '') + '</span></td>' +
       '<td>' + (Number(i.qty) || 0) + '× ' + escH(i.name) + '</td>' +
       '<td class="num uni">' + fmt(i.price) + '</td>' +
       '<td class="num">' + fmt((Number(i.price) || 0) * (Number(i.qty) || 0)) + '</td></tr>'
     ).join('') + '</tbody></table>';
+  }
+
+  function celda(label, valor, ancho) {
+    return '<div class="ped-celda' + (ancho ? ' ancho' : '') + '">' +
+      '<span class="ped-label">' + escH(label) + '</span>' +
+      '<span class="ped-valor">' + valor + '</span></div>';
+  }
+
+  function datosHTML(p, tel) {
+    const wa = tel
+      ? '<a class="ped-wa" href="https://wa.me/' + escH(tel) + '" target="_blank" rel="noopener"' +
+        ' title="Escribir por WhatsApp" aria-label="Escribir por WhatsApp">' + ICONO_WA + '</a>'
+      : '';
+
+    // Los cortos van de a dos por fila; los largos al ancho entero, porque un
+    // correo o una direccion partida en media columna no se lee.
+    const cortos = [];
+    cortos.push(['Teléfono', '<span class="ped-tel">' + escH(p.cliente_telefono) + wa + '</span>']);
+    if (p.cliente_rut)    cortos.push(['RUT', escH(p.cliente_rut)]);
+    if (p.cliente_ciudad) cortos.push(['Ciudad', escH(p.cliente_ciudad)]);
+
+    // Si los cortos son impares, el ultimo se estira: asi no queda un hueco
+    // al lado en la ultima fila.
+    const impar = cortos.length % 2 === 1;
+
+    let out = celda('Email', escH(p.cliente_email), true);
+    cortos.forEach(([l, v], i) => { out += celda(l, v, impar && i === cortos.length - 1); });
+    if (p.cliente_direccion) out += celda('Dirección', escH(p.cliente_direccion), true);
+    if (p.payment_id)        out += celda('Pago Mercado Pago', escH(p.payment_id), true);
+    return out;
   }
 
   function tarjeta(p) {
@@ -131,17 +161,7 @@ const Pedidos = (() => {
       '<div class="ped-borrar" hidden></div>' +
 
       '<div class="ped-detalle"' + (abierto ? '' : ' hidden') + '>' +
-        '<div class="ped-datos">' +
-          '<p><b>Email</b> ' + escH(p.cliente_email) + '</p>' +
-          '<p class="ped-tel"><b>Teléfono</b> <span>' + escH(p.cliente_telefono) + '</span>' +
-            (tel ? '<a class="ped-wa" href="https://wa.me/' + escH(tel) +
-              '" target="_blank" rel="noopener" title="Escribir por WhatsApp" aria-label="Escribir por WhatsApp">' +
-              ICONO_WA + '</a>' : '') + '</p>' +
-          (p.cliente_rut       ? '<p><b>RUT</b> '       + escH(p.cliente_rut) + '</p>' : '') +
-          (p.cliente_ciudad    ? '<p><b>Ciudad</b> '    + escH(p.cliente_ciudad) + '</p>' : '') +
-          (p.cliente_direccion ? '<p><b>Dirección</b> ' + escH(p.cliente_direccion) + '</p>' : '') +
-          (p.payment_id        ? '<p><b>Pago Mercado Pago</b> ' + escH(p.payment_id) + '</p>' : '') +
-        '</div>' +
+        '<div class="ped-datos">' + datosHTML(p, tel) + '</div>' +
         itemsHTML(p.items) +
         '<p class="ped-suma">Total <b>' + fmt(p.total) + '</b></p>' +
       '</div>' +
