@@ -17,9 +17,14 @@ module.exports = async (req, res) => {
   };
 
   try {
-    out.supabase = sbConfigurado()
-      ? { ok: true, filas: (await sbRest('orders', { method: 'GET', query: '?select=id&limit=1' }) || []).length }
-      : { ok: false, error: 'faltan las variables' };
+    if (!sbConfigurado()) out.supabase = { ok: false, error: 'faltan las variables' };
+    else {
+      const filas = await sbRest('orders', { method: 'GET', query: '?select=status,payment_id,created_at&order=created_at.desc&limit=10' }) || [];
+      const porEstado = {};
+      filas.forEach(f => { porEstado[f.status] = (porEstado[f.status] || 0) + 1; });
+      out.supabase = { ok: true, total: filas.length, porEstado,
+        ultimos: filas.map(f => ({ status: f.status, pago: f.payment_id, cuando: f.created_at })) };
+    }
   } catch (e) { out.supabase = { ok: false, error: limpio(e) }; }
 
   try {
