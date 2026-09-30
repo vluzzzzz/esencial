@@ -11,9 +11,9 @@
 const Pedidos = (() => {
 
   const ESTADOS = {
-    nuevo:      { txt:'Nuevo',      sig:'preparando', btn:'Marcar preparando' },
-    preparando: { txt:'Preparando', sig:'enviado',    btn:'Pedido enviado'    },
-    enviado:    { txt:'Enviado',    sig:null,         btn:'Ya enviado'        },
+    nuevo:      { txt:'Nuevo',      sig:'preparando', btn:'Preparando →' },
+    preparando: { txt:'Preparando', sig:'enviado',    btn:'Enviado →'    },
+    enviado:    { txt:'Enviado',    sig:null,         btn:'Ya enviado'   },
   };
 
   let pedidos = [];
@@ -95,7 +95,7 @@ const Pedidos = (() => {
     if (!lista.length) return '<p class="hint">Sin detalle de productos.</p>';
     return '<table class="ped-items"><tbody>' + lista.map(i =>
       '<tr><td>' + (Number(i.qty) || 0) + '× ' + escH(i.name) + '</td>' +
-      '<td class="num">' + fmt(i.price) + '</td>' +
+      '<td class="num uni">' + fmt(i.price) + '</td>' +
       '<td class="num">' + fmt((Number(i.price) || 0) * (Number(i.qty) || 0)) + '</td></tr>'
     ).join('') + '</tbody></table>';
   }
@@ -110,8 +110,10 @@ const Pedidos = (() => {
           '<p class="ped-nombre">' + (escH(p.cliente_nombre) || 'Sin nombre') + '</p>' +
           '<p class="ped-fecha">' + escH(fecha(p.paid_at || p.created_at)) + '</p>' +
         '</div>' +
-        '<span class="ped-chip ped-chip-' + escH(p.status) + '">' + escH(est.txt) + '</span>' +
-        '<span class="ped-total">' + fmt(p.total) + '</span>' +
+        '<div class="ped-meta">' +
+          '<span class="ped-chip ped-chip-' + escH(p.status) + '">' + escH(est.txt) + '</span>' +
+          '<span class="ped-total">' + fmt(p.total) + '</span>' +
+        '</div>' +
       '</div>' +
 
       '<div class="ped-acciones">' +
@@ -150,14 +152,34 @@ const Pedidos = (() => {
 
   /* ── Avanzar de estado ──────────────────────────────────────────────── */
 
+  // Un clic no cambia nada: el boton pide confirmacion en su propio lugar y
+  // vuelve solo a los 4 segundos. Sin el cartel del navegador, que corta todo.
+  let esperando = null;
+  let esperaT = null;
+
+  function pedirOk(id, btn) {
+    soltarOk();
+    esperando = id;
+    btn.dataset.txt = btn.textContent;
+    btn.textContent = 'Confirmar';
+    btn.classList.add('btn-confirmar');
+    esperaT = setTimeout(soltarOk, 4000);
+  }
+
+  function soltarOk() {
+    clearTimeout(esperaT);
+    const b = $('#listPedidos .btn-confirmar');
+    if (b) { b.textContent = b.dataset.txt || b.textContent; b.classList.remove('btn-confirmar'); }
+    esperando = null;
+  }
+
   async function avanzar(id, btn) {
     const p = pedidos.find(x => x.id === id);
     if (!p) return;
     const sig = (ESTADOS[p.status] || {}).sig;
     if (!sig) return;
-    if (!confirm('¿Pasar este pedido a "' + ESTADOS[sig].txt + '"?')) return;
 
-    const orig = btn.textContent;
+    const orig = ESTADOS[p.status].btn;
     btn.disabled = true;
     btn.innerHTML = '<span class="spin"></span>';
     try {
@@ -175,6 +197,13 @@ const Pedidos = (() => {
         || (new Date(b.created_at) - new Date(a.created_at)));
       pintarFiltro();
       pintar();
+
+      // La tarjeta salta de grupo: un destello la sigue con la vista.
+      const card = $('#listPedidos [data-id="' + id + '"]');
+      if (card) {
+        card.classList.add('ped-cambio');
+        setTimeout(() => card.classList.remove('ped-cambio'), 600);
+      }
       toast('Pedido en ' + ESTADOS[sig].txt.toLowerCase());
     } catch (err) {
       btn.disabled = false;
@@ -197,6 +226,8 @@ const Pedidos = (() => {
       const id = card && card.dataset.id;
       if (!id) return;
 
+      if (b.dataset.act !== 'avanzar') soltarOk();
+
       if (b.dataset.act === 'ver') {
         const det = card.querySelector('.ped-detalle');
         const abrir = det.hasAttribute('hidden');
@@ -204,7 +235,15 @@ const Pedidos = (() => {
         else       { det.setAttribute('hidden', ''); abiertos.delete(id); }
         b.textContent = abrir ? 'Ocultar' : 'Ver pedido';
       }
-      if (b.dataset.act === 'avanzar') avanzar(id, b);
+      if (b.dataset.act === 'avanzar') {
+        if (esperando === id) { soltarOk(); avanzar(id, b); }
+        else pedirOk(id, b);
+      }
+    });
+
+    // Un clic en cualquier otro lado deshace la confirmacion pendiente.
+    document.addEventListener('click', e => {
+      if (!e.target.closest('[data-act="avanzar"]')) soltarOk();
     });
 
     const sel = $('#filtroPedido');

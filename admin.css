@@ -209,7 +209,19 @@ input[type=date]{
 /* ── Pedidos ────────────────────────────────────────────── */
 .resumen-alerta{color:var(--red); font-weight:600}
 
-.ped{border-left:4px solid var(--line); margin-bottom:14px}
+/* Rejilla de tres. La tarjeta queda angosta, asi que adentro todo se apila. */
+#listPedidos{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start}
+#listPedidos > .empty, #listPedidos > .aviso-sql{grid-column:1/-1}
+
+/* En pantalla grande la seccion se sale del ancho del panel: con tres columnas
+   de 300 px las tarjetas quedaban apretadas. */
+@media(min-width:1180px){
+  #tab-pedidos{margin-inline:calc((100% - min(1240px, 100vw - 48px)) / 2)}
+}
+@media(max-width:900px){ #listPedidos{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:620px){ #listPedidos{grid-template-columns:1fr} }
+
+.ped{border-left:4px solid var(--line); margin-bottom:0; padding:18px}
 .ped-nuevo{border-left-color:var(--blue)}
 .ped-preparando{border-left-color:#f5a623}
 /* El enviado se apaga entero, no solo el texto: el contenido sigue ahí y se
@@ -217,10 +229,10 @@ input[type=date]{
 .ped-enviado{opacity:.55}
 .ped-enviado:hover{opacity:1}
 
-.ped-top{display:flex; align-items:center; gap:14px; flex-wrap:wrap}
-.ped-quien{flex:1; min-width:150px}
-.ped-nombre{font-weight:600; font-size:16px}
+.ped-top{display:flex; flex-direction:column; gap:10px}
+.ped-nombre{font-weight:600; font-size:16px; line-height:1.25; overflow-wrap:anywhere}
 .ped-fecha{font-size:13px; color:var(--muted)}
+.ped-meta{display:flex; align-items:center; justify-content:space-between; gap:10px}
 .ped-total{font-weight:700; font-size:18px; flex:none}
 
 .ped-chip{
@@ -231,23 +243,35 @@ input[type=date]{
 .ped-chip-preparando{background:#fdf1dd; color:#a96b00}
 .ped-chip-enviado{background:#f0f0f2; color:var(--muted)}
 
-.ped-acciones{display:flex; gap:10px; margin-top:14px; flex-wrap:wrap}
-.ped-acciones .btn{flex:none}
+.ped-acciones{display:flex; gap:8px; margin-top:14px}
+.ped-acciones .btn{flex:1; padding:11px 10px; font-size:14px}
+
+/* Confirmar sin el cartel del navegador: el propio boton pregunta. */
+.btn-confirmar{background:var(--red); color:#fff}
+.btn-confirmar:hover{opacity:.85}
+
+@keyframes pedCambio{
+  0%  {transform:scale(.97); box-shadow:0 0 0 3px rgba(0,113,227,.4)}
+  100%{transform:none;       box-shadow:var(--shadow)}
+}
+.ped-cambio{animation:pedCambio .55s ease}
 
 .ped-detalle{margin-top:16px; padding-top:16px; border-top:1px solid var(--line)}
 .ped-detalle[hidden]{display:none}
-.ped-datos p{font-size:14px; margin-bottom:5px}
-.ped-datos b{display:inline-block; min-width:92px; color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase}
+/* Etiqueta chica arriba y el dato abajo: es lo unico que entra bien en una
+   tarjeta de un tercio de ancho. */
+.ped-datos p{font-size:14px; margin-bottom:9px; overflow-wrap:anywhere}
+.ped-datos b{display:block; color:var(--muted); font-weight:600; font-size:11px; letter-spacing:.6px; text-transform:uppercase}
 .ped-wa{color:var(--green); font-weight:600; text-decoration:none; margin-left:8px}
 .ped-wa:hover{text-decoration:underline}
 
-.ped-items{width:100%; border-collapse:collapse; margin-top:14px; font-size:14px}
-.ped-items td{padding:7px 0; border-bottom:1px solid var(--line)}
-.ped-items .num{text-align:right; white-space:nowrap; padding-left:14px}
-.ped-suma{margin-top:12px; text-align:right; font-size:16px}
+.ped-items{width:100%; border-collapse:collapse; margin-top:14px; font-size:13px}
+.ped-items td{padding:7px 0; border-bottom:1px solid var(--line); overflow-wrap:anywhere}
+.ped-items .num{text-align:right; white-space:nowrap; padding-left:10px}
+/* El precio por unidad se cae primero: el subtotal es el que importa. */
+.ped-items .uni{display:none}
+.ped-suma{margin-top:12px; text-align:right; font-size:15px}
 
-@media(max-width:640px){
-  .ped-total{width:100%; order:3}
-  .ped-acciones .btn{flex:1}
-  .ped-datos b{display:block; min-width:0}
+@media(max-width:620px){
+  .ped-items .uni{display:table-cell}
 }
