@@ -210,6 +210,17 @@ const Pedidos = (() => {
     const sel = $('#filtroPedido');
     if (sel) sel.addEventListener('change', e => { filtro = e.target.value; pintar(); });
 
+    const rec = $('#recargarPedidos');
+    if (rec) rec.addEventListener('click', () => {
+      const orig = rec.textContent;
+      rec.disabled = true;
+      rec.innerHTML = '<span class="spin"></span>';
+      cargar().catch(e => console.error('Pedidos:', e)).then(() => {
+        rec.disabled = false;
+        rec.textContent = orig;
+      });
+    });
+
     // Carga diferida: la consulta recién se hace al abrir la pestaña, así
     // entrar al panel a cambiar un precio no trae pedidos que nadie pidió.
     $$('.tab').forEach(t => t.addEventListener('click', () => {
