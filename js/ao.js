@@ -23,6 +23,8 @@ const Pedidos = (() => {
 
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
+  const ICONO_LAPIZ = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5a2 2 0 0 0 0-2.83l-1.17-1.17a2 2 0 0 0-2.83 0L4 16v4z"/><path d="M14.5 6.5 17.5 9.5"/></svg>';
+
   const ICONO_TACHO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
 
   const ICONO_WA = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
@@ -137,6 +139,14 @@ const Pedidos = (() => {
     return out;
   }
 
+  // La nota queda a la vista sin tener que abrir el pedido: si el duenio la
+  // escribio, es porque hay algo que no puede olvidar al despachar.
+  function notaHTML(p) {
+    if (!p.nota) return '<div class="ped-nota" hidden></div>';
+    return '<div class="ped-nota"><span class="ped-nota-t">Nota</span>' +
+      '<p>' + escH(p.nota) + '</p></div>';
+  }
+
   function tarjeta(p) {
     const est = ESTADOS[p.status] || ESTADOS.nuevo;
     const abierto = abiertos.has(p.id);
@@ -156,8 +166,12 @@ const Pedidos = (() => {
       '<div class="ped-acciones">' +
         '<button class="btn btn-ghost" data-act="ver">' + (abierto ? 'Ocultar' : 'Ver pedido') + '</button>' +
         '<button class="btn btn-dark" data-act="avanzar"' + (est.sig ? '' : ' disabled') + '>' + escH(est.btn) + '</button>' +
+        '<button class="btn btn-nota" data-act="nota" title="' + (p.nota ? 'Editar la nota' : 'Agregar una nota') +
+          '" aria-label="' + (p.nota ? 'Editar la nota' : 'Agregar una nota') + '">' + ICONO_LAPIZ + '</button>' +
         '<button class="btn btn-borrar" data-act="borrar" title="Eliminar pedido" aria-label="Eliminar pedido">' + ICONO_TACHO + '</button>' +
       '</div>' +
+      notaHTML(p) +
+      '<div class="ped-nota-edit" hidden></div>' +
       '<div class="ped-borrar" hidden></div>' +
 
       '<div class="ped-detalle"' + (abierto ? '' : ' hidden') + '>' +
@@ -236,6 +250,70 @@ const Pedidos = (() => {
         setTimeout(() => card.classList.remove('ped-cambio'), 600);
       }
       toast('Pedido en ' + ESTADOS[sig].txt.toLowerCase());
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = orig;
+      toast(mensajeError(err), true);
+    }
+  }
+
+  /* ── Nota ───────────────────────────────────────────────────────────── */
+
+  const TOPE_NOTA = 2000;
+  let editando = null;
+
+  function cerrarNota() {
+    const card = editando && $('#listPedidos [data-id="' + editando + '"]');
+    if (card) {
+      const z = card.querySelector('.ped-nota-edit');
+      z.innerHTML = '';
+      z.setAttribute('hidden', '');
+    }
+    editando = null;
+  }
+
+  function abrirNota(id) {
+    if (editando === id) { cerrarNota(); return; }
+    cerrarNota();
+    const p = pedidos.find(x => x.id === id);
+    const card = $('#listPedidos [data-id="' + id + '"]');
+    if (!p || !card) return;
+    editando = id;
+    const z = card.querySelector('.ped-nota-edit');
+    z.removeAttribute('hidden');
+    z.innerHTML = '<label class="ped-nota-lbl" for="notaTxt">' +
+        (p.nota ? 'Editar la nota' : 'Agregar una nota') + '</label>' +
+      '<textarea id="notaTxt" class="ped-nota-txt" rows="3" maxlength="' + TOPE_NOTA +
+        '" placeholder="Ej: tiene otro número, +56 9 1234 5678 · pidió sumar un cargador · despachar el lunes">' +
+        escH(p.nota || '') + '</textarea>' +
+      '<div class="ped-nota-btns">' +
+        '<button class="btn btn-dark" data-act="notaGuardar">Guardar nota</button>' +
+        '<button class="btn btn-ghost" data-act="notaCerrar">Cancelar</button>' +
+        (p.nota ? '<button class="btn btn-danger" data-act="notaBorrar">Quitar</button>' : '') +
+      '</div>';
+    const ta = z.querySelector('.ped-nota-txt');
+    ta.focus();
+    ta.setSelectionRange(ta.value.length, ta.value.length);
+  }
+
+  async function guardarNota(id, texto, btn) {
+    const p = pedidos.find(x => x.id === id);
+    if (!p) return;
+    const orig = btn.textContent;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spin"></span>';
+    try {
+      const nota = String(texto || '').trim().slice(0, TOPE_NOTA);
+      const { data, error } = await sb.from('orders')
+        .update({ nota, updated_at: new Date().toISOString() })
+        .eq('id', id).select('id');
+      if (error) throw error;
+      if (!data || !data.length) throw new Error('SIN_PERMISO');
+
+      p.nota = nota;
+      cerrarNota();
+      pintar();
+      toast(nota ? 'Nota guardada' : 'Nota quitada');
     } catch (err) {
       btn.disabled = false;
       btn.textContent = orig;
@@ -343,6 +421,7 @@ const Pedidos = (() => {
 
       if (b.dataset.act !== 'avanzar') soltarOk();
       if (!String(b.dataset.act).startsWith('borrar')) cerrarBorrar();
+      if (!String(b.dataset.act).startsWith('nota')) cerrarNota();
 
       if (b.dataset.act === 'ver') {
         const det = card.querySelector('.ped-detalle');
@@ -355,6 +434,14 @@ const Pedidos = (() => {
         if (esperando === id) { soltarOk(); avanzar(id, b); }
         else pedirOk(id, b);
       }
+      if (b.dataset.act === 'nota')        abrirNota(id);
+      if (b.dataset.act === 'notaCerrar')  cerrarNota();
+      if (b.dataset.act === 'notaGuardar') {
+        const ta = b.closest('.ped-nota-edit').querySelector('.ped-nota-txt');
+        guardarNota(id, ta.value, b);
+      }
+      if (b.dataset.act === 'notaBorrar')  guardarNota(id, '', b);
+
       if (b.dataset.act === 'borrar')          preguntarBorrar(id);
       if (b.dataset.act === 'borrarSi')        contarBorrar(id);
       if (b.dataset.act === 'borrarNo')        cerrarBorrar();
@@ -368,6 +455,16 @@ const Pedidos = (() => {
       // no puede dejar el borrado corriendo a ciegas ni cancelarlo sin querer.
     });
 
+    cont.addEventListener('keydown', e => {
+      if (!e.target.classList.contains('ped-nota-txt')) return;
+      if (e.key === 'Escape') { cerrarNota(); return; }
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        const z = e.target.closest('.ped-nota-edit');
+        const btn = z.querySelector('[data-act="notaGuardar"]');
+        if (btn) guardarNota(editando, e.target.value, btn);
+      }
+    });
+
     // Una foto que no carga deja el hueco, no el icono de roto. El evento
     // error no burbujea, asi que se escucha en la fase de captura.
     cont.addEventListener('error', e => {
@@ -375,11 +472,11 @@ const Pedidos = (() => {
     }, true);
 
     const sel = $('#filtroPedido');
-    if (sel) sel.addEventListener('change', e => { cerrarBorrar(); filtro = e.target.value; pintar(); });
+    if (sel) sel.addEventListener('change', e => { cerrarBorrar(); cerrarNota(); filtro = e.target.value; pintar(); });
 
     const rec = $('#recargarPedidos');
     if (rec) rec.addEventListener('click', () => {
-      cerrarBorrar();
+      cerrarBorrar(); cerrarNota();
       const orig = rec.textContent;
       rec.disabled = true;
       rec.innerHTML = '<span class="spin"></span>';

@@ -155,6 +155,12 @@ El botón oscuro avanza el estado, de a uno:
 El **enviado** baja al final y queda apagado, pero se sigue abriendo: los datos
 no se pierden nunca.
 
+El **lápiz** agrega una nota al pedido: otro teléfono, otro correo, que pidió
+sumar un producto, cuándo despacharlo. Lo que sea, en texto libre. La nota
+queda a la vista en la tarjeta sin tener que abrir el pedido, porque si la
+escribiste es porque no te lo podés olvidar. Se edita con el mismo lápiz y se
+saca con **Quitar**. Con el teclado: **Ctrl + Enter** guarda, **Escape** cierra.
+
 Para **eliminar** un pedido está el tacho, al lado de los otros dos botones.
 Pide confirmación y después da 5 segundos con un botón **Cancelar** antes de
 borrarlo. Un pedido borrado no se recupera: se van los datos del cliente, la
