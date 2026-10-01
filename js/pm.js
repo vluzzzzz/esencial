@@ -64,13 +64,15 @@ const ProductModal=(()=>{
     if(!wrap||!row)return;
     if(!cv){wrap.style.display='none';return;}
     wrap.style.display='';
-    const primerAgotado = cv.findIndex(v=>v.agotado);
-    const ponerSep = primerAgotado > 0;
-    row.innerHTML=cv.map((v,i)=>{
+    const swatch=(v,i)=>{
       const ag=!!v.agotado;
-      const sep=(ponerSep&&i===primerAgotado)?'<span class="ppage-color-sep" aria-hidden="true"></span>':'';
-      return sep+`<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}" title="${escAttr(v.name)}${ag?' · sin stock':''}" aria-label="${escAttr(v.name)}${ag?', sin stock':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
-    }).join('');
+      return `<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}" title="${escAttr(v.name)}${ag?' · sin stock':''}" aria-label="${escAttr(v.name)}${ag?', sin stock':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
+    };
+    let htmlIn='',htmlOut='';
+    cv.forEach((v,i)=>{ if(v.agotado) htmlOut+=swatch(v,i); else htmlIn+=swatch(v,i); });
+    row.innerHTML = htmlIn + (htmlOut
+      ? `<span class="ppage-colors-oos"><span class="oos-cap">Sin stock</span><span class="oos-swatches">${htmlOut}</span></span>`
+      : '');
     row.querySelectorAll('.ppage-color-swatch').forEach(s=>s.addEventListener('click',()=>{
       _clearColorWarn();goToImgDirectly(Number(s.dataset.index));
     }));
@@ -82,11 +84,11 @@ const ProductModal=(()=>{
   }
   function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
   function _pintarSinStock(){
-    const d=document.getElementById('ppageSinStock');
-    if(!d)return;
+    const box=document.querySelector('#ppageColorsRow .ppage-colors-oos');
+    if(!box)return;
     const cv=colorVars(currentProduct&&currentProduct.key)||[];
     const ag=imgIndex>=0&&cv[imgIndex]&&cv[imgIndex].agotado;
-    d.hidden=!ag;
+    box.classList.toggle('show-cap', !!ag);
   }
   function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name);_pintarSinStock();}
   // El error de color SIEMPRE sale la 1ª vez que tocás un botón (aunque ya hayas mirado/cambiado colores).
