@@ -202,7 +202,7 @@ const ProductModal=(()=>{
     const el=document.getElementById('ppageViewers');
     if(!el)return;
     const t=el.querySelector('.pv-txt');
-    if(t)t.innerHTML='<b>'+_pvN+'</b> personas viendo este producto';
+    if(t)t.innerHTML='<b>'+_pvN+'</b> Personas viendo este producto';
     el.hidden=false;
   }
   function _pvAgenda(){
