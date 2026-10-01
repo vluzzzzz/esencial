@@ -28,7 +28,7 @@ let BANNERS = [
   // { desktop:'images/principalhero.webp', mobile:'', alt:'Essential Tech · Tecnología al por mayor', link:'#ofertas' },
   { desktop:'images/bannerdos.webp',     mobile:'images/bannerdoscelu.webp',    alt:'AirPods Pro 3',        producto:'airpods-3' },
   { desktop:'images/bannertres.webp',    mobile:'images/bannertrescelu.webp',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
-  { desktop:'images/CUATRO.webp',         mobile:'images/bannercuatrocelu.webp', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
+  { desktop:'images/CUATRO.webp',         mobile:'images/batterypackbannercelu.webp', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
   { desktop:'images/bannercinco.webp',   mobile:'images/bannercincocelu.webp',  alt:'Celulares',            categoria:'celulares' },
 ];
 
