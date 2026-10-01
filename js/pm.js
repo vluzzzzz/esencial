@@ -73,11 +73,19 @@ const ProductModal=(()=>{
     }));
     const label=document.getElementById('ppageColorName');
     if(label)label.innerHTML=(imgIndex>=0&&cv[imgIndex])
-      ? escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">sin stock</span>':'')
+      ? escTxt(cv[imgIndex].name)
       : '';
+    _pintarSinStock();
   }
   function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
-  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">sin stock</span>':'');}
+  function _pintarSinStock(){
+    const d=document.getElementById('ppageSinStock');
+    if(!d)return;
+    const cv=colorVars(currentProduct&&currentProduct.key)||[];
+    const ag=imgIndex>=0&&cv[imgIndex]&&cv[imgIndex].agotado;
+    d.hidden=!ag;
+  }
+  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name);_pintarSinStock();}
   // El error de color SIEMPRE sale la 1ª vez que tocás un botón (aunque ya hayas mirado/cambiado colores).
   // Después de tocar un botón una vez (_buyTried) ya no bloquea.
   function _blockColor(){if(currentProduct&&colorVars(currentProduct.key)&&!_buyTried){_buyTried=true;_shakeColor();return true;}_clearColorWarn();return false;}
