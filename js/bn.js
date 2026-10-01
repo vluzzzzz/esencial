@@ -78,7 +78,7 @@ let CATEGORIAS = [
 ];
 
 // Banner de la sección "todo el catálogo" (el enlace Productos de la nav).
-const BANNER_TODOS = { banner:'images/bannertodoelcatalogo.webp', bannerMobile:'images/bannertodoelcatalogocelular.webp', bannerArchivo:'banner-catalogo.webp' };
+const BANNER_TODOS = { banner:'images/bannertodoelcatalogocelular.webp', bannerMobile:'images/bannertodoelcatalogo.webp', bannerArchivo:'banner-catalogo.webp' };
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
