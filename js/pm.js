@@ -64,9 +64,12 @@ const ProductModal=(()=>{
     if(!wrap||!row)return;
     if(!cv){wrap.style.display='none';return;}
     wrap.style.display='';
+    const primerAgotado = cv.findIndex(v=>v.agotado);
+    const ponerSep = primerAgotado > 0;
     row.innerHTML=cv.map((v,i)=>{
       const ag=!!v.agotado;
-      return `<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}" title="${escAttr(v.name)}${ag?' · sin stock':''}" aria-label="${escAttr(v.name)}${ag?', sin stock':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
+      const sep=(ponerSep&&i===primerAgotado)?'<span class="ppage-color-sep" aria-hidden="true"></span>':'';
+      return sep+`<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}" title="${escAttr(v.name)}${ag?' · sin stock':''}" aria-label="${escAttr(v.name)}${ag?', sin stock':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
     }).join('');
     row.querySelectorAll('.ppage-color-swatch').forEach(s=>s.addEventListener('click',()=>{
       _clearColorWarn();goToImgDirectly(Number(s.dataset.index));
