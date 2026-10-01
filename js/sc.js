@@ -39,13 +39,13 @@ let MAS_PRODUCTOS = [
 
 // Pinta una lista de productos dentro de un contenedor y la deja lista para
 // usar: escala de imagen, estrellas, descuento y stock.
-function pintarProductos(el, lista){
+function pintarProductos(el, lista, opts){
   if(!el) return false;
   // Si lo que hay que pintar es idéntico a lo que ya está, no se toca nada.
   // Esto corre dos veces: al arrancar con lo de los archivos y de nuevo
   // cuando contesta Supabase. Sin esta comparación, la segunda vuelta borra
   // y rehace tarjetas iguales, y se ve el parpadeo.
-  const nuevo = lista.map(cardHTML).join('');
+  const nuevo = lista.map(p=>cardHTML(p, opts)).join('');
   if (nuevo.replace(/\s+/g,'') === (el.dataset.pintado||'')) return false;
   el.innerHTML = nuevo;
   el.dataset.pintado = nuevo.replace(/\s+/g,'');
@@ -134,19 +134,20 @@ const Carru=(()=>{
 })();
 
 const Filas=(()=>{
-  function una(id, slugs, reserva){
+  function una(id, slugs, reserva, opts){
     const row=document.getElementById(id);
     if(!row)return;
     const elegidos=slugs.map(findProduct).filter(Boolean);
     // Si ningún slug de la lista existe en el catálogo, la fila no se queda
     // vacía: se rellena con los primeros del catálogo.
     const lista=elegidos.length?elegidos:CATALOGO.slice(0,reserva);
-    pintarProductos(row,lista);
+    pintarProductos(row,lista,opts);
     animarProductos(row);
     Carru.revisar(row);
   }
   function init(){
-    una('ofertasRow', OFERTAS, 5);
+    // La fila de ofertas muestra el precio desde 3 unidades y el descuento.
+    una('ofertasRow', OFERTAS, 5, {oferta:true});
     una('masRow', MAS_PRODUCTOS, 6);
   }
   return{init};

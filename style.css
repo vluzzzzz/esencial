@@ -2238,3 +2238,23 @@ svg{ -webkit-user-select:none; user-select:none; }
   font-family:system-ui,-apple-system,sans-serif; font-size:19px; line-height:1.5;
   color:#1d1d1f; white-space:pre-wrap;
 }
+
+/* ── Personas viendo este producto (ficha) ─────────────────── */
+.ppage-viewers{
+  display:flex; align-items:center; gap:8px;
+  margin:10px 0 2px; font-size:13px; letter-spacing:.3px;
+  color:var(--black); text-transform:uppercase;
+}
+.ppage-viewers[hidden]{display:none}
+.ppage-viewers .pv-txt b{font-weight:800}
+.ppage-viewers .pv-dot{
+  width:9px; height:9px; border-radius:50%; background:#e0245e; flex:none;
+  box-shadow:0 0 0 0 rgba(224,36,94,.5); animation:pvPulse 1.6s infinite;
+}
+@keyframes pvPulse{
+  0%{box-shadow:0 0 0 0 rgba(224,36,94,.5)}
+  70%{box-shadow:0 0 0 7px rgba(224,36,94,0)}
+  100%{box-shadow:0 0 0 0 rgba(224,36,94,0)}
+}
+.ppage-viewers.pv-bump .pv-txt b{animation:pvBump .5s ease}
+@keyframes pvBump{0%{transform:scale(1)}40%{transform:scale(1.35);color:#e0245e}100%{transform:scale(1)}}

@@ -123,12 +123,26 @@ function tierOne(slug){
   return (t.find(x => x.qty === 1) || t[0] || {}).price || 0;
 }
 
+// Precio por unidad llevando n unidades (el tramo mayorista que ya se controla
+// en el panel). Si no hay un tramo para esa cantidad, devuelve el de 1 unidad.
+function tierDesde(slug, n){
+  const t = PRICE_TIERS[slug] || [];
+  if (!t.length) return 0;
+  let p = (t.find(x => x.qty === 1) || t[0]).price || 0;
+  t.forEach(r => { if (n >= r.qty) p = r.price; });
+  return p;
+}
+
 const ICONO_CARRO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>';
 
 // Tarjeta comercial: nombre, estrellas (las pone js/tr.js), "desde", precio
 // grande y botón de carrito. El clic en cualquier otra parte abre la ficha.
-function cardHTML(p){
+function cardHTML(p, opts){
+  const oferta = !!(opts && opts.oferta);
   const p1  = tierOne(p.slug);
+  const p3  = oferta ? tierDesde(p.slug, 3) : p1;
+  const hayDcto = oferta && p3 > 0 && p3 < p1;
+  const precioBase = hayDcto ? p3 : p1;
   const sin = p.inStock === false;
   const oos = sin ? '<div class="oos-tag">SIN STOCK</div>' : '';
   const accion = sin
@@ -142,8 +156,9 @@ function cardHTML(p){
         ${colorDots(p.slug)}
         <div class="card-foot">
           <div class="card-precio-col">
-            <span class="card-desde">Desde</span>
-            <p class="card-price">${fmt(p1)} <span class="card-unit">c/u</span></p>
+            <span class="card-desde">${hayDcto ? 'Desde 3u' : 'Desde'}</span>
+            <p class="card-price">${fmt(precioBase)} <span class="card-unit">c/u</span></p>
+            ${hayDcto ? `<span class="dcto"><span class="dcto-chip">-${Math.round((1 - p3 / p1) * 100)}%</span><s class="dcto-antes">${fmt(p1)}</s></span>` : ''}
           </div>
           ${accion}
         </div>

@@ -46,7 +46,18 @@ const ProductModal=(()=>{
   }
   function resetCarousel(src,name,key){imgIndex=0;const cv=colorVars(key);if(cv){imgList=cv.map(v=>v.img);}else{const g=(typeof GALLERY!=='undefined')?GALLERY[key]:null;imgList=(g&&g.length>1)?g.slice():buildImgList(src,key||name);}const w=document.getElementById('ppageThumbs');if(w)w.innerHTML='';document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');renderDots();updateArrow();}
   // ── Variantes de color ─────────────────────────────────────
-  function _clearColorWarn(){document.getElementById('ppageColorHint')?.classList.remove('show');document.getElementById('ppageColorsRow')?.classList.remove('shake');}
+  function _clearColorWarn(){const h=document.getElementById('ppageColorHint');if(h){h.classList.remove('show');h.textContent='Seleccioná tu color';}document.getElementById('ppageColorsRow')?.classList.remove('shake');}
+  // El color elegido esta sin stock: se puede ver, pero no comprar.
+  function _colorSinStock(){
+    const cv=colorVars(currentProduct&&currentProduct.key);
+    if(cv&&imgIndex>=0&&cv[imgIndex]&&cv[imgIndex].agotado){
+      const h=document.getElementById('ppageColorHint');
+      if(h){h.textContent='Ese color está sin stock';h.classList.add('show');}
+      _shakeColor();
+      return true;
+    }
+    return false;
+  }
   function renderColors(key){
     const wrap=document.getElementById('ppageColors'),row=document.getElementById('ppageColorsRow');
     const cv=colorVars(key);
@@ -55,19 +66,18 @@ const ProductModal=(()=>{
     wrap.style.display='';
     row.innerHTML=cv.map((v,i)=>{
       const ag=!!v.agotado;
-      return `<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}"${ag?' disabled aria-disabled="true"':''} title="${escAttr(v.name)}${ag?' · agotado':''}" aria-label="${escAttr(v.name)}${ag?', agotado':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
+      return `<button class="ppage-color-swatch${i===imgIndex?' active':''}${ag?' agotado':''}" data-index="${i}" title="${escAttr(v.name)}${ag?' · sin stock':''}" aria-label="${escAttr(v.name)}${ag?', sin stock':''}" style="${v.swatch?'':'background:'+v.hex}">${v.swatch?`<img src="${escAttr(v.swatch)}" alt="">`:''}</button>`;
     }).join('');
     row.querySelectorAll('.ppage-color-swatch').forEach(s=>s.addEventListener('click',()=>{
-      if(s.disabled)return;
       _clearColorWarn();goToImgDirectly(Number(s.dataset.index));
     }));
     const label=document.getElementById('ppageColorName');
     if(label)label.innerHTML=(imgIndex>=0&&cv[imgIndex])
-      ? escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">agotado</span>':'')
+      ? escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">sin stock</span>':'')
       : '';
   }
-  function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;const _cv=colorVars(currentProduct&&currentProduct.key);if(_cv&&_cv[ni]&&_cv[ni].agotado)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
-  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">agotado</span>':'');}
+  function goToImgDirectly(ni){if(ni<0||ni>=imgList.length)return;imgIndex=ni;const ie=document.getElementById('ppageImg');if(ie){gsap.killTweensOf(ie);ie.style.opacity='1';ie.src=imgList[ni];}document.getElementById('ppageImgWrap')?.style.setProperty('--ppage-img-scale','1');if(currentProduct)currentProduct.image=imgList[ni];_updateColorActive();const b=document.getElementById('ppageImgNext');if(b)b.classList.add('hidden');}
+  function _updateColorActive(){const row=document.getElementById('ppageColorsRow');if(!row)return;row.querySelectorAll('.ppage-color-swatch').forEach((s,i)=>s.classList.toggle('active',i===imgIndex));const label=document.getElementById('ppageColorName'),cv=colorVars(currentProduct&&currentProduct.key)||[];if(label&&cv[imgIndex])label.innerHTML=escTxt(cv[imgIndex].name)+(cv[imgIndex].agotado?' <span class="color-agotado-txt">sin stock</span>':'');}
   // El error de color SIEMPRE sale la 1ª vez que tocás un botón (aunque ya hayas mirado/cambiado colores).
   // Después de tocar un botón una vez (_buyTried) ya no bloquea.
   function _blockColor(){if(currentProduct&&colorVars(currentProduct.key)&&!_buyTried){_buyTried=true;_shakeColor();return true;}_clearColorWarn();return false;}
@@ -171,6 +181,40 @@ const ProductModal=(()=>{
     requestAnimationFrame(()=>requestAnimationFrame(()=>Reviews.ajustarRecorte()));
   }
 
+  // ── Personas viendo este producto ─────────────────────────
+  // Nunca arranca en el mismo numero (minimo 9) y sube de a uno cada cierto
+  // rato mientras la ficha sigue abierta. Es un efecto de vitrina, no un dato.
+  let _pvN=0,_pvT=null,_pvTope=0;
+  function _pvPinta(){
+    const el=document.getElementById('ppageViewers');
+    if(!el)return;
+    const t=el.querySelector('.pv-txt');
+    if(t)t.innerHTML='<b>'+_pvN+'</b> personas viendo este producto';
+    el.hidden=false;
+  }
+  function _pvAgenda(){
+    _pvT=setTimeout(function subir(){
+      if(!isOpen){stopViewers();return;}
+      if(_pvN<_pvTope){_pvN++;_pvPinta();
+        const el=document.getElementById('ppageViewers');
+        if(el){el.classList.remove('pv-bump');void el.offsetWidth;el.classList.add('pv-bump');}
+      }
+      _pvAgenda();
+    }, 6000+Math.floor(Math.random()*9000));   // entre 6 y 15 s
+  }
+  function startViewers(){
+    stopViewers();
+    _pvN=9+Math.floor(Math.random()*15);        // 9 a 23 al abrir
+    _pvTope=_pvN+6+Math.floor(Math.random()*8);  // sube unas cuantas y frena
+    _pvPinta();
+    _pvAgenda();
+  }
+  function stopViewers(){
+    clearTimeout(_pvT);_pvT=null;
+    const el=document.getElementById('ppageViewers');
+    if(el){el.hidden=true;el.classList.remove('pv-bump');}
+  }
+
   function populate(p,temp){
     clonarPie();
     const key=p.slug;
@@ -194,6 +238,7 @@ const ProductModal=(()=>{
     document.getElementById('ppageTiersList').style.height='0';
     renderTiers();updateTotal();renderFeatures(key);
     renderMeta(p);renderTrust(p);Reviews.renderProducto(key);renderSimilares(key);
+    startViewers();
     resetCarousel(currentProduct.image,p.name,key);
     _buyTried=false;
     if(colorVars(key))imgIndex=-1;            // color: ninguno elegido al abrir
@@ -320,6 +365,7 @@ const ProductModal=(()=>{
 
   function close(){
     if(!isOpen||!originRect)return;
+    stopViewers();
     const card=originCard,cardImg=getCardImg(card),ppageImgEl=document.getElementById('ppageImg'),iw=document.getElementById('ppageImgWrap');
 
     const isNormalCard=!card?.classList.contains('csl-slide');
@@ -466,9 +512,9 @@ const ProductModal=(()=>{
     }
     document.getElementById('ppageQtyMinus').addEventListener('click',()=>{if(qty>1){qty--;document.getElementById('ppageQtyNum').textContent=qty;updateTotal();}});
     document.getElementById('ppageQtyPlus').addEventListener('click',()=>{qty++;document.getElementById('ppageQtyNum').textContent=qty;updateTotal();});
-    document.getElementById('ppageWaBtn')?.addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;const u=priceForQty(qty),t=u*qty;const cv=colorVars(currentProduct.key),cn=(cv&&imgIndex>=0&&cv[imgIndex])?cv[imgIndex].name:'';const msg=[`*\u00a1Hola!* Me interesa este producto:`,'',`\u25b8 ${qty}x ${currentProduct.name}${cn?` (${cn})`:''}`,`  Precio: ${fmt(u)} c/u`,`  Total: *${fmt(t)}*`,'','\u00bfTienen stock disponible?'].join('\n');window.open(`https://wa.me/56930521645?text=${encodeURIComponent(msg)}`,'_blank');});
-    document.getElementById('ppageCartBtn').addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);const b=document.getElementById('ppageCartBtn');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';setTimeout(()=>{b.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>';},1800);});
-    document.getElementById('ppageMpBtn')?.addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);Checkout.open();});
+    document.getElementById('ppageWaBtn')?.addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;if(_colorSinStock())return;const u=priceForQty(qty),t=u*qty;const cv=colorVars(currentProduct.key),cn=(cv&&imgIndex>=0&&cv[imgIndex])?cv[imgIndex].name:'';const msg=[`*\u00a1Hola!* Me interesa este producto:`,'',`\u25b8 ${qty}x ${currentProduct.name}${cn?` (${cn})`:''}`,`  Precio: ${fmt(u)} c/u`,`  Total: *${fmt(t)}*`,'','\u00bfTienen stock disponible?'].join('\n');window.open(`https://wa.me/56930521645?text=${encodeURIComponent(msg)}`,'_blank');});
+    document.getElementById('ppageCartBtn').addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;if(_colorSinStock())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);const b=document.getElementById('ppageCartBtn');b.innerHTML='<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>';setTimeout(()=>{b.innerHTML='<svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM7.2 14h9.5c.8 0 1.5-.5 1.7-1.2l3-7H6.2L5.3 3H1v2h3l3.6 7.6-1.3 2.4c-.1.2-.2.5-.2.8 0 1.1.9 2 2 2h12v-2H8.4c-.1 0-.2-.1-.2-.2l.03-.12L9.1 14z"/></svg>';},1800);});
+    document.getElementById('ppageMpBtn')?.addEventListener('click',()=>{if(!currentProduct)return;if(_blockColor())return;if(_colorSinStock())return;const p=cartProduct();for(let i=0;i<qty;i++)Cart.addItem(p);Checkout.open();});
     ['ppage-features'].forEach(id=>document.getElementById(id+'-header')?.addEventListener('click',()=>openAccordion(id)));
     // Las tarjetas se pintan y se repintan todo el tiempo (ofertas, panel de
     // categoría, buscador), así que el clic se escucha una sola vez acá arriba

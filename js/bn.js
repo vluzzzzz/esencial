@@ -74,11 +74,11 @@ let CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.webp',  medida:'800 × 1000', banner:'images/audifonoscategorias.webp', bannerMobile:'images/aurifonoscategoriacelu.webp', bannerArchivo:'banner-audifonos.webp'  },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.webp',      medida:'800 × 500',  banner:'images/categoriasmarwatch.webp', bannerMobile:'images/relojescategoriacelu.webp', bannerArchivo:'banner-smartwatch.webp' },
   { arriba:'Accesorios',  titulo:'Celulares',  desde:'$15.000', cat:'celulares',  img:'images/iphone.webp',         medida:'800 × 500',  banner:'images/smarthphonecategoria.webp', bannerMobile:'images/smartphonecategoriacelu.webp', bannerArchivo:'banner-celulares.webp'  },
-  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.webp', medida:'800 × 1000', banner:'images/categoriacargadores.webp', bannerMobile:'images/cargadorescelu.webp', bannerArchivo:'banner-cargadores.webp' },
+  { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/cat-cargadores.webp', medida:'800 × 1000', banner:'images/categoriacargadoress.webp', bannerMobile:'images/cargadorescelu.webp', bannerArchivo:'banner-cargadores.webp' },
 ];
 
 // Banner de la sección "todo el catálogo" (el enlace Productos de la nav).
-const BANNER_TODOS = { banner:'', bannerMobile:'', bannerArchivo:'banner-catalogo.webp' };
+const BANNER_TODOS = { banner:'images/bannertodoelcatalogo.webp', bannerMobile:'images/bannertodoelcatalogocelular.webp', bannerArchivo:'banner-catalogo.webp' };
 /* ═══════════════════════════ FIN ZONA EDITABLE ═════════════════════════════ */
 
 
@@ -131,10 +131,8 @@ const Banners = (() => {
       : `<div class="slot cat-slot" data-medida="${escAttr(c.medida || '800 × 1000')}">` +
         (c.archivo ? `<span class="slot-archivo">${escTxt(c.archivo)}</span>` : '') +
         `</div>`;
-    const precio = c.desde
-      ? `<span class="cat-desde"><span class="cat-desde-lbl">desde:</span>${escTxt(c.desde)}</span>`
-      : '';
     // No lleva a otra página: abre el panel de esa categoría acá mismo.
+    // Solo categoría y nombre: el precio lo decide cada producto, no la tarjeta.
     return `<a href="#panel" class="cat-card" data-cat="${escAttr(c.cat || '')}" data-cat-abrir="${escAttr(c.cat || '')}">
         <div class="cat-media">${img}</div>
         <div class="cat-body">
@@ -142,7 +140,6 @@ const Banners = (() => {
             <span class="cat-arriba">${escTxt(c.arriba || '')}</span>
             <h3 class="cat-titulo">${escTxt(c.titulo)}</h3>
           </div>
-          ${precio}
         </div>
       </a>`;
   }
