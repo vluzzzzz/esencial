@@ -211,7 +211,7 @@ const ProductModal=(()=>{
         if(el){el.classList.remove('pv-bump');void el.offsetWidth;el.classList.add('pv-bump');}
       }
       _pvAgenda();
-    }, 6000+Math.floor(Math.random()*9000));   // entre 6 y 15 s
+    }, 2500+Math.floor(Math.random()*3000));   // entre 2,5 y 5,5 s
   }
   function startViewers(){
     stopViewers();
