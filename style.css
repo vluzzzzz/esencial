@@ -1761,9 +1761,7 @@ svg{ -webkit-user-select:none; user-select:none; }
   transition:background .25s var(--ease-smooth), color .25s,
              border-color .25s, transform .25s var(--ease-spring);
 }
-/* El trazado del logo llena su lienzo de borde a borde. El viewBox ampliado
-   a -2 -2 28 28 le deja aire alrededor, si no el recuadro exterior quedaba
-   cortado contra el borde del botón. */
+/* Glifo de Instagram en viewBox 0 0 24 24, con aire propio. */
 .footer-red svg{ width:22px; height:22px; fill:currentColor; flex:none; }
 /* El degradado es el de la marca de Instagram. */
 .footer-red:hover{
