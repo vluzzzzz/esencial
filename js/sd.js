@@ -156,7 +156,7 @@ function cardHTML(p, opts){
         ${colorDots(p.slug)}
         <div class="card-foot">
           <div class="card-precio-col">
-            <span class="card-desde">Desde</span>
+            ${oferta ? '<span class="card-desde">Desde</span>' : ''}
             <p class="card-price">${fmt(precioBase)} <span class="card-unit">c/u</span></p>
             ${hayDcto ? `<span class="dcto"><span class="dcto-chip">-${Math.round((1 - p3 / p1) * 100)}%</span><s class="dcto-antes">${fmt(p1)}</s></span>` : ''}
           </div>
