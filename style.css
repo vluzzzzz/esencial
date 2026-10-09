@@ -2309,3 +2309,6 @@ svg{ -webkit-user-select:none; user-select:none; }
 
 .rv-carrusel .rv-card-foto{flex:0 0 200px;width:200px}
 @media(max-width:768px){.rv-carrusel .rv-card-foto{flex:0 0 170px;width:170px}}
+
+.ppage-rv-lista .rv-card-foto{max-width:200px}
+.ppage-bottom .ppage-rv-lista .rv-card-foto{max-width:100%}
