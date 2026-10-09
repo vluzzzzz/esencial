@@ -335,18 +335,16 @@ const Reviews = (() => {
 
   function tarjetaFoto(r, imgs, conProducto){
     const sello = r.verified ? '<span class="rv-ok-ico" title="Verificada">✓</span>' : '';
-    const tipo  = r.color ? `<p class="rv-tipo">Tipo de artículo:<br><b>${escTxt(r.color)}</b></p>` : '';
     return `<article class="rv-card rv-card-foto" data-rv="${datosRv(r)}" tabindex="0" role="button" aria-label="Ver reseña de ${escAttr(r.name)}">
         <div class="rv-foto-main">
           <img src="${escAttr(imgs[0])}" alt="" loading="lazy">
-          <span class="rv-foto-grad"></span>
-          <span class="rv-foto-cap">${escTxt(r.name)} ${sello}</span>
           ${imgs.length > 1 ? `<span class="rv-foto-n">+${imgs.length - 1}</span>` : ''}
-        </div>
-        <div class="rv-card-body">
-          ${estrellas(r.stars, 'sm')}
-          <p class="rv-text">${escTxt(r.text)}</p>
-          ${tipo}
+          <span class="rv-foto-grad"></span>
+          <div class="rv-foto-info">
+            <p class="rv-foto-name">${escTxt(r.name)} ${sello}</p>
+            ${estrellas(r.stars, 'xs')}
+            <p class="rv-foto-coment">${escTxt(r.text)}</p>
+          </div>
         </div>
       </article>`;
   }
