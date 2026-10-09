@@ -37,6 +37,7 @@ const SiteConfig = (() => {
     if (!window.sb) return;
     try {
       const { data, error } = await window.sb.from('reviews').select('*')
+        .eq('status', 'aprobada')
         .order('product_slug', { ascending: true })
         .order('position', { ascending: true });
       if (error || !Array.isArray(data)) return;
