@@ -2300,3 +2300,10 @@ svg{ -webkit-user-select:none; user-select:none; }
   .catnav-item{scroll-snap-align:start}
   .catnav-ico{width:56px;height:56px}
 }
+
+.rv-carrusel .rv-card-foto,
+.ppage-rv-lista .rv-card-foto,
+.rv-pista .rv-card-foto,
+.rv-card.rv-card-foto{
+  border:none;background:transparent;box-shadow:none;padding:0;border-radius:14px;
+}
