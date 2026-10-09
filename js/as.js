@@ -419,27 +419,14 @@ const Secciones = (() => {
         st.categorias.push({ arriba:'', titulo:'', desde:'', cat:'', img:'', banner:'', bannerMobile:'' });
         pintarCategorias(); marcar('categorias');
       }
-      if (q === 'resena') {
-        const hoy = new Date().toISOString().slice(0, 10);
-        st.reviews.unshift({
-          name:'', stars:5, product: filtro || (catalogo[0] || {}).slug || '',
-          text:'', date:hoy, verified:false,
-        });
-        filtro = '';
-        pintarResenas(); marcar('reviews');
-        $('#listResenas .card input')?.focus();
-      }
     }));
 
     // Guardar
     $$('[data-save]').forEach(b =>
       b.querySelector('button').addEventListener('click', () => guardar(b.dataset.save)));
 
-    $('#filtroResena').addEventListener('change', e => { filtro = e.target.value; pintarResenas(); });
-
     conectarLista('#listBanners', pintarBanners, 'banners');
     conectarLista('#listCategorias', pintarCategorias, 'categorias');
-    conectarResenas();
     conectarPortada();
   }
 
@@ -552,6 +539,7 @@ const Secciones = (() => {
     const { data } = await sb.from('products')
       .select('slug,name,image,category').order('position', { ascending: true });
     catalogo = data || [];
+    if (typeof Resenas !== 'undefined') Resenas.setCatalogo(catalogo);
 
     const cfg = await leerTodo();
 
@@ -559,7 +547,6 @@ const Secciones = (() => {
     // vacío la primera vez y se puede editar sobre lo que ya se ve en la web.
     st.banners    = Array.isArray(cfg.banners)    ? cfg.banners    : [];
     st.categorias = Array.isArray(cfg.categorias) ? cfg.categorias : [];
-    st.reviews    = Array.isArray(cfg.reviews)    ? cfg.reviews    : [];
     st.filas = (cfg.filas && typeof cfg.filas === 'object')
       ? { ofertas: cfg.filas.ofertas || [], mas: cfg.filas.mas || [] }
       : { ofertas: [], mas: [] };
@@ -567,7 +554,6 @@ const Secciones = (() => {
     pintarBanners();
     pintarCategorias();
     pintarFilas();
-    pintarResenas();
     pintarBarras();
   }
 

@@ -321,7 +321,15 @@ const Reviews = (() => {
         </header>
         ${prod}${color}
         <p class="rv-text">${escTxt(r.text)}</p>
+        ${fotosReview(r)}
       </article>`;
+  }
+
+  function fotosReview(r){
+    const imgs = Array.isArray(r.images) ? r.images : [];
+    if (!imgs.length) return '';
+    return `<div class="rv-fotos">${imgs.map(u =>
+      `<a class="rv-foto" href="${escAttr(u)}" target="_blank" rel="noopener"><img src="${escAttr(u)}" alt="" loading="lazy"></a>`).join('')}</div>`;
   }
 
   function barras(dist, total) {

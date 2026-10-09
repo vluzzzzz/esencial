@@ -30,4 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   SiteConfig.cargar()
     .catch(err => console.error('Configuración:', err));
+
+  SiteConfig.cargarReviews()
+    .catch(err => console.error('Reseñas:', err));
 });

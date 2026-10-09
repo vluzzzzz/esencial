@@ -31,19 +31,31 @@ const SiteConfig = (() => {
       if (Array.isArray(v.mas))     MAS_PRODUCTOS = v.mas;
       return true;
     },
-    reviews(v) {
-      if (!Array.isArray(v)) return false;
-      REVIEWS = v;
-      return true;
-    },
   };
+
+  async function cargarReviews() {
+    if (!window.sb) return;
+    try {
+      const { data, error } = await window.sb.from('reviews').select('*')
+        .order('product_slug', { ascending: true })
+        .order('position', { ascending: true });
+      if (error || !Array.isArray(data)) return;
+      REVIEWS = data.map(r => ({
+        name: r.name, stars: Number(r.stars) || 5, text: r.text,
+        product: r.product_slug, color: r.color || '',
+        verified: !!r.verified, date: r.fecha || '',
+        images: Array.isArray(r.images) ? r.images : [],
+      }));
+      if (typeof Reviews !== 'undefined') Reviews.init();
+      if (typeof Trust !== 'undefined') Trust.init();
+    } catch (err) { console.info('reviews no disponible:', err.message); }
+  }
 
   // Qué hay que repintar según lo que cambió. Repintar de más es barato;
   // repintar de menos deja la página mostrando datos viejos.
   function repintar(claves) {
     if (claves.has('banners') || claves.has('categorias')) Banners.init();
     if (claves.has('filas'))   Filas.init();
-    if (claves.has('reviews')) { Reviews.init(); Trust.init(); }
   }
 
   async function cargar() {
@@ -69,5 +81,5 @@ const SiteConfig = (() => {
     }
   }
 
-  return { cargar };
+  return { cargar, cargarReviews };
 })();

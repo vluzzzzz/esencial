@@ -252,12 +252,35 @@ function renderGallery(card, st){
 }
 
 /* ── Subida de imágenes a Storage ───────────────────────── */
-async function uploadFile(file){
-  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
-  const path = `catalog/${Date.now()}-${rid()}.${ext}`;
-  const { error } = await sb.storage.from(BUCKET).upload(path, file, { cacheControl:'3600', upsert:false });
+async function uploadFile(file, prefijo){
+  const carpeta = prefijo || 'catalog/';
+  const esBlob = !file.name;
+  const ext = esBlob ? 'webp' : ((file.name.split('.').pop() || 'jpg').toLowerCase());
+  const path = `${carpeta}${Date.now()}-${rid()}.${ext}`;
+  const { error } = await sb.storage.from(BUCKET).upload(path, file, { cacheControl:'3600', upsert:false, contentType:file.type || undefined });
   if (error) throw error;
   return sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+}
+
+function comprimirImagen(file, maxLado = 1200, calidad = 0.8){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let w = img.width, h = img.height;
+      if (w > maxLado || h > maxLado){
+        if (w >= h){ h = Math.round(h * maxLado / w); w = maxLado; }
+        else       { w = Math.round(w * maxLado / h); h = maxLado; }
+      }
+      const cv = document.createElement('canvas');
+      cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(img, 0, 0, w, h);
+      cv.toBlob(b => b ? resolve(b) : reject(new Error('No se pudo procesar la imagen')), 'image/webp', calidad);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Imagen inválida')); };
+    img.src = url;
+  });
 }
 
 async function uploadMain(e, card, st){
