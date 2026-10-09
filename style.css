@@ -2264,7 +2264,7 @@ svg{ -webkit-user-select:none; user-select:none; }
 .rv-foto-main{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:#000;border-radius:14px}
 .rv-foto-main img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
 .rv-card-foto:hover .rv-foto-main img{transform:scale(1.05)}
-.rv-foto-grad{position:absolute;inset:0;background:linear-gradient(to top,#fff 0%,rgba(255,255,255,.92) 22%,rgba(255,255,255,.55) 40%,rgba(255,255,255,0) 60%);pointer-events:none}
+.rv-foto-grad{position:absolute;inset:0;border-radius:14px;background:linear-gradient(to top,#fff 0%,rgba(255,255,255,.92) 22%,rgba(255,255,255,.55) 40%,rgba(255,255,255,0) 60%);pointer-events:none}
 .rv-foto-info{position:absolute;left:14px;right:14px;bottom:12px;color:var(--ink,#1d1d1f)}
 .rv-foto-name{font-weight:700;font-size:14px;display:flex;align-items:center;gap:5px;margin-bottom:3px}
 .rv-foto-info .stars{font-size:12px}
@@ -2275,10 +2275,10 @@ svg{ -webkit-user-select:none; user-select:none; }
 #rvModal{position:fixed;inset:0;z-index:4000;display:none}
 #rvModal.abierto{display:block}
 .rvm-overlay{position:absolute;inset:0;background:rgba(0,0,0,.72)}
-.rvm-box{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(760px,92vw);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;display:flex;gap:0;padding:18px}
+.rvm-box{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(680px,92vw);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:flex-start;gap:0;padding:18px}
 .rvm-x{position:absolute;top:10px;right:14px;z-index:2;background:rgba(0,0,0,.5);color:#fff;border:none;width:32px;height:32px;border-radius:50%;font-size:20px;cursor:pointer;line-height:1}
-.rvm-fotos{flex:none;width:280px;display:flex;flex-direction:column;gap:8px}
-.rvm-fotos img{width:280px;height:280px;object-fit:cover;border-radius:12px;display:block}
+.rvm-fotos{flex:none;width:240px;display:flex;flex-direction:column;gap:8px}
+.rvm-fotos img{width:240px;height:240px;object-fit:cover;border-radius:12px;display:block}
 .rvm-info{flex:1;padding:6px 8px 6px 22px;min-width:0}
 .rvm-name{font-weight:700;font-size:18px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .rvm-date{display:block;color:var(--gray-mid,#6e6e73);font-size:13px;margin:8px 0}
@@ -2307,5 +2307,5 @@ svg{ -webkit-user-select:none; user-select:none; }
   border:none;background:transparent;box-shadow:none;padding:0;border-radius:14px;
 }
 
-.rv-carrusel .rv-card-foto{flex:0 0 240px;width:240px}
-@media(max-width:768px){.rv-carrusel .rv-card-foto{flex:0 0 210px;width:210px}}
+.rv-carrusel .rv-card-foto{flex:0 0 200px;width:200px}
+@media(max-width:768px){.rv-carrusel .rv-card-foto{flex:0 0 170px;width:170px}}
