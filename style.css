@@ -2376,7 +2376,14 @@ svg{ -webkit-user-select:none; user-select:none; }
 .wz-foto-sub{font-size:12.5px;color:var(--gray-mid,#6e6e73);line-height:1.3}
 .wz-foto img{width:100%;height:100%;object-fit:cover}
 .wz-ok{display:flex;flex-direction:column;align-items:center;gap:6px}
-.wz-ok-ico{width:60px;height:60px;border-radius:50%;background:#eafaf0;color:#1a9e44;display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:8px}
+.wz-ok-check{width:84px;height:84px;margin-bottom:12px;transform-origin:center;animation:wzOkPop .45s var(--ease-spring,cubic-bezier(.34,1.56,.64,1)) both}
+.wz-ok-circ{fill:#eafaf0;stroke:#1a9e44;stroke-width:2;stroke-dasharray:151;stroke-dashoffset:151;animation:wzOkDraw .55s .1s var(--ease-out,cubic-bezier(0,0,.2,1)) forwards}
+.wz-ok-tick{fill:none;stroke:#1a9e44;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:36;stroke-dashoffset:36;animation:wzOkDraw .4s .5s var(--ease-out,cubic-bezier(0,0,.2,1)) forwards}
+.wz-ok .wz-t{animation:wzOkText .4s .55s both}
+.wz-ok .wz-sub{animation:wzOkText .4s .68s both}
+@keyframes wzOkPop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes wzOkDraw{to{stroke-dashoffset:0}}
+@keyframes wzOkText{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .rvfm-foot{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-top:1px solid var(--gray-light,#eee);gap:10px}
 .wz-foot-l,.wz-foot-r{flex:1;display:flex}
 .wz-foot-r{justify-content:flex-end}

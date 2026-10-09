@@ -621,7 +621,7 @@ const Reviews = (() => {
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'No se pudo enviar');
-      document.getElementById('rvfmCont').innerHTML = '<div class="wz-ok"><div class="wz-ok-ico">✓</div><h3 class="wz-t">¡Gracias!</h3><p class="wz-sub">Tu reseña quedó enviada y aparecerá cuando la revisemos.</p></div>';
+      document.getElementById('rvfmCont').innerHTML = '<div class="wz-ok"><svg class="wz-ok-check" viewBox="0 0 52 52" aria-hidden="true"><circle class="wz-ok-circ" cx="26" cy="26" r="24"/><path class="wz-ok-tick" d="M14 27l8 8 16-16"/></svg><h3 class="wz-t">¡Gracias!</h3><p class="wz-sub">Tu reseña quedó enviada y aparecerá cuando la revisemos.</p></div>';
       document.getElementById('rvfmFoot').innerHTML = '<div class="wz-foot-l"></div><div></div><div class="wz-foot-r"><button class="wz-done" data-cerrar type="button">Cerrar</button></div>';
     } catch (err) {
       btn.disabled = false; btn.textContent = 'Hecho';
