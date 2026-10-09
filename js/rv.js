@@ -539,8 +539,11 @@ const Reviews = (() => {
 
   function cerrarWizard() {
     const m = document.getElementById('rvfModal');
-    if (m) m.classList.remove('abierto');
     document.documentElement.style.overflow = '';
+    if (!m || !m.classList.contains('abierto')) return;
+    m.classList.remove('abierto');
+    m.classList.add('cerrando');
+    setTimeout(() => m.classList.remove('cerrando'), 240);
   }
 
   const ICONO_SUBIR = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>';
