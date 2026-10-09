@@ -475,30 +475,35 @@ const Reviews = (() => {
     el.hidden = false;
     const lista = porFecha(porProducto(slug));
     const { total, media } = resumen(lista);
-    const cabeza = lista.length ? `
-      <div class="ppage-rv-head">
-        ${estrellas(Math.round(media), 'lg')}
-        <span class="ppage-rv-n">${nota(media)}</span>
-        <span class="ppage-rv-total">${total} ${total === 1 ? 'reseña' : 'reseñas'}</span>
-      </div>
+    const head = lista.length
+      ? `<div class="ppage-rv-head">
+          ${estrellas(Math.round(media), 'lg')}
+          <span class="ppage-rv-n">${nota(media)}</span>
+          <span class="ppage-rv-total">${total} ${total === 1 ? 'reseña' : 'reseñas'}</span>
+        </div>`
+      : '<p class="ppage-rv-vacio">Todavía no hay reseñas. Sé el primero en opinar.</p>';
+    const bar = `<div class="ppage-rv-bar">${head}
+        <button class="rvf-abrir" id="rvfAbrir" type="button">Escribir reseña</button>
+      </div>`;
+    const cuerpo = lista.length ? `
       <div class="ppage-rv-caja" id="ppageRvCaja" style="--rv-alto:${RESENAS_ALTO_RECORTE}px">
         <div class="ppage-rv-lista">${lista.map(r => tarjeta(r, false)).join('')}</div>
       </div>
       <button class="ppage-rv-mas" id="ppageRvMas" type="button" hidden>
         Ver las ${total} reseñas
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
-      </button>` : '<p class="ppage-rv-vacio">Todavía no hay reseñas. Sé el primero en opinar.</p>';
-    el.innerHTML = '<div class="rvf-top"><button class="rvf-abrir" id="rvfAbrir" type="button">Escribir reseña</button></div>' + cabeza;
+      </button>` : '';
+    el.innerHTML = bar + cuerpo;
     ajustarRecorte();
     conectarFotos();
     const btn = document.getElementById('rvfAbrir');
     if (btn) btn.addEventListener('click', abrirWizard);
   }
 
-  const wiz = { paso: 1, stars: 0, text: '', image: '', name: '' };
+  const wiz = { paso: 1, stars: 0, text: '', image: '', nombre: '', apellido: '' };
 
   function abrirWizard() {
-    wiz.paso = 1; wiz.stars = 0; wiz.text = ''; wiz.image = ''; wiz.name = '';
+    wiz.paso = 1; wiz.stars = 0; wiz.text = ''; wiz.image = ''; wiz.nombre = ''; wiz.apellido = '';
     let m = document.getElementById('rvfModal');
     if (!m) {
       m = document.createElement('div');
@@ -512,7 +517,8 @@ const Reviews = (() => {
       m.addEventListener('click', wizClick);
       m.addEventListener('input', e => {
         if (e.target.id === 'wzText') wiz.text = e.target.value;
-        if (e.target.id === 'wzName') wiz.name = e.target.value;
+        if (e.target.id === 'wzNombre') wiz.nombre = e.target.value;
+        if (e.target.id === 'wzApellido') wiz.apellido = e.target.value;
         pintarFoot();
       });
       m.addEventListener('change', async e => {
@@ -537,28 +543,35 @@ const Reviews = (() => {
     document.documentElement.style.overflow = '';
   }
 
+  const ICONO_SUBIR = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>';
+
   function pintarWizard() {
     const cont = document.getElementById('rvfmCont');
     if (!cont) return;
+    let html = '';
     if (wiz.paso === 1) {
-      cont.innerHTML = '<h3 class="wz-t">¿Cómo puntuarías este producto?</h3>' +
+      html = '<h3 class="wz-t">¿Cómo puntuarías este producto?</h3>' +
         '<div class="wz-stars" id="wzStars">' +
         [1,2,3,4,5].map(i => '<button type="button" class="wz-star' + (i <= wiz.stars ? ' on' : '') + '" data-star="' + i + '" aria-label="' + i + '">★</button>').join('') +
         '</div><div class="wz-stars-lbl"><span>No me gusta</span><span>¡Me encanta!</span></div>';
     } else if (wiz.paso === 2) {
-      cont.innerHTML = '<h3 class="wz-t">Contanos tu experiencia</h3>' +
+      html = '<h3 class="wz-t">Contanos tu experiencia</h3>' +
         '<textarea class="wz-text" id="wzText" rows="5" maxlength="600" placeholder="¿Qué te pareció el producto? ¿Cómo llegó?">' + escTxt(wiz.text) + '</textarea>';
     } else if (wiz.paso === 3) {
-      cont.innerHTML = '<h3 class="wz-t">Mostralo</h3><p class="wz-sub">¡Nos encantaría verlo! (opcional)</p>' +
-        '<label class="wz-foto"><input type="file" id="wzFoto" accept="image/*" hidden>' +
-        '<span id="wzFotoPrev">' + (wiz.image ? '<img src="' + wiz.image + '" alt="">' : '📷 Añadir foto') + '</span></label>';
+      html = '<h3 class="wz-t">Mostralo</h3><p class="wz-sub">¡Nos encantaría verlo! (opcional)</p>' +
+        '<label class="wz-foto' + (wiz.image ? ' con-foto' : '') + '"><input type="file" id="wzFoto" accept="image/*" hidden>' +
+        '<span id="wzFotoPrev">' + (wiz.image ? '<img src="' + wiz.image + '" alt="">' : '<span class="wz-foto-ico">' + ICONO_SUBIR + '</span><span class="wz-foto-tit">Subir una foto</span><span class="wz-foto-sub">Tocá para elegir desde tu galería</span>') + '</span></label>';
     } else {
-      cont.innerHTML = '<h3 class="wz-t">Sobre vos</h3>' +
-        '<label class="wz-lbl">Tu nombre</label>' +
-        '<input class="wz-input" id="wzName" type="text" maxlength="80" placeholder="Ej: Camila R." value="' + escAttr(wiz.name) + '" autocomplete="name">' +
-        '<p class="wz-legal">Al enviar aceptás que publiquemos tu reseña y foto. Se revisa antes de aparecer.</p>' +
+      html = '<h3 class="wz-t">Sobre usted</h3>' +
+        '<div class="wz-nombre-row">' +
+        '<label class="wz-campo"><span class="wz-lbl">Nombre</span>' +
+        '<input class="wz-input" id="wzNombre" type="text" maxlength="40" placeholder="Ej: Camila" value="' + escAttr(wiz.nombre) + '" autocomplete="given-name"></label>' +
+        '<label class="wz-campo"><span class="wz-lbl">Apellido</span>' +
+        '<input class="wz-input" id="wzApellido" type="text" maxlength="40" placeholder="Ej: Rojas" value="' + escAttr(wiz.apellido) + '" autocomplete="family-name"></label>' +
+        '</div>' +
         '<p class="rvf-msg" id="wzMsg" hidden></p>';
     }
+    cont.innerHTML = '<div class="wz-step" key="' + wiz.paso + '">' + html + '</div>';
     pintarFoot();
   }
 
@@ -566,12 +579,11 @@ const Reviews = (() => {
     const foot = document.getElementById('rvfmFoot');
     if (!foot) return;
     const dots = '<div class="wz-dots">' + [1,2,3,4].map(i => '<span class="wz-dot' + (i <= wiz.paso ? ' on' : '') + '"></span>').join('') + '</div>';
-    let izq = '', der = '';
-    if (wiz.paso > 1) izq = '<button class="wz-volver" data-wz="volver" type="button">← Volver</button>';
-    if (wiz.paso === 1) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.stars ? '' : ' disabled') + '>Siguiente</button>';
-    else if (wiz.paso === 2) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.text.trim().length >= 3 ? '' : ' disabled') + '>Siguiente</button>';
+    if (wiz.paso === 1) { foot.innerHTML = dots; return; }
+    let izq = '<button class="wz-volver" data-wz="volver" type="button">← Volver</button>', der = '';
+    if (wiz.paso === 2) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.text.trim().length >= 3 ? '' : ' disabled') + '>Siguiente</button>';
     else if (wiz.paso === 3) der = '<button class="wz-skip" data-wz="next" type="button">' + (wiz.image ? 'Siguiente' : 'Saltar') + '</button>';
-    else der = '<button class="wz-done" data-wz="done" type="button"' + (wiz.name.trim().length >= 2 ? '' : ' disabled') + '>Hecho</button>';
+    else der = '<button class="wz-done" data-wz="done" type="button"' + (wiz.nombre.trim().length >= 2 && wiz.apellido.trim().length >= 2 ? '' : ' disabled') + '>Hecho</button>';
     foot.innerHTML = '<div class="wz-foot-l">' + izq + '</div>' + dots + '<div class="wz-foot-r">' + der + '</div>';
   }
 
@@ -579,9 +591,14 @@ const Reviews = (() => {
     const st = e.target.closest('.wz-star');
     if (st) {
       wiz.stars = Number(st.dataset.star);
-      document.querySelectorAll('#wzStars .wz-star').forEach((x, i) => x.classList.toggle('on', i < wiz.stars));
+      document.querySelectorAll('#wzStars .wz-star').forEach((x, i) => {
+        const on = i < wiz.stars;
+        x.classList.toggle('on', on);
+        x.classList.remove('pop');
+        if (on) { void x.offsetWidth; x.classList.add('pop'); }
+      });
       pintarFoot();
-      setTimeout(() => { if (wiz.paso === 1) { wiz.paso = 2; pintarWizard(); } }, 300);
+      setTimeout(() => { if (wiz.paso === 1) { wiz.paso = 2; pintarWizard(); } }, 560);
       return;
     }
     const b = e.target.closest('[data-wz]');
@@ -597,7 +614,7 @@ const Reviews = (() => {
     try {
       const r = await fetch('/api/submit-review', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product: slugActual, name: wiz.name.trim(), stars: wiz.stars, text: wiz.text.trim(), image: wiz.image || '' }),
+        body: JSON.stringify({ product: slugActual, name: (wiz.nombre.trim() + ' ' + wiz.apellido.trim()).trim(), stars: wiz.stars, text: wiz.text.trim(), image: wiz.image || '' }),
       });
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || 'No se pudo enviar');
