@@ -558,7 +558,7 @@ const Reviews = (() => {
       html = '<h3 class="wz-t">Contanos tu experiencia</h3>' +
         '<textarea class="wz-text" id="wzText" rows="5" maxlength="600" placeholder="¿Qué te pareció el producto? ¿Cómo llegó?">' + escTxt(wiz.text) + '</textarea>';
     } else if (wiz.paso === 3) {
-      html = '<h3 class="wz-t">Mostralo</h3><p class="wz-sub">¡Nos encantaría verlo! (opcional)</p>' +
+      html = '<h3 class="wz-t">Subir foto del producto</h3><p class="wz-sub">Opcional</p>' +
         '<label class="wz-foto' + (wiz.image ? ' con-foto' : '') + '"><input type="file" id="wzFoto" accept="image/*" hidden>' +
         '<span id="wzFotoPrev">' + (wiz.image ? '<img src="' + wiz.image + '" alt="">' : '<span class="wz-foto-ico">' + ICONO_SUBIR + '</span><span class="wz-foto-tit">Subir una foto</span><span class="wz-foto-sub">Tocá para elegir desde tu galería</span>') + '</span></label>';
     } else {
@@ -579,7 +579,7 @@ const Reviews = (() => {
     const foot = document.getElementById('rvfmFoot');
     if (!foot) return;
     const dots = '<div class="wz-dots">' + [1,2,3,4].map(i => '<span class="wz-dot' + (i <= wiz.paso ? ' on' : '') + '"></span>').join('') + '</div>';
-    if (wiz.paso === 1) { foot.innerHTML = dots; return; }
+    if (wiz.paso === 1) { foot.innerHTML = '<div class="wz-foot-l"></div>' + dots + '<div class="wz-foot-r"></div>'; return; }
     let izq = '<button class="wz-volver" data-wz="volver" type="button">← Volver</button>', der = '';
     if (wiz.paso === 2) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.text.trim().length >= 3 ? '' : ' disabled') + '>Siguiente</button>';
     else if (wiz.paso === 3) der = '<button class="wz-skip" data-wz="next" type="button">' + (wiz.image ? 'Siguiente' : 'Saltar') + '</button>';

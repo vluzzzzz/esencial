@@ -2333,7 +2333,7 @@ svg{ -webkit-user-select:none; user-select:none; }
 .rvf-top{display:flex;justify-content:flex-end;margin-bottom:14px}
 .ppage-rv-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
 .ppage-rv-bar .ppage-rv-head{margin-bottom:0}
-.rvf-abrir{background:#fff;color:var(--ink,#1d1d1f);border:1px solid var(--gray-light,#d8d8dd);border-radius:999px;padding:10px 20px;font:inherit;font-weight:600;cursor:pointer;flex:none}
+.rvf-abrir{background:#fff;color:var(--ink,#1d1d1f);border:1px solid var(--gray-light,#d8d8dd);border-radius:12px;padding:10px 20px;font:inherit;font-weight:600;cursor:pointer;flex:none}
 .rvf-abrir:hover{background:#fafafa;border-color:#000}
 .rvf-msg{font-size:13px;color:#e0245e;font-weight:600;margin-top:8px}
 .ppage-rv-vacio{color:var(--gray-mid,#6e6e73);font-size:15px;padding:6px 0}
