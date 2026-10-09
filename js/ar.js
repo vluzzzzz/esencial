@@ -89,7 +89,7 @@ const Resenas = (() => {
     const abierto = abiertos.has(slug);
     const prod = catalogo.find(p => p.slug === slug);
     const img = prod && prod.image ? '<img src="' + escH(prod.image) + '" alt="" loading="lazy">' : '';
-    return '<div class="rr-grupo" data-slug="' + escH(slug) + '">' +
+    return '<div class="rr-grupo' + (abierto ? ' abierto' : '') + '" data-slug="' + escH(slug) + '">' +
       '<button class="rr-gcab" data-act="toggle" aria-expanded="' + (abierto ? 'true' : 'false') + '">' +
         '<span class="rr-gimg">' + img + '</span>' +
         '<span class="rr-gnom">' + escH(nombreProd(slug)) + '</span>' +

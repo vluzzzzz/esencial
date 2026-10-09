@@ -306,6 +306,8 @@ const Reviews = (() => {
   const porFecha = lista => lista.slice().sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
   function tarjeta(r, conProducto = true) {
+    const imgs = Array.isArray(r.images) ? r.images : [];
+    if (imgs.length) return tarjetaFoto(r, imgs, conProducto);
     const inicial = (r.name.trim()[0] || '?').toUpperCase();
     const sello = r.verified ? '<span class="rv-ok">✓ Compra verificada</span>' : '';
     const prod  = conProducto ? `<p class="rv-prod">Producto: ${escTxt(nombreProducto(r.product))}</p>` : '';
@@ -321,15 +323,81 @@ const Reviews = (() => {
         </header>
         ${prod}${color}
         <p class="rv-text">${escTxt(r.text)}</p>
-        ${fotosReview(r)}
       </article>`;
   }
 
-  function fotosReview(r){
+  function datosRv(r){
+    return encodeURIComponent(JSON.stringify({
+      name: r.name, stars: r.stars, text: r.text, verified: !!r.verified,
+      color: r.color || '', date: r.date || '', images: r.images || [],
+    }));
+  }
+
+  function tarjetaFoto(r, imgs, conProducto){
+    const sello = r.verified ? '<span class="rv-ok-ico" title="Verificada">✓</span>' : '';
+    const tipo  = r.color ? `<p class="rv-tipo">Tipo de artículo:<br><b>${escTxt(r.color)}</b></p>` : '';
+    return `<article class="rv-card rv-card-foto" data-rv="${datosRv(r)}" tabindex="0" role="button" aria-label="Ver reseña de ${escAttr(r.name)}">
+        <div class="rv-foto-main">
+          <img src="${escAttr(imgs[0])}" alt="" loading="lazy">
+          <span class="rv-foto-grad"></span>
+          <span class="rv-foto-cap">${escTxt(r.name)} ${sello}</span>
+          ${imgs.length > 1 ? `<span class="rv-foto-n">+${imgs.length - 1}</span>` : ''}
+        </div>
+        <div class="rv-card-body">
+          ${estrellas(r.stars, 'sm')}
+          <p class="rv-text">${escTxt(r.text)}</p>
+          ${tipo}
+        </div>
+      </article>`;
+  }
+
+  function abrirRv(datos){
+    let r;
+    try { r = JSON.parse(decodeURIComponent(datos)); } catch { return; }
+    let m = document.getElementById('rvModal');
+    if (!m){
+      m = document.createElement('div');
+      m.id = 'rvModal';
+      m.innerHTML = '<div class="rvm-overlay" data-cerrar></div><div class="rvm-box" role="dialog" aria-modal="true"><button class="rvm-x" data-cerrar aria-label="Cerrar">&times;</button><div class="rvm-cont"></div></div>';
+      document.body.appendChild(m);
+      m.addEventListener('click', e => { if (e.target.hasAttribute('data-cerrar')) cerrarRv(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarRv(); });
+    }
     const imgs = Array.isArray(r.images) ? r.images : [];
-    if (!imgs.length) return '';
-    return `<div class="rv-fotos">${imgs.map(u =>
-      `<a class="rv-foto" href="${escAttr(u)}" target="_blank" rel="noopener"><img src="${escAttr(u)}" alt="" loading="lazy"></a>`).join('')}</div>`;
+    const sello = r.verified ? '<span class="rv-ok">✓ Compra verificada</span>' : '';
+    const tipo  = r.color ? `<p class="rvm-tipo">Tipo de artículo: <b>${escTxt(r.color)}</b></p>` : '';
+    m.querySelector('.rvm-cont').innerHTML =
+      `<div class="rvm-fotos">${imgs.map(u => `<img src="${escAttr(u)}" alt="" loading="lazy">`).join('')}</div>
+       <div class="rvm-info">
+         <p class="rvm-name">${escTxt(r.name)} <span class="rv-cl">CL</span> ${sello}</p>
+         ${estrellas(r.stars, 'md')}
+         <time class="rvm-date">${fecha(r.date)}</time>
+         <p class="rvm-text">${escTxt(r.text)}</p>
+         ${tipo}
+       </div>`;
+    m.classList.add('abierto');
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function cerrarRv(){
+    const m = document.getElementById('rvModal');
+    if (m) m.classList.remove('abierto');
+    document.documentElement.style.overflow = '';
+  }
+
+  function conectarFotos(){
+    if (window.__rvFotoWired) return;
+    window.__rvFotoWired = true;
+    document.addEventListener('click', e => {
+      const c = e.target.closest('.rv-card-foto');
+      if (c) abrirRv(c.dataset.rv);
+    });
+    document.addEventListener('keydown', e => {
+      if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList.contains('rv-card-foto')){
+        e.preventDefault();
+        abrirRv(document.activeElement.dataset.rv);
+      }
+    });
   }
 
   function barras(dist, total) {
@@ -367,6 +435,7 @@ const Reviews = (() => {
 `;
 
     pintarPista(vistas);
+    conectarFotos();
   }
 
   // Carrusel automático, una sola fila. Va solo, como la cinta de arriba: el
@@ -421,6 +490,7 @@ const Reviews = (() => {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
       </button>`;
     ajustarRecorte();
+    conectarFotos();
   }
 
   // El botón solo tiene sentido si de verdad quedó algo tapado. No se puede
