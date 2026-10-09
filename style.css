@@ -2324,8 +2324,8 @@ svg{ -webkit-user-select:none; user-select:none; }
 
 .ppage-bottom .ppage-rv-lista,
 .ppage-rv-caja .ppage-rv-lista{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:12px;align-items:start;columns:auto;column-gap:12px;
+  display:block;columns:220px;column-gap:12px;
 }
-.ppage-rv-lista .rv-card-foto{width:100%;max-width:100%}
-.ppage-rv-lista .rv-foto-main{aspect-ratio:1/1}
+.ppage-rv-lista .rv-card,
+.ppage-rv-lista .rv-card-foto{break-inside:avoid;width:100%;max-width:100%;margin:0 0 12px}
+.ppage-rv-lista .rv-foto-main{aspect-ratio:4/5}
