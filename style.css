@@ -2285,7 +2285,17 @@ svg{ -webkit-user-select:none; user-select:none; }
 .rvm-text{font-size:16px;line-height:1.55;margin-top:10px}
 .rvm-tipo{margin-top:14px;font-size:14px;color:var(--gray-mid,#6e6e73)}
 .rvm-tipo b{color:var(--ink,#1d1d1f)}
-@media(max-width:620px){.rvm-cont{flex-direction:column;align-items:center}.rvm-fotos{width:100%;flex-direction:row;overflow-x:auto}.rvm-fotos img{width:200px;height:200px}.rvm-info{padding:14px 4px 4px}}
+@media(max-width:620px){
+  .rvm-box{padding:14px}
+  .rvm-cont{flex-direction:row;align-items:center;gap:0}
+  .rvm-fotos{flex:none;width:135px;flex-direction:column}
+  .rvm-fotos img{width:135px;height:170px}
+  .rvm-info{flex:1;min-width:0;padding:2px 2px 2px 14px}
+  .rvm-name{font-size:15px}
+  .rvm-date{font-size:12px;margin:6px 0}
+  .rvm-text{font-size:14px;line-height:1.5;margin-top:8px}
+  .rvm-tipo{margin-top:10px;font-size:13px}
+}
 
 .catnav{max-width:1180px;margin:22px auto 0;padding:0 20px;display:flex;justify-content:center;gap:40px}
 .catnav-item{display:flex;flex-direction:column;align-items:center;gap:10px;text-decoration:none;color:var(--ink,#1d1d1f);flex:none;transition:color .2s ease;animation:catnavColor 6s ease-in-out infinite}
