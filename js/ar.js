@@ -63,24 +63,31 @@ const Resenas = (() => {
     return '<div class="rr-fotos">' + minis + subir + '</div>';
   }
 
+  function estrellasHTML(n){
+    const v = Number(n) || 5;
+    let out = '<div class="rr-stars" data-f="stars" data-val="' + v + '">';
+    for (let i = 1; i <= 5; i++) out += '<button type="button" class="rr-star' + (i <= v ? ' on' : '') + '" data-star="' + i + '" aria-label="' + i + ' estrellas">★</button>';
+    return out + '</div>';
+  }
+
   function tarjeta(r){
     const cv = (typeof COLOR_VARIANTS !== 'undefined') ? COLOR_VARIANTS[r.product_slug] : null;
     return '<div class="rr-card" data-id="' + escH(r.id) + '">' +
       '<div class="rr-top">' +
-        '<input class="rr-nombre" data-f="name" value="' + escH(r.name) + '" placeholder="Nombre del cliente">' +
-        '<select class="rr-stars" data-f="stars">' +
-          [5,4,3,2,1].map(n => '<option value="' + n + '"' + (Number(r.stars) === n ? ' selected' : '') + '>' + '★'.repeat(n) + '</option>').join('') +
-        '</select>' +
-        '<button class="btn btn-borrar" data-act="borrar" title="Eliminar reseña" aria-label="Eliminar reseña">' + ICONO_TACHO + '</button>' +
+        '<input class="rr-nombre" data-f="name" value="' + escH(r.name) + '" placeholder="Nombre">' +
+        estrellasHTML(r.stars) +
       '</div>' +
       '<textarea class="rr-text" data-f="text" rows="2" placeholder="Comentario">' + escH(r.text) + '</textarea>' +
       '<div class="rr-fila">' +
         '<label class="rr-fld"><span>Fecha</span><input type="date" data-f="fecha" value="' + escH(r.fecha || '') + '"></label>' +
         (cv && cv.length ? colorOpciones(r) : '') +
-        '<label class="rr-check"><input type="checkbox" data-f="verified"' + (r.verified ? ' checked' : '') + '><span>Compra verificada</span></label>' +
       '</div>' +
+      '<label class="rr-check"><input type="checkbox" data-f="verified"' + (r.verified ? ' checked' : '') + '><span>Compra verificada</span></label>' +
       fotosHTML(r) +
-      '<div class="rr-pie"><button class="btn btn-dark rr-guardar" data-act="guardar">Guardar cambios</button></div>' +
+      '<div class="rr-pie">' +
+        '<button class="btn btn-dark rr-guardar" data-act="guardar">Guardar</button>' +
+        '<button class="btn btn-danger rr-elim" data-act="borrar">Eliminar</button>' +
+      '</div>' +
       '<div class="rr-borrar" hidden></div>' +
     '</div>';
   }
@@ -140,7 +147,7 @@ const Resenas = (() => {
     const val = f => card.querySelector('[data-f="' + f + '"]');
     const patch = {
       name: (val('name') || {}).value || '',
-      stars: Number((val('stars') || {}).value) || 5,
+      stars: Number((val('stars') || {}).dataset?.val) || 5,
       text: (val('text') || {}).value || '',
       fecha: (val('fecha') || {}).value || r.fecha,
       verified: !!(val('verified') || {}).checked,
@@ -244,6 +251,14 @@ const Resenas = (() => {
     const idDe = el => { const c = el.closest('[data-id]'); return c ? c.dataset.id : null; };
 
     cont.addEventListener('click', e => {
+      const st = e.target.closest('.rr-star');
+      if (st){
+        const wrap = st.closest('.rr-stars');
+        const v = Number(st.dataset.star);
+        wrap.dataset.val = v;
+        wrap.querySelectorAll('.rr-star').forEach((x, i) => x.classList.toggle('on', i < v));
+        return;
+      }
       const b = e.target.closest('[data-act]');
       if (!b) return;
       const act = b.dataset.act;

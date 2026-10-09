@@ -380,19 +380,21 @@ input[type=date]{
 .rr-grupo.abierto .rr-gcab{flex-direction:row;text-align:left;gap:14px;padding:14px 16px;border-bottom:1px solid var(--line)}
 .rr-grupo.abierto .rr-gimg{width:40px;height:40px}
 .rr-grupo.abierto .rr-gnom{flex:1;font-size:15px}
-.rr-glista{padding:16px;display:flex;flex-direction:column;gap:12px}
+.rr-glista{padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;align-items:start}
+.rr-glista .rr-add{grid-column:1/-1}
+@media(max-width:1000px){.rr-glista{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.rr-glista{grid-template-columns:1fr}}
 .rr-add{align-self:flex-start}
 @media(max-width:900px){#listResenas{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){#listResenas{grid-template-columns:1fr}}
 
-.rr-card{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff}
-.rr-top{display:flex;gap:10px;align-items:center}
-.rr-nombre{flex:1;font:inherit;font-weight:600;padding:9px 12px;border:1px solid var(--line);border-radius:10px;outline:none}
+.rr-card{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff}
+.rr-top{display:flex;flex-direction:column;gap:8px}
+.rr-nombre{width:100%;font:inherit;font-weight:600;padding:8px 11px;border:1px solid var(--line);border-radius:10px;outline:none}
 .rr-nombre:focus{border-color:#000}
-.rr-stars{flex:none;font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:10px;color:#f5a623}
-.rr-card .btn-borrar{flex:none;width:38px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--muted);border:1px solid var(--line)}
-.rr-card .btn-borrar svg{width:16px;height:16px}
-.rr-card .btn-borrar:hover{background:#fff5f8;color:var(--red);border-color:#f3c6d4}
+.rr-stars{display:inline-flex;gap:2px}
+.rr-star{background:none;border:none;cursor:pointer;font-size:19px;line-height:1;padding:0;color:#d8d8dd}
+.rr-star.on{color:#f5a623}
 .rr-text{width:100%;font:inherit;font-size:14px;padding:10px 12px;margin-top:10px;border:1px solid var(--line);border-radius:10px;outline:none;resize:vertical;line-height:1.45}
 .rr-text:focus{border-color:#000}
 .rr-fila{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;margin-top:10px}
@@ -415,5 +417,5 @@ input[type=date]{
 .rr-borrar-btns{display:flex;gap:8px}
 .rr-borrar-btns .btn{flex:1;padding:9px 10px;font-size:13px}
 
-.rr-pie{margin-top:12px}
-.rr-guardar{padding:9px 18px;font-size:13px}
+.rr-pie{margin-top:12px;display:flex;gap:8px}
+.rr-pie .btn{flex:1;padding:9px 10px;font-size:13px}
