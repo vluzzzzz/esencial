@@ -101,7 +101,22 @@ async function leerPedido(id) {
   return Array.isArray(out) && out[0] ? out[0] : null;
 }
 
+async function sbUpload(path, buffer, contentType) {
+  const r = await fetch(`${SB_URL()}/storage/v1/object/site-images/${path}`, {
+    method: 'POST',
+    headers: {
+      apikey: SB_KEY(),
+      Authorization: `Bearer ${SB_KEY()}`,
+      'Content-Type': contentType || 'application/octet-stream',
+      'x-upsert': 'false',
+    },
+    body: buffer,
+  });
+  if (!r.ok) throw new Error(`storage ${r.status}: ${await r.text()}`);
+  return `${SB_URL()}/storage/v1/object/public/site-images/${path}`;
+}
+
 module.exports = {
-  UUID_RE, sbConfigurado, sbRest,
+  UUID_RE, sbConfigurado, sbRest, sbUpload, SB_URL,
   crearPedidoIniciado, marcarPagado, guardarPedidoPagado, leerPedido,
 };

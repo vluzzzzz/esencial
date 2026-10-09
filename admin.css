@@ -424,3 +424,16 @@ input[type=date]{
   #tab-resenas{margin-inline:calc((100% - min(1320px, 100vw - 48px)) / 2)}
 }
 .rr-glista{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+.rr-pend{grid-column:1/-1;margin-bottom:18px;padding:16px;background:#fff7ed;border:1px solid #f5d6a8;border-radius:14px}
+.rr-pend-t{font-size:16px;margin-bottom:12px;color:#a96b00}
+.rr-pend-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:1000px){.rr-pend-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.rr-pend-grid{grid-template-columns:1fr}}
+.rr-pend-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;display:flex;flex-direction:column;gap:6px}
+.rr-pend-prod{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.rr-pend-nom{font-weight:600;color:#f5a623}
+.rr-pend-txt{font-size:14px;color:var(--ink);line-height:1.4}
+.rr-pend-img{width:100%;max-height:160px;object-fit:cover;border-radius:10px}
+.rr-pend-acc{display:flex;gap:8px;margin-top:4px}
+.rr-pend-acc .btn{flex:1;padding:9px 10px;font-size:13px}

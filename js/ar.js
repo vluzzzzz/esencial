@@ -92,8 +92,25 @@ const Resenas = (() => {
     '</div>';
   }
 
+  function pendientesHTML(){
+    const pend = reviews.filter(r => r.status === 'pendiente');
+    if (!pend.length) return '';
+    return '<div class="rr-pend"><h2 class="rr-pend-t">Pendientes de aprobar (' + pend.length + ')</h2>' +
+      '<div class="rr-pend-grid">' + pend.map(p => {
+        const img = (Array.isArray(p.images) && p.images[0]) ? '<img class="rr-pend-img" src="' + escH(p.images[0]) + '" alt="" loading="lazy">' : '';
+        return '<div class="rr-pend-card" data-id="' + escH(p.id) + '">' +
+          '<p class="rr-pend-prod">' + escH(nombreProd(p.product_slug)) + '</p>' +
+          '<p class="rr-pend-nom">' + escH(p.name) + ' · ' + '★'.repeat(Number(p.stars) || 0) + '</p>' +
+          '<p class="rr-pend-txt">' + escH(p.text) + '</p>' + img +
+          '<div class="rr-pend-acc">' +
+            '<button class="btn btn-dark" data-act="aprobar">✓ Aprobar</button>' +
+            '<button class="btn btn-danger" data-act="rechazar">✗ Rechazar</button>' +
+          '</div></div>';
+      }).join('') + '</div></div>';
+  }
+
   function grupoHTML(slug){
-    const lista = reviews.filter(r => r.product_slug === slug);
+    const lista = reviews.filter(r => r.product_slug === slug && r.status !== 'pendiente');
     const abierto = abiertos.has(slug);
     const prod = catalogo.find(p => p.slug === slug);
     const img = prod && prod.image ? '<img src="' + escH(prod.image) + '" alt="" loading="lazy">' : '';
@@ -117,7 +134,7 @@ const Resenas = (() => {
     const slugs = catalogo.map(p => p.slug);
     reviews.forEach(r => { if (!slugs.includes(r.product_slug)) slugs.push(r.product_slug); });
     if (!slugs.length){ cont.innerHTML = '<div class="empty">No hay productos.</div>'; return; }
-    cont.innerHTML = slugs.map(grupoHTML).join('');
+    cont.innerHTML = pendientesHTML() + slugs.map(grupoHTML).join('');
 
     const res = $('#resumenResenas');
     if (res){
@@ -166,6 +183,25 @@ const Resenas = (() => {
       setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 1400);
     } catch (err){
       btn.disabled = false; btn.textContent = orig;
+      toast(mensajeError(err), true);
+    }
+  }
+
+  async function aprobar(id, btn){
+    const r = reviews.find(x => x.id === id);
+    if (!r) return;
+    if (btn){ btn.disabled = true; btn.textContent = '…'; }
+    try {
+      const { data, error } = await sb.from('reviews')
+        .update({ status: 'aprobada', updated_at: new Date().toISOString() }).eq('id', id).select('id');
+      if (error) throw error;
+      if (!data || !data.length) throw new Error('SIN_PERMISO');
+      r.status = 'aprobada';
+      abiertos.add(r.product_slug);
+      pintar();
+      toast('Reseña aprobada');
+    } catch (err){
+      if (btn){ btn.disabled = false; btn.textContent = '✓ Aprobar'; }
       toast(mensajeError(err), true);
     }
   }
@@ -270,6 +306,8 @@ const Resenas = (() => {
         pintar();
       }
       if (act === 'agregar') agregar(b.closest('[data-slug]').dataset.slug);
+      if (act === 'aprobar') aprobar(idDe(b), b);
+      if (act === 'rechazar') borrarYa(idDe(b));
       if (act === 'guardar') guardarTodo(b.closest('[data-id]'), b);
       if (act === 'quitarFoto') quitarFoto(idDe(b), Number(b.dataset.foto));
       if (act === 'borrar')   preguntarBorrar(idDe(b));

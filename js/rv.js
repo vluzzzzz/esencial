@@ -467,14 +467,15 @@ const Reviews = (() => {
   }
 
   // Bloque dentro de la ficha de producto
+  let slugActual = '';
   function renderProducto(slug) {
     const el = document.getElementById('ppageReviews');
     if (!el) return;
-    const lista = porFecha(porProducto(slug));
-    if (!lista.length) { el.innerHTML = ''; el.hidden = true; return; }
+    slugActual = slug;
     el.hidden = false;
+    const lista = porFecha(porProducto(slug));
     const { total, media } = resumen(lista);
-    el.innerHTML = `
+    const cabeza = lista.length ? `
       <div class="ppage-rv-head">
         ${estrellas(Math.round(media), 'lg')}
         <span class="ppage-rv-n">${nota(media)}</span>
@@ -486,9 +487,108 @@ const Reviews = (() => {
       <button class="ppage-rv-mas" id="ppageRvMas" type="button" hidden>
         Ver las ${total} reseñas
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
-      </button>`;
+      </button>` : '<p class="ppage-rv-vacio">Todavía no hay reseñas. Sé el primero en opinar.</p>';
+    el.innerHTML = cabeza + formResena(slug);
     ajustarRecorte();
     conectarFotos();
+    conectarForm();
+  }
+
+  function formResena(slug) {
+    return `
+      <div class="rvf" data-slug="${escAttr(slug)}">
+        <button class="rvf-abrir" type="button" id="rvfAbrir">✍ Dejá tu reseña</button>
+        <form class="rvf-form" id="rvfForm" hidden>
+          <input class="rvf-nombre" id="rvfNombre" type="text" maxlength="80" placeholder="Tu nombre" autocomplete="name">
+          <div class="rvf-stars" id="rvfStars" data-val="0" role="radiogroup" aria-label="Calificación">
+            ${[1,2,3,4,5].map(i => `<button type="button" class="rvf-star" data-star="${i}" aria-label="${i} estrellas">★</button>`).join('')}
+          </div>
+          <textarea class="rvf-text" id="rvfText" rows="3" maxlength="600" placeholder="Contá cómo te fue con el producto"></textarea>
+          <label class="rvf-foto" id="rvfFotoLbl">
+            <input type="file" id="rvfFoto" accept="image/*" hidden>
+            <span id="rvfFotoTxt">+ Agregar una foto (opcional)</span>
+          </label>
+          <button class="rvf-enviar" id="rvfEnviar" type="submit">Enviar reseña</button>
+          <p class="rvf-nota">Al enviar aceptás que publiquemos tu reseña y foto. Se revisa antes de aparecer.</p>
+          <p class="rvf-msg" id="rvfMsg" hidden></p>
+        </form>
+      </div>`;
+  }
+
+  function comprimeImg(file, maxLado = 1200, calidad = 0.8) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let w = img.width, h = img.height;
+        if (w > maxLado || h > maxLado) {
+          if (w >= h) { h = Math.round(h * maxLado / w); w = maxLado; }
+          else { w = Math.round(w * maxLado / h); h = maxLado; }
+        }
+        const cv = document.createElement('canvas');
+        cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        resolve(cv.toDataURL('image/webp', calidad));
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('imagen')); };
+      img.src = url;
+    });
+  }
+
+  function conectarForm() {
+    const cont = document.getElementById('rvfForm');
+    if (!cont) return;
+    let fotoData = '';
+
+    document.getElementById('rvfAbrir').addEventListener('click', () => {
+      cont.hidden = !cont.hidden;
+    });
+
+    document.getElementById('rvfStars').addEventListener('click', e => {
+      const b = e.target.closest('.rvf-star');
+      if (!b) return;
+      const wrap = document.getElementById('rvfStars');
+      const v = Number(b.dataset.star);
+      wrap.dataset.val = v;
+      wrap.querySelectorAll('.rvf-star').forEach((x, i) => x.classList.toggle('on', i < v));
+    });
+
+    document.getElementById('rvfFoto').addEventListener('change', async e => {
+      const f = e.target.files[0];
+      const txt = document.getElementById('rvfFotoTxt');
+      if (!f) { fotoData = ''; txt.textContent = '+ Agregar una foto (opcional)'; return; }
+      txt.textContent = 'Procesando foto…';
+      try { fotoData = await comprimeImg(f); txt.textContent = '✓ Foto lista (tocá para cambiar)'; }
+      catch { fotoData = ''; txt.textContent = 'No se pudo leer la foto'; }
+    });
+
+    cont.addEventListener('submit', async e => {
+      e.preventDefault();
+      const msg = document.getElementById('rvfMsg');
+      const btn = document.getElementById('rvfEnviar');
+      const body = {
+        product: slugActual,
+        name: document.getElementById('rvfNombre').value.trim(),
+        stars: Number(document.getElementById('rvfStars').dataset.val) || 0,
+        text: document.getElementById('rvfText').value.trim(),
+        image: fotoData || '',
+      };
+      msg.hidden = true;
+      btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Enviando…';
+      try {
+        const r = await fetch('/api/submit-review', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+        });
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || 'No se pudo enviar');
+        cont.innerHTML = '<p class="rvf-ok">¡Gracias! Tu reseña quedó enviada y aparecerá cuando la revisemos.</p>';
+      } catch (err) {
+        btn.disabled = false; btn.textContent = orig;
+        msg.textContent = err.message;
+        msg.hidden = false;
+      }
+    });
   }
 
   // El botón solo tiene sentido si de verdad quedó algo tapado. No se puede
