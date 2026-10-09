@@ -2360,6 +2360,9 @@ svg{ -webkit-user-select:none; user-select:none; }
   .ppage-rv-lista .rv-card{padding:12px 13px}
   .ppage-rv-lista .rv-text{font-size:13.5px;line-height:1.45}
   .ppage-rv-lista .rv-name{font-size:13px}
+  .ppage-rv-lista .rv-head{grid-template-columns:auto 1fr;gap:8px}
+  .ppage-rv-lista .rv-who{min-width:0}
+  .ppage-rv-lista .rv-date{grid-column:2;grid-row:2;margin-top:3px;font-size:11px}
 }
 
 .rvf-top{display:flex;justify-content:flex-end;margin-bottom:14px}
