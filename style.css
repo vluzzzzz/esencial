@@ -2383,7 +2383,8 @@ svg{ -webkit-user-select:none; user-select:none; }
 .wz-dots{display:flex;gap:7px}
 .wz-dot{width:28px;height:5px;border-radius:3px;background:#e5e5e7}
 .wz-dot.on{background:var(--black,#111)}
-.wz-volver{background:none;border:none;font:inherit;font-weight:600;cursor:pointer;color:var(--ink,#1d1d1f)}
+.wz-volver{display:inline-flex;align-items:center;gap:5px;background:none;border:none;font:inherit;font-weight:600;cursor:pointer;color:var(--ink,#1d1d1f)}
+.wz-volver svg{display:block}
 .wz-next,.wz-done{background:var(--black,#111);color:#fff;border:none;border-radius:999px;padding:11px 26px;font:inherit;font-weight:700;cursor:pointer}
 .wz-skip{background:none;border:none;font:inherit;font-weight:600;cursor:pointer;color:var(--gray-mid,#6e6e73)}
 .wz-next:disabled,.wz-done:disabled{opacity:.4;cursor:not-allowed}

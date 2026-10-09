@@ -583,7 +583,7 @@ const Reviews = (() => {
     if (!foot) return;
     const dots = '<div class="wz-dots">' + [1,2,3,4].map(i => '<span class="wz-dot' + (i <= wiz.paso ? ' on' : '') + '"></span>').join('') + '</div>';
     if (wiz.paso === 1) { foot.innerHTML = '<div class="wz-foot-l"></div>' + dots + '<div class="wz-foot-r"></div>'; return; }
-    let izq = '<button class="wz-volver" data-wz="volver" type="button">← Volver</button>', der = '';
+    let izq = '<button class="wz-volver" data-wz="volver" type="button"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>Volver</button>', der = '';
     if (wiz.paso === 2) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.text.trim().length >= 3 ? '' : ' disabled') + '>Siguiente</button>';
     else if (wiz.paso === 3) der = '<button class="wz-skip" data-wz="next" type="button">' + (wiz.image ? 'Siguiente' : 'Saltar') + '</button>';
     else der = '<button class="wz-done" data-wz="done" type="button"' + (wiz.nombre.trim().length >= 2 && wiz.apellido.trim().length >= 2 ? '' : ' disabled') + '>Hecho</button>';
