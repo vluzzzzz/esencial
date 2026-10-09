@@ -414,3 +414,6 @@ input[type=date]{
 .rr-borrar-txt{font-size:13px;font-weight:600;color:var(--red);margin-bottom:9px}
 .rr-borrar-btns{display:flex;gap:8px}
 .rr-borrar-btns .btn{flex:1;padding:9px 10px;font-size:13px}
+
+.rr-pie{margin-top:12px}
+.rr-guardar{padding:9px 18px;font-size:13px}

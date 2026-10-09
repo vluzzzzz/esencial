@@ -80,6 +80,7 @@ const Resenas = (() => {
         '<label class="rr-check"><input type="checkbox" data-f="verified"' + (r.verified ? ' checked' : '') + '><span>Compra verificada</span></label>' +
       '</div>' +
       fotosHTML(r) +
+      '<div class="rr-pie"><button class="btn btn-dark rr-guardar" data-act="guardar">Guardar cambios</button></div>' +
       '<div class="rr-borrar" hidden></div>' +
     '</div>';
   }
@@ -129,6 +130,37 @@ const Resenas = (() => {
       if (error) throw error;
       if (!data || !data.length) throw new Error('SIN_PERMISO');
     } catch (err){ toast(mensajeError(err), true); }
+  }
+
+  async function guardarTodo(card, btn){
+    if (!card) return;
+    const id = card.dataset.id;
+    const r = reviews.find(x => x.id === id);
+    if (!r) return;
+    const val = f => card.querySelector('[data-f="' + f + '"]');
+    const patch = {
+      name: (val('name') || {}).value || '',
+      stars: Number((val('stars') || {}).value) || 5,
+      text: (val('text') || {}).value || '',
+      fecha: (val('fecha') || {}).value || r.fecha,
+      verified: !!(val('verified') || {}).checked,
+      updated_at: new Date().toISOString(),
+    };
+    const col = val('color');
+    if (col) patch.color = col.value;
+    const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Guardando…';
+    try {
+      const { data, error } = await sb.from('reviews').update(patch).eq('id', id).select('id');
+      if (error) throw error;
+      if (!data || !data.length) throw new Error('SIN_PERMISO');
+      Object.assign(r, patch);
+      btn.textContent = 'Guardado ✓';
+      setTimeout(() => { btn.disabled = false; btn.textContent = orig; }, 1400);
+    } catch (err){
+      btn.disabled = false; btn.textContent = orig;
+      toast(mensajeError(err), true);
+    }
   }
 
   async function agregar(slug){
@@ -223,6 +255,7 @@ const Resenas = (() => {
         pintar();
       }
       if (act === 'agregar') agregar(b.closest('[data-slug]').dataset.slug);
+      if (act === 'guardar') guardarTodo(b.closest('[data-id]'), b);
       if (act === 'quitarFoto') quitarFoto(idDe(b), Number(b.dataset.foto));
       if (act === 'borrar')   preguntarBorrar(idDe(b));
       if (act === 'borrarNo') cerrarBorrar();
