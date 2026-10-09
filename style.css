@@ -1584,15 +1584,9 @@ body:has(#topbar) .nav{top:auto}
 }
 @media(max-width:768px){
   .ppage-bottom{ padding-bottom:40px; }
-  .ppage-bottom .ppage-rv-lista{ columns:2; column-gap:10px; }
   .ppage-bottom .ppage-rv-head{ margin-bottom:16px; }
   .ppage-bottom .ppage-rv-head .stars.lg .star{ font-size:22px; }
   .ppage-rv-n{ font-size:25px; }
-  .ppage-bottom .ppage-rv-lista .rv-card{ margin:0 0 10px; padding:12px 13px; }
-  .ppage-bottom .ppage-rv-lista .rv-head{ gap:8px; }
-  .ppage-bottom .ppage-rv-lista .rv-text{ font-size:13.5px; line-height:1.45; }
-  .ppage-bottom .ppage-rv-lista .rv-name{ font-size:13px; }
-  .ppage-bottom .ppage-rv-lista .rv-card-foto{ margin:0 0 10px; }
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
@@ -2334,6 +2328,15 @@ svg{ -webkit-user-select:none; user-select:none; }
 .ppage-rv-lista .rv-card,
 .ppage-rv-lista .rv-card-foto{break-inside:avoid;width:100%;max-width:100%;margin:0 0 12px}
 .ppage-rv-lista .rv-foto-main{aspect-ratio:4/5}
+@media(max-width:768px){
+  .ppage-bottom .ppage-rv-lista,
+  .ppage-rv-caja .ppage-rv-lista{columns:2;column-gap:10px}
+  .ppage-rv-lista .rv-card,
+  .ppage-rv-lista .rv-card-foto{margin:0 0 10px}
+  .ppage-rv-lista .rv-card{padding:12px 13px}
+  .ppage-rv-lista .rv-text{font-size:13.5px;line-height:1.45}
+  .ppage-rv-lista .rv-name{font-size:13px}
+}
 
 .rvf-top{display:flex;justify-content:flex-end;margin-bottom:14px}
 .ppage-rv-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
