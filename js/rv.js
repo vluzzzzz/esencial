@@ -488,31 +488,125 @@ const Reviews = (() => {
         Ver las ${total} reseñas
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
       </button>` : '<p class="ppage-rv-vacio">Todavía no hay reseñas. Sé el primero en opinar.</p>';
-    el.innerHTML = cabeza + formResena(slug);
+    el.innerHTML = '<div class="rvf-top"><button class="rvf-abrir" id="rvfAbrir" type="button">Escribir reseña</button></div>' + cabeza;
     ajustarRecorte();
     conectarFotos();
-    conectarForm();
+    const btn = document.getElementById('rvfAbrir');
+    if (btn) btn.addEventListener('click', abrirWizard);
   }
 
-  function formResena(slug) {
-    return `
-      <div class="rvf" data-slug="${escAttr(slug)}">
-        <button class="rvf-abrir" type="button" id="rvfAbrir">✍ Dejá tu reseña</button>
-        <form class="rvf-form" id="rvfForm" hidden>
-          <input class="rvf-nombre" id="rvfNombre" type="text" maxlength="80" placeholder="Tu nombre" autocomplete="name">
-          <div class="rvf-stars" id="rvfStars" data-val="0" role="radiogroup" aria-label="Calificación">
-            ${[1,2,3,4,5].map(i => `<button type="button" class="rvf-star" data-star="${i}" aria-label="${i} estrellas">★</button>`).join('')}
-          </div>
-          <textarea class="rvf-text" id="rvfText" rows="3" maxlength="600" placeholder="Contá cómo te fue con el producto"></textarea>
-          <label class="rvf-foto" id="rvfFotoLbl">
-            <input type="file" id="rvfFoto" accept="image/*" hidden>
-            <span id="rvfFotoTxt">+ Agregar una foto (opcional)</span>
-          </label>
-          <button class="rvf-enviar" id="rvfEnviar" type="submit">Enviar reseña</button>
-          <p class="rvf-nota">Al enviar aceptás que publiquemos tu reseña y foto. Se revisa antes de aparecer.</p>
-          <p class="rvf-msg" id="rvfMsg" hidden></p>
-        </form>
-      </div>`;
+  const wiz = { paso: 1, stars: 0, text: '', image: '', name: '' };
+
+  function abrirWizard() {
+    wiz.paso = 1; wiz.stars = 0; wiz.text = ''; wiz.image = ''; wiz.name = '';
+    let m = document.getElementById('rvfModal');
+    if (!m) {
+      m = document.createElement('div');
+      m.id = 'rvfModal';
+      m.innerHTML = '<div class="rvfm-ov" data-cerrar></div><div class="rvfm-box" role="dialog" aria-modal="true">' +
+        '<button class="rvfm-x" data-cerrar aria-label="Cerrar">&times;</button>' +
+        '<div class="rvfm-cont" id="rvfmCont"></div>' +
+        '<div class="rvfm-foot" id="rvfmFoot"></div></div>';
+      document.body.appendChild(m);
+      m.addEventListener('click', e => { if (e.target.hasAttribute('data-cerrar')) cerrarWizard(); });
+      m.addEventListener('click', wizClick);
+      m.addEventListener('input', e => {
+        if (e.target.id === 'wzText') wiz.text = e.target.value;
+        if (e.target.id === 'wzName') wiz.name = e.target.value;
+        pintarFoot();
+      });
+      m.addEventListener('change', async e => {
+        if (e.target.id !== 'wzFoto') return;
+        const f = e.target.files[0];
+        const prev = document.getElementById('wzFotoPrev');
+        if (!f) return;
+        if (prev) prev.textContent = 'Procesando…';
+        try { wiz.image = await comprimeImg(f); if (prev) prev.innerHTML = '<img src="' + wiz.image + '" alt="">'; }
+        catch { wiz.image = ''; if (prev) prev.textContent = 'No se pudo leer la foto'; }
+        pintarFoot();
+      });
+    }
+    m.classList.add('abierto');
+    document.documentElement.style.overflow = 'hidden';
+    pintarWizard();
+  }
+
+  function cerrarWizard() {
+    const m = document.getElementById('rvfModal');
+    if (m) m.classList.remove('abierto');
+    document.documentElement.style.overflow = '';
+  }
+
+  function pintarWizard() {
+    const cont = document.getElementById('rvfmCont');
+    if (!cont) return;
+    if (wiz.paso === 1) {
+      cont.innerHTML = '<h3 class="wz-t">¿Cómo puntuarías este producto?</h3>' +
+        '<div class="wz-stars" id="wzStars">' +
+        [1,2,3,4,5].map(i => '<button type="button" class="wz-star' + (i <= wiz.stars ? ' on' : '') + '" data-star="' + i + '" aria-label="' + i + '">★</button>').join('') +
+        '</div><div class="wz-stars-lbl"><span>No me gusta</span><span>¡Me encanta!</span></div>';
+    } else if (wiz.paso === 2) {
+      cont.innerHTML = '<h3 class="wz-t">Contanos tu experiencia</h3>' +
+        '<textarea class="wz-text" id="wzText" rows="5" maxlength="600" placeholder="¿Qué te pareció el producto? ¿Cómo llegó?">' + escTxt(wiz.text) + '</textarea>';
+    } else if (wiz.paso === 3) {
+      cont.innerHTML = '<h3 class="wz-t">Mostralo</h3><p class="wz-sub">¡Nos encantaría verlo! (opcional)</p>' +
+        '<label class="wz-foto"><input type="file" id="wzFoto" accept="image/*" hidden>' +
+        '<span id="wzFotoPrev">' + (wiz.image ? '<img src="' + wiz.image + '" alt="">' : '📷 Añadir foto') + '</span></label>';
+    } else {
+      cont.innerHTML = '<h3 class="wz-t">Sobre vos</h3>' +
+        '<label class="wz-lbl">Tu nombre</label>' +
+        '<input class="wz-input" id="wzName" type="text" maxlength="80" placeholder="Ej: Camila R." value="' + escAttr(wiz.name) + '" autocomplete="name">' +
+        '<p class="wz-legal">Al enviar aceptás que publiquemos tu reseña y foto. Se revisa antes de aparecer.</p>' +
+        '<p class="rvf-msg" id="wzMsg" hidden></p>';
+    }
+    pintarFoot();
+  }
+
+  function pintarFoot() {
+    const foot = document.getElementById('rvfmFoot');
+    if (!foot) return;
+    const dots = '<div class="wz-dots">' + [1,2,3,4].map(i => '<span class="wz-dot' + (i <= wiz.paso ? ' on' : '') + '"></span>').join('') + '</div>';
+    let izq = '', der = '';
+    if (wiz.paso > 1) izq = '<button class="wz-volver" data-wz="volver" type="button">← Volver</button>';
+    if (wiz.paso === 1) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.stars ? '' : ' disabled') + '>Siguiente</button>';
+    else if (wiz.paso === 2) der = '<button class="wz-next" data-wz="next" type="button"' + (wiz.text.trim().length >= 3 ? '' : ' disabled') + '>Siguiente</button>';
+    else if (wiz.paso === 3) der = '<button class="wz-skip" data-wz="next" type="button">' + (wiz.image ? 'Siguiente' : 'Saltar') + '</button>';
+    else der = '<button class="wz-done" data-wz="done" type="button"' + (wiz.name.trim().length >= 2 ? '' : ' disabled') + '>Hecho</button>';
+    foot.innerHTML = '<div class="wz-foot-l">' + izq + '</div>' + dots + '<div class="wz-foot-r">' + der + '</div>';
+  }
+
+  function wizClick(e) {
+    const st = e.target.closest('.wz-star');
+    if (st) {
+      wiz.stars = Number(st.dataset.star);
+      document.querySelectorAll('#wzStars .wz-star').forEach((x, i) => x.classList.toggle('on', i < wiz.stars));
+      pintarFoot();
+      setTimeout(() => { if (wiz.paso === 1) { wiz.paso = 2; pintarWizard(); } }, 300);
+      return;
+    }
+    const b = e.target.closest('[data-wz]');
+    if (!b) return;
+    if (b.dataset.wz === 'volver') { wiz.paso = Math.max(1, wiz.paso - 1); pintarWizard(); }
+    if (b.dataset.wz === 'next')   { wiz.paso = Math.min(4, wiz.paso + 1); pintarWizard(); }
+    if (b.dataset.wz === 'done')   enviarWizard(b);
+  }
+
+  async function enviarWizard(btn) {
+    const msg = document.getElementById('wzMsg');
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    try {
+      const r = await fetch('/api/submit-review', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product: slugActual, name: wiz.name.trim(), stars: wiz.stars, text: wiz.text.trim(), image: wiz.image || '' }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || 'No se pudo enviar');
+      document.getElementById('rvfmCont').innerHTML = '<div class="wz-ok"><div class="wz-ok-ico">✓</div><h3 class="wz-t">¡Gracias!</h3><p class="wz-sub">Tu reseña quedó enviada y aparecerá cuando la revisemos.</p></div>';
+      document.getElementById('rvfmFoot').innerHTML = '<div class="wz-foot-l"></div><div></div><div class="wz-foot-r"><button class="wz-done" data-cerrar type="button">Cerrar</button></div>';
+    } catch (err) {
+      btn.disabled = false; btn.textContent = 'Hecho';
+      if (msg) { msg.textContent = err.message; msg.hidden = false; }
+    }
   }
 
   function comprimeImg(file, maxLado = 1200, calidad = 0.8) {
@@ -533,61 +627,6 @@ const Reviews = (() => {
       };
       img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('imagen')); };
       img.src = url;
-    });
-  }
-
-  function conectarForm() {
-    const cont = document.getElementById('rvfForm');
-    if (!cont) return;
-    let fotoData = '';
-
-    document.getElementById('rvfAbrir').addEventListener('click', () => {
-      cont.hidden = !cont.hidden;
-    });
-
-    document.getElementById('rvfStars').addEventListener('click', e => {
-      const b = e.target.closest('.rvf-star');
-      if (!b) return;
-      const wrap = document.getElementById('rvfStars');
-      const v = Number(b.dataset.star);
-      wrap.dataset.val = v;
-      wrap.querySelectorAll('.rvf-star').forEach((x, i) => x.classList.toggle('on', i < v));
-    });
-
-    document.getElementById('rvfFoto').addEventListener('change', async e => {
-      const f = e.target.files[0];
-      const txt = document.getElementById('rvfFotoTxt');
-      if (!f) { fotoData = ''; txt.textContent = '+ Agregar una foto (opcional)'; return; }
-      txt.textContent = 'Procesando foto…';
-      try { fotoData = await comprimeImg(f); txt.textContent = '✓ Foto lista (tocá para cambiar)'; }
-      catch { fotoData = ''; txt.textContent = 'No se pudo leer la foto'; }
-    });
-
-    cont.addEventListener('submit', async e => {
-      e.preventDefault();
-      const msg = document.getElementById('rvfMsg');
-      const btn = document.getElementById('rvfEnviar');
-      const body = {
-        product: slugActual,
-        name: document.getElementById('rvfNombre').value.trim(),
-        stars: Number(document.getElementById('rvfStars').dataset.val) || 0,
-        text: document.getElementById('rvfText').value.trim(),
-        image: fotoData || '',
-      };
-      msg.hidden = true;
-      btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Enviando…';
-      try {
-        const r = await fetch('/api/submit-review', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-        });
-        const data = await r.json();
-        if (!r.ok) throw new Error(data.error || 'No se pudo enviar');
-        cont.innerHTML = '<p class="rvf-ok">¡Gracias! Tu reseña quedó enviada y aparecerá cuando la revisemos.</p>';
-      } catch (err) {
-        btn.disabled = false; btn.textContent = orig;
-        msg.textContent = err.message;
-        msg.hidden = false;
-      }
     });
   }
 
