@@ -20,6 +20,7 @@ const PRICE_TIERS={
   'buds2-pro':[{qty:1,price:14000},{qty:3,price:14000},{qty:5,price:14000},{qty:10,price:14000}],
   'iphone-15-128':[{qty:1,price:480000}],
   'iphone-16-128':[{qty:1,price:580000}],
+  'iphone-18-pro-max-256':[{qty:1,price:1150000}],
   's26-plus-256':[{qty:1,price:580000}],
   'bateria-magsafe':[{qty:1,price:15000},{qty:3,price:15000},{qty:5,price:15000},{qty:10,price:15000}],
   'cargador-lightning':[{qty:1,price:5000},{qty:3,price:5000},{qty:5,price:5000},{qty:10,price:4500}],
@@ -47,6 +48,7 @@ let CATALOGO = [
   {slug:'iphone-15-128',            cat:'celulares',  name:'iPhone 15 128 GB',           image:'images/iphone15uno.webp',           desc:'iPhone 15 de 128 GB. Pantalla Super Retina XDR, Dynamic Island, cámara de 48 MP y puerto USB-C.'},
   {slug:'iphone-16-128',            cat:'celulares',  name:'iPhone 16 128 GB',           image:'images/iphone16uno.webp',           desc:'iPhone 16 de 128 GB. Chip A18, botón de Control de Cámara, cámara de 48 MP y batería de mayor duración.'},
   {slug:'s26-plus-256',             cat:'celulares',  name:'Galaxy S26 Plus 256 GB',     image:'images/samsumg26uno.webp',            desc:'Samsung Galaxy S26 Plus de 256 GB. Pantalla Dynamic AMOLED, cámara de alta resolución y carga rápida.'},
+  {slug:'iphone-18-pro-max-256',    cat:'celulares',  name:'iPhone 18 Pro Max 256 GB',   image:'images/iphone18.webp',            desc:'iPhone 18 Pro Max de 256 GB. Pantalla Super Retina XDR, sistema de cámaras Pro y el chip más potente de Apple.'},
   {slug:'bateria-magsafe',          cat:'celulares',     name:'Batería MagSafe',            image:'images/bateria-magsafe.webp',     desc:'Batería externa magnética para iPhone. Se adhiere perfectamente y carga de forma inalámbrica sin cables. Compacta y ligera.'},
   {slug:'cargador-lightning',       cat:'cargadores', name:'Cargador Lightning Completo',image:'images/cargador-lightning.webp',  desc:'Cargador completo con cable Lightning y adaptador de corriente. Compatible con iPhone, iPad y AirPods.'},
   {slug:'cargador-tipo-c',          cat:'cargadores', name:'Cargador Tipo C Completo',   image:'images/cargadorcompletotipoc.webp',     desc:'Cargador completo con cable USB-C. Compatible con iPhone 15 en adelante, iPad Pro y MacBook. Carga rápida.'},
@@ -262,6 +264,7 @@ const FEATURES={
   'apple-watch-serie-10':['Pantalla OLED más grande','Detección de apnea del sueño','Carga rápida','Diseño más delgado'],
   'iphone-15-128':['128 GB de almacenamiento','Pantalla Super Retina XDR','Cámara principal de 48 MP','Puerto USB-C'],
   'iphone-16-128':['128 GB de almacenamiento','Chip A18','Botón de Control de Cámara','Cámara principal de 48 MP'],
+  'iphone-18-pro-max-256':['256 GB de almacenamiento','Pantalla Super Retina XDR','Sistema de cámaras Pro','Chip de última generación'],
   's26-plus-256':['256 GB de almacenamiento','Pantalla Dynamic AMOLED','Cámara de alta resolución','Carga rápida'],
   'bateria-magsafe':['Carga magnética MagSafe','Compacta y liviana','Compatible iPhone 12 en adelante','Sin cables'],
   'airpods-max':['Compatibles con MagSafe','Fijación magnética perfecta','Carga inalámbrica optimizada','Múltiples colores'],
@@ -277,6 +280,7 @@ const GALLERY={
   'airpods-3':['images/airpodspro3uno.webp','images/airpodspro3dos.webp'],
   'iphone-15-128':['images/iphone15uno.webp','images/iphone15dos.webp','images/iphone15tres.webp'],
   'iphone-16-128':['images/iphone16uno.webp','images/iphone16dos.webp','images/iphone16tres.webp'],
+  'iphone-18-pro-max-256':['images/iphone18.webp','images/iphone18dos.webp'],
   's26-plus-256':['images/samsumg26uno.webp','images/samsumg26dos.webp','images/samsumg26tres.webp'],
 };
 // Variantes de color — SOLO los slugs listados acá muestran colores (dots + selector + validación).

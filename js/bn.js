@@ -29,7 +29,7 @@ let BANNERS = [
   { desktop:'images/bannerdos.webp',     mobile:'images/bannerdoscelu.webp',    alt:'AirPods Pro 3',        producto:'airpods-3' },
   { desktop:'images/bannertres.webp',    mobile:'images/bannertrescelu.webp',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
   { desktop:'images/CUATRO.webp',         mobile:'images/batterypackbannercelu.webp', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  { desktop:'images/eliguetuproximoiphone.webp',   mobile:'images/bannercincocelu.webp',  alt:'Celulares',            categoria:'celulares' },
+  { desktop:'images/eliguetuproximoiphone.webp',   mobile:'images/medidacelulareliguetuproximoiphone.webp',  alt:'Celulares',            categoria:'celulares' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
@@ -73,7 +73,7 @@ const CINTA_SEPARADOR = 'images/logo-cinta.webp';
 let CATEGORIAS = [
   { arriba:'Lo mejor en', titulo:'Audífonos',  desde:'$14.000', cat:'audifonos',  img:'images/cat-audifonos.webp',  medida:'800 × 1000', banner:'images/audifonoscategorias.webp', bannerMobile:'images/aurifonoscategoriacelu.webp', bannerArchivo:'banner-audifonos.webp'  },
   { arriba:'Todo en',     titulo:'Smartwatch', desde:'$29.990', cat:'smartwatch', img:'images/smarwacth.webp',      medida:'800 × 500',  banner:'images/categoriasmarwatch.webp', bannerMobile:'images/relojescategoriacelu.webp', bannerArchivo:'banner-smartwatch.webp' },
-  { arriba:'Todo en',     titulo:'iPhone',     desde:'$15.000', cat:'celulares',  img:'images/iphone.webp',         medida:'800 × 500',  banner:'images/smarthphonecategoria.webp', bannerMobile:'images/smartphonecategoriacelu.webp', bannerArchivo:'banner-celulares.webp'  },
+  { arriba:'Todo en',     titulo:'iPhone',     desde:'$15.000', cat:'celulares',  img:'images/iphone.webp',         medida:'800 × 500',  banner:'images/iphonescategoria.webp', bannerMobile:'images/iphonecategoriacelu.webp', bannerArchivo:'banner-celulares.webp'  },
   { arriba:'Todo en',     titulo:'Cargadores', desde:'$5.000',  cat:'cargadores', img:'images/categoriacargadoress.webp', medida:'800 × 1000', banner:'images/categoriacargadores.webp', bannerMobile:'images/cargadorescelu.webp', bannerArchivo:'banner-cargadores.webp' },
 ];
 
