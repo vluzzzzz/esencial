@@ -29,7 +29,7 @@ let BANNERS = [
   { desktop:'images/bannerdos.webp',     mobile:'images/bannerdoscelu.webp',    alt:'AirPods Pro 3',        producto:'airpods-3' },
   { desktop:'images/bannertres.webp',    mobile:'images/bannertrescelu.webp',   alt:'Apple Watch Serie 11', producto:'apple-watch-serie-10' },
   { desktop:'images/CUATRO.webp',         mobile:'images/batterypackbannercelu.webp', alt:'Batería MagSafe',      producto:'bateria-magsafe' },
-  { desktop:'images/bannercinco.webp',   mobile:'images/bannercincocelu.webp',  alt:'Celulares',            categoria:'celulares' },
+  { desktop:'images/eliguetuproximoiphone.webp',   mobile:'images/bannercincocelu.webp',  alt:'Celulares',            categoria:'celulares' },
 ];
 
 // Banner ancho de promoción (va entre la grilla y las reseñas) → 2400 × 600 px
