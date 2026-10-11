@@ -284,9 +284,10 @@ const GALLERY={
    puede elegir, y desde /admin se vuelve a encender sin perder las fotos. */
 const COLOR_VARIANTS={
   'apple-watch-ultra-3':[
-    {name:'Negro',   hex:'#1A1A1A', img:'images/ultra3black.webp',  swatch:'images/miniblackultra3.webp'},
-    {name:'Gris',    hex:'#8E8E93', img:'images/ultra3gris.webp',   swatch:'images/minigrisultra3.webp'},
-    {name:'Naranja', hex:'#F26513', img:'images/ultra3orange.webp', swatch:'images/miniorangeultra3.webp'},
+    {name:'Negro',       hex:'#1A1A1A', img:'images/ultra3black.webp',            swatch:'images/miniultra3correablack.webp'},
+    {name:'Negro total', hex:'#000000', img:'images/ultra3blackcorreablack.webp', swatch:'images/miniblackultra3.webp'},
+    {name:'Gris',        hex:'#8E8E93', img:'images/ultra3gris.webp',             swatch:'images/minigrisultra3.webp'},
+    {name:'Naranja',     hex:'#F26513', img:'images/ultra3orange.webp',           swatch:'images/miniorangeultra3.webp'},
   ],
   'buds4-pro':[
     {name:'Negro', hex:'#1A1A1A', img:'images/buds4black.webp', swatch:'images/minibuds4black.webp'},

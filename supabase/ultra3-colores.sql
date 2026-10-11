@@ -16,9 +16,10 @@ update public.products set
   category = 'smartwatch',
   image    = 'images/ultra3black.webp',
   colors   = '[
-    {"name":"Negro",   "hex":"#1A1A1A", "img":"images/ultra3black.webp",  "swatch":"images/miniblackultra3.webp"},
-    {"name":"Gris",    "hex":"#8E8E93", "img":"images/ultra3gris.webp",   "swatch":"images/minigrisultra3.webp"},
-    {"name":"Naranja", "hex":"#F26513", "img":"images/ultra3orange.webp", "swatch":"images/miniorangeultra3.webp"}
+    {"name":"Negro",       "hex":"#1A1A1A", "img":"images/ultra3black.webp",            "swatch":"images/miniultra3correablack.webp"},
+    {"name":"Negro total", "hex":"#000000", "img":"images/ultra3blackcorreablack.webp", "swatch":"images/miniblackultra3.webp"},
+    {"name":"Gris",        "hex":"#8E8E93", "img":"images/ultra3gris.webp",             "swatch":"images/minigrisultra3.webp"},
+    {"name":"Naranja",     "hex":"#F26513", "img":"images/ultra3orange.webp",           "swatch":"images/miniorangeultra3.webp"}
   ]'::jsonb
 where slug = 'apple-watch-ultra-3';
 
