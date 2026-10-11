@@ -37,7 +37,7 @@ const getUnitPrice=(key,qty)=>{const t=PRICE_TIERS[key];if(!t||!t.length)return 
    loadCatalog() lo reemplaza entero si Supabase responde.                   */
 let CATALOGO = [
   {slug:'apple-watch-ultra-3',      cat:'smartwatch', name:'Apple Watch Ultra 3',        image:'images/ultra3black.webp', desc:'El Apple Watch más resistente. Titanio de grado aeroespacial, pantalla Always-On de 49mm y hasta 60 horas de batería.'},
-  {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie-10.webp',            desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
+  {slug:'apple-watch-serie-10',     cat:'smartwatch', name:'Apple Watch Serie 11',       image:'images/serie11black.webp',        desc:'El Apple Watch más delgado hasta la fecha. Pantalla OLED más grande, detección de apnea del sueño y carga rápida.'},
   {slug:'airpods-4',                cat:'audifonos',  name:'AirPods 4ta Generación',     image:'images/airpods-4gen.webp',        desc:'Diseño completamente rediseñado, audio adaptable y cancelación activa de ruido. La mejor experiencia sin cables.'},
   {slug:'airpods-3',                cat:'audifonos',  name:'AirPods Pro 3',              image:'images/airpodspro3uno.webp',        desc:'Cancelación activa de ruido, audio espacial y resistencia al agua. La generación más avanzada, cómoda para todo el día.'},
   {slug:'airpods-pro-2',            cat:'audifonos',  name:'AirPods Pro 2',              image:'images/airpods-pro-2.webp',       desc:'Cancelación activa de ruido de siguiente nivel, audio espacial personalizado y hasta 30 horas de batería con el estuche.'},
@@ -283,6 +283,11 @@ const GALLERY={
 /* Cada color lleva 'agotado'. En true sigue a la vista pero en gris y no se
    puede elegir, y desde /admin se vuelve a encender sin perder las fotos. */
 const COLOR_VARIANTS={
+  'apple-watch-serie-10':[
+    {name:'Negro', hex:'#1A1A1A', img:'images/serie11black.webp',  swatch:'images/miniblack11.webp'},
+    {name:'Oro',   hex:'#E3C08D', img:'images/serie11oro.webp',    swatch:'images/minioro.webp'},
+    {name:'Gris',  hex:'#8E8E93', img:'images/grisserie11.webp',   swatch:'images/miniserie11gris.webp'},
+  ],
   'apple-watch-ultra-3':[
     {name:'Negro',       hex:'#1A1A1A', img:'images/ultra3black.webp',            swatch:'images/miniultra3correablack.webp'},
     {name:'Negro total', hex:'#000000', img:'images/ultra3blackcorreablack.webp', swatch:'images/miniblackultra3.webp'},
